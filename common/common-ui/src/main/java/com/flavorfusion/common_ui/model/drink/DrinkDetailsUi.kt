@@ -3,31 +3,31 @@ package com.flavorfusion.common_ui.model.drink
 import com.flavorfusion.common_domain.model.drinks.DrinkDetails
 
 data class DrinkDetailsUi(
-    val drinkId: String,
-    val drinkName: String,
-    val drinkAlternate: String?,
-    val tags: String?,
-    val videoUrl: String?,
-    val category: String,
-    val iba: String?,
-    val alcoholic: String?,
-    val glass: String?,
-    val instructions: String?,
-    val instructionsES: String?,
-    val instructionsDE: String?,
-    val instructionsFR: String?,
-    val instructionsIT: String?,
-    val instructionsZH_HANS: String?,
-    val instructionsZH_HANT: String?,
-    val drinkImage: String?,
-    val ingredients: Map<String?, String?>?,
-    val imageSource: String?,
-    val imageAttribution: String?,
-    val creativeCommonsConfirmed: String?,
-    val dateModified: String?
+    val drinkId: String = "",
+    val drinkName: String = "",
+    val drinkAlternate: String? = null,
+    val tags: String? = null,
+    val videoUrl: String? = null,
+    val category: String = "",
+    val iba: String? = null,
+    val alcoholic: String? = null,
+    val glass: String? = null,
+    val instructions: String? = null,
+    val instructionsES: String? = null,
+    val instructionsDE: String? = null,
+    val instructionsFR: String? = null,
+    val instructionsIT: String? = null,
+    val instructionsZH_HANS: String? = null,
+    val instructionsZH_HANT: String? = null,
+    val drinkImage: String? = null,
+    val ingredients: Map<String?, String?>? = null,
+    val imageSource: String? = null,
+    val imageAttribution: String? = null,
+    val creativeCommonsConfirmed: String? = null,
+    val dateModified: String? = null
 )
 
-fun DrinkDetails.toUi() = DrinkDetails(
+fun DrinkDetails.toUi() = DrinkDetailsUi(
     drinkId = drinkId,
     drinkName = drinkName,
     drinkAlternate = drinkAlternate,
@@ -52,4 +52,4 @@ fun DrinkDetails.toUi() = DrinkDetails(
     dateModified = dateModified,
 )
 
-fun List<DrinkDetails>.toUi(): List<DrinkDetails> = map { it.toUi() }
+fun List<DrinkDetails>.toUi(): List<DrinkDetailsUi> = map { it.toUi() }
