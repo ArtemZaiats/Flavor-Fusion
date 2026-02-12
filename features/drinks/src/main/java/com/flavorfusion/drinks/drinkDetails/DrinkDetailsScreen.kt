@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -232,4 +233,19 @@ fun DrinkDetails(
                 .padding(top = 16.dp)
         )
     }
+}
+
+@Preview
+@Composable
+fun DrinkDetailsPreview() {
+    DrinkDetailsScreen(
+        state = DrinkDetailsContract.State(
+            drink = DrinkDetailsUi(
+                drinkName = "A1",
+                drinkImage = "",
+                category = "Cocktail",
+            )
+        ),
+        onEvent = {}
+    )
 }

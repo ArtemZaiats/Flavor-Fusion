@@ -17,9 +17,9 @@ class DrinksViewModel @Inject constructor(
     override fun handleEvent(event: DrinksContract.Event) {
         when (event) {
             is DrinksContract.Event.OnDrinkClicked -> onDrinkClicked(event.drink.drinkId)
-            is DrinksContract.Event.OnSearchValueChanged -> {}
-            DrinksContract.Event.OnSearchClicked -> {}
-            DrinksContract.Event.OnSearchCloseClicked -> {}
+            is DrinksContract.Event.OnSearchValueChanged -> handleSearchValueChanged(event.value)
+            DrinksContract.Event.OnSearchClicked -> handleSearchPanelVisibility()
+            DrinksContract.Event.OnSearchCloseClicked -> handleOnSearchClose()
             DrinksContract.Event.OnRefresh -> getDrinks()
         }
     }
@@ -33,12 +33,39 @@ class DrinksViewModel @Inject constructor(
                         drinks = it?.toUi() ?: emptyList()
                     )
                 )
+                handleSearch(currentState.searchValue)
             }
         )
-
     }
 
     private fun onDrinkClicked(drinkId: String) {
         publish { DrinksContract.Effect.NavigateToDrinkDetails(drinkId) }
+    }
+
+    private fun handleSearchPanelVisibility() {
+        dispatch(DrinksContract.Action.UpdateShowSearch(showSearch = !state.value.showSearch))
+        handleSearchValueChanged("")
+    }
+
+    private fun handleSearchValueChanged(searchValue: String) {
+        dispatch(DrinksContract.Action.UpdateSearchValue(searchValue = searchValue))
+        handleSearch(searchValue)
+    }
+
+    private fun handleSearch(searchValue: String) {
+        val allDrinks = currentState.drinks
+        val searchDrinks = if (searchValue.isEmpty()) {
+            allDrinks
+        } else {
+            allDrinks.filter { drink ->
+                drink.drinkName.contains(searchValue, ignoreCase = true)
+            }
+        }
+        dispatch(DrinksContract.Action.UpdateSearchDrinks(searchDrinks = searchDrinks))
+    }
+
+    private fun handleOnSearchClose() {
+        dispatch(DrinksContract.Action.UpdateShowSearch(showSearch = false))
+        handleSearchValueChanged("")
     }
 }

@@ -13,4 +13,5 @@
 
     <string name="feature_drinks_search_drinks">Search drinks</string>
     <string name="feature_drinks_search">Search</string>
+    <string name="feature_drinks_title">Drinks</string>
 </resources>
