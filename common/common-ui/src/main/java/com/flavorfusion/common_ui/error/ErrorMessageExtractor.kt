@@ -14,7 +14,7 @@ interface ErrorMessageExtractor {
 }
 
 class DefaultMessageExtractor @Inject constructor(
-    @ApplicationContext private val context: Context
+    @param:ApplicationContext private val context: Context
 ) : ErrorMessageExtractor {
 
     private val defaultErrorMessage: ErrorMessage

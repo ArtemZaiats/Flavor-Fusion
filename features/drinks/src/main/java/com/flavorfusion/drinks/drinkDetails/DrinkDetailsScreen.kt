@@ -1,4 +1,4 @@
-package com.flavorfusion.drinks.drinksFeature.presentation
+package com.flavorfusion.drinks.drinkDetails
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -33,79 +33,48 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.flavorfusion.common_ui.compose.CocktailLoading
+import com.flavorfusion.common_ui.model.drink.DrinkDetailsUi
 import com.flavorfusion.common_ui.theme.NunitoFontFontFamily
-import com.flavorfusion.drinks.drinksFeature.presentation.model.DrinkDetailsModel
-import com.flavorfusion.drinks.drinksFeature.presentation.model.UIState
 
 @Composable
 fun DrinkDetailsScreen(
-    modifier: Modifier = Modifier,
-    drinkName: String,
-    drinkImage: String,
-    drinkDetailsState: UIState,
+    drinkId: String,
     onBackClick: () -> Unit
 ) {
-    DrinkBody(
-        modifier = modifier,
-        drinkDetailsState = drinkDetailsState,
-        drinkName = drinkName,
-        drinkImage = drinkImage,
-        onBackClick = onBackClick
-    )
+
+
 }
 
 @Composable
 fun DrinkBody(
     modifier: Modifier = Modifier,
-    drinkName: String,
-    drinkImage: String,
-    drinkDetailsState: UIState,
+    drink: DrinkDetailsUi,
     onBackClick: () -> Unit
 ) {
 
-    when (drinkDetailsState) {
-        is UIState.Loading -> {
-            CocktailLoading()
-        }
-
-        is UIState.Success<*> -> {
-            val drink =
-                (drinkDetailsState.data as List<DrinkDetailsModel>).getOrElse(0) { DrinkDetailsModel() }
-
-            Column(
-                modifier
-                    .fillMaxSize()
-                    .background(color = Color.White)
-                    .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.Top
-            ) {
-                DrinkHeader(
-                    drinkImage = drinkImage,
-                    drinkName = drinkName,
-                    drink = drink,
-                    onBackClick = onBackClick
-                )
-                DrinkDetails(
-                    modifier = modifier,
-                    drink = drink
-                )
-                Spacer(modifier = Modifier.height(96.dp))
-            }
-        }
-
-        is UIState.Error -> {
-            //TODO
-        }
+    Column(
+        modifier
+            .fillMaxSize()
+            .background(color = Color.White)
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.Top
+    ) {
+        DrinkHeader(
+            drinkImage = drink.drinkImage ?: "",
+            drinkName = drink.drinkName,
+            drink = drink,
+            onBackClick = onBackClick
+        )
+        DrinkDetails(drink = drink)
+        Spacer(modifier = Modifier.height(96.dp))
     }
 }
 
 @Composable
 fun DrinkHeader(
-    modifier: Modifier = Modifier,
     drinkImage: String,
     drinkName: String,
-    drink: DrinkDetailsModel,
+    drink: DrinkDetailsUi,
     onBackClick: () -> Unit
 ) {
     Column(
@@ -194,8 +163,7 @@ fun DrinkHeader(
 
 @Composable
 fun DrinkDetails(
-    modifier: Modifier = Modifier,
-    drink: DrinkDetailsModel,
+    drink: DrinkDetailsUi,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),

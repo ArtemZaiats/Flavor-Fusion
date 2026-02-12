@@ -32,7 +32,7 @@ object DrinksRemoteModule {
     }
 
     @Provides
-    @Singleton
+    @DrinksClient
     fun provideDrinksApiService(@DrinksClient retrofit: Retrofit): DrinksApiService {
         return retrofit.create(DrinksApiService::class.java)
     }

@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.flavorfusion.flavorfusion.navigation.graphs.DrinksNavHost
 
 @Composable
 fun AppNavigation(
@@ -16,7 +17,7 @@ fun AppNavigation(
             RecipesNavHost(modifier = modifier)
         }
         composable("drinks") {
-            DrinksNavHost(modifier = modifier)
+            DrinksNavHost()
         }
         composable("favorite") {
             FavoritesNavHost(modifier = modifier)

@@ -14,7 +14,8 @@ import javax.inject.Singleton
 
 @Singleton
 class DrinksRepositoryImpl @Inject constructor(
-    @param:DrinksClient private val service: DrinksApiService,
+    @DrinksClient
+    private val service: DrinksApiService,
     private val responseHandler: ResponseHandler
 ) : DrinksRepository {
 

@@ -13,14 +13,14 @@ android {
             buildConfigField(
                 type = "String",
                 name = "BASE_URL",
-                value = "https://www.thecocktaildb.com/api/json/v1/1/"
+                value = "\"https://www.thecocktaildb.com/api/json/v1/1/\""
             )
         }
         release {
             buildConfigField(
                 type = "String",
                 name = "BASE_URL",
-                value = "https://www.thecocktaildb.com/api/json/v1/1/"
+                value = "\"https://www.thecocktaildb.com/api/json/v1/1/\""
             )
         }
     }
@@ -38,7 +38,11 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
 
+    implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.androidx.hilt.compiler)
+
     implementation(libs.retrofit)
+    implementation(libs.retrofit.adapters.result)
     implementation(libs.retrofit.converter.kotlin.serialization)
     implementation(libs.logging.interceptor)
     implementation(libs.kotlinx.serialization.json)
