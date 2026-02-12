@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,6 +24,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,7 +34,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.flavorfusion.common_ui.compose.EffectHandler
 import com.flavorfusion.common_ui.model.drink.DrinkDetailsUi
 import com.flavorfusion.common_ui.theme.NunitoFontFontFamily
 
@@ -41,31 +46,45 @@ fun DrinkDetailsScreen(
     drinkId: String,
     onBackClick: () -> Unit
 ) {
+    val viewModel: DrinkDetailsViewModel = hiltViewModel()
+    val state = viewModel.state.collectAsStateWithLifecycle().value
 
+    LaunchedEffect(drinkId) {
+        if (drinkId.isNotEmpty()) {
+            viewModel.setEvent(DrinkDetailsContract.Event.OnDrinkIdReceived(drinkId))
+        }
+    }
 
+    EffectHandler(viewModel = viewModel) {
+        when (it) {
+            is DrinkDetailsContract.Effect.NavigateBack -> onBackClick()
+        }
+    }
+
+    DrinkDetailsScreen(state = state, onEvent = viewModel::handleEvent)
 }
 
 @Composable
-fun DrinkBody(
-    modifier: Modifier = Modifier,
-    drink: DrinkDetailsUi,
-    onBackClick: () -> Unit
+fun DrinkDetailsScreen(
+    state: DrinkDetailsContract.State,
+    onEvent: (DrinkDetailsContract.Event) -> Unit
 ) {
 
     Column(
-        modifier
+        Modifier
             .fillMaxSize()
+            .statusBarsPadding()
             .background(color = Color.White)
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Top
     ) {
         DrinkHeader(
-            drinkImage = drink.drinkImage ?: "",
-            drinkName = drink.drinkName,
-            drink = drink,
-            onBackClick = onBackClick
+            drinkImage = state.drink.drinkImage ?: "",
+            drinkName = state.drink.drinkName,
+            drink = state.drink,
+            onBackClick = { onEvent(DrinkDetailsContract.Event.OnIconBackClicked) }
         )
-        DrinkDetails(drink = drink)
+        DrinkDetails(drink = state.drink)
         Spacer(modifier = Modifier.height(96.dp))
     }
 }
