@@ -1,4 +1,4 @@
-package com.flavorfusion.drinks.drinksFeature.presentation.components
+package com.flavorfusion.drinks.compose
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,13 +22,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.flavorfusion.drinks.drinksFeature.presentation.model.DrinkModel
+import com.flavorfusion.common_ui.model.drink.DrinkUi
 
 @Composable
 fun DrinkItem(
     modifier: Modifier = Modifier,
-    drink: DrinkModel,
-    onDrinkClick: (DrinkModel) -> Unit,
+    drink: DrinkUi,
+    onDrinkClick: (DrinkUi) -> Unit,
 ) {
     Card(
         modifier = modifier

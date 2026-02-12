@@ -10,4 +10,7 @@
     <string name="internet_no_ping_error_message">Please check your internet connection or contact your provider.</string>
     <string name="mock_timeout_error">Mock! Timeout error</string>
     <string name="mock_server_error">Mock! Server error</string>
+
+    <string name="feature_drinks_search_drinks">Search drinks</string>
+    <string name="feature_drinks_search">Search</string>
 </resources>

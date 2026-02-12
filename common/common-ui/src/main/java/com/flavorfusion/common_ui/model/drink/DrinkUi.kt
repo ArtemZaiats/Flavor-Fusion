@@ -13,3 +13,5 @@ fun Drink.toUi() = DrinkUi(
     drinkImage = drinkImage,
     drinkId = drinkId
 )
+
+fun List<Drink>.toUi(): List<DrinkUi> = map { it.toUi() }

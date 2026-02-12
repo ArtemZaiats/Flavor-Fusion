@@ -20,5 +20,7 @@ object RepositoryModule {
     fun providesDrinksRepository(
         @DrinksClient service: DrinksApiService,
         responseHandler: ResponseHandler
-    ): DrinksRepository = DrinksRepositoryImpl(service, responseHandler)
+    ): DrinksRepository {
+        return DrinksRepositoryImpl(service, responseHandler)
+    }
 }

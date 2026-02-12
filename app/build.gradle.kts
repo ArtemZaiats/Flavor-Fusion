@@ -39,6 +39,7 @@ android {
 
 dependencies {
     implementation(projects.common.commonUi)
+    implementation(projects.common.commonData)
     implementation(projects.common.commonDomain)
     implementation(projects.features.drinks)
 

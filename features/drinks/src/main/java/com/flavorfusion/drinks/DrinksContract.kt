@@ -4,6 +4,7 @@ import com.flavorfusion.common_ui.model.drink.DrinkUi
 import com.flavorfusion.core_ui.mvi.MviConfig
 import com.flavorfusion.core_ui.mvi.Reducer
 import com.flavorfusion.core_ui.mvi.UiAction
+import com.flavorfusion.core_ui.mvi.UiEffect
 import com.flavorfusion.core_ui.mvi.UiEvent
 import com.flavorfusion.core_ui.mvi.UiState
 import javax.inject.Inject
@@ -37,5 +38,9 @@ interface DrinksContract {
         data class UpdateSearchDrinks(val searchDrinks: List<DrinkUi>) : Action
         data class UpdateSearchValue(val searchValue: String) : Action
         data class UpdateShowSearch(val showSearch: Boolean) : Action
+    }
+
+    sealed interface Effect: UiEffect {
+        data class NavigateToDrinkDetails(val drinkId: String): Effect
     }
 }

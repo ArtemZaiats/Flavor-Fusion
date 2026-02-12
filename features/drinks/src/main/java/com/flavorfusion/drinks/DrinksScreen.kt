@@ -1,4 +1,4 @@
-package com.flavorfusion.drinks.drinksFeature.presentation
+package com.flavorfusion.drinks
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -31,29 +31,58 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.flavorfusion.drinks.drinksFeature.presentation.components.DrinksGrid
-import com.flavorfusion.drinks.drinksFeature.presentation.model.DrinkModel
-import com.flavorfusion.drinks.drinksFeature.presentation.model.UIState
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.flavorfusion.common_ui.R
+import com.flavorfusion.common_ui.compose.EffectHandler
+import com.flavorfusion.common_ui.model.drink.DrinkUi
+import com.flavorfusion.core_ui.compose.OnLifecycleEvent
+import com.flavorfusion.drinks.compose.DrinksGrid
+import com.flavorfusion.drinks.compose.DrinksList
+import com.flavorfusion.drinks.model.DrinksDataPreviewProvider
 
 @Composable
 fun DrinksScreen(
-    modifier: Modifier = Modifier,
-    uiState: UIState,
-    onDrinkClick: (DrinkModel) -> Unit,
-    onSearchClick: (String) -> Unit
+    navigateToDrinkDetails: (String) -> Unit
+) {
+    val viewModel: DrinksViewModel = hiltViewModel()
+    val state = viewModel.state.collectAsStateWithLifecycle().value
+
+    OnLifecycleEvent(
+        onCreate = { viewModel.setEvent(DrinksContract.Event.OnRefresh) }
+    )
+
+    EffectHandler(viewModel = viewModel) {
+        when (it) {
+            is DrinksContract.Effect.NavigateToDrinkDetails -> navigateToDrinkDetails(it.drinkId)
+        }
+    }
+
+    DrinksScreen(
+        state = state,
+        onEvent = viewModel::handleEvent
+    )
+}
+
+@Composable
+fun DrinksScreen(
+    state: DrinksContract.State,
+    onEvent: (DrinksContract.Event) -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
             .background(color = Color.White),
     ) {
-        SearchPanel(onSearchClick = onSearchClick)
+        SearchPanel(onSearchClick = { onEvent.invoke(DrinksContract.Event.OnSearchClicked) })
         DrinksGrid(
-            uiState = uiState,
-            onDrinkClick = onDrinkClick
+            drinks = state.drinks,
+            onDrinkClick = { onEvent.invoke(DrinksContract.Event.OnDrinkClicked(it)) }
         )
     }
 }
@@ -67,7 +96,7 @@ fun SearchPanel(
     val focusManager = LocalFocusManager.current
 
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp, top = 8.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -75,7 +104,9 @@ fun SearchPanel(
         TextField(
             value = text,
             onValueChange = setText,
-            placeholder = { Text("Search drinks") },
+            placeholder = {
+                Text(text = stringResource(R.string.feature_drinks_search_drinks))
+            },
             shape = RoundedCornerShape(16.dp),
             textStyle = TextStyle(
                 color = Color.Black,
@@ -84,7 +115,7 @@ fun SearchPanel(
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Search,
-                    contentDescription = "search icon",
+                    contentDescription = stringResource(R.string.feature_drinks_search_drinks),
                     modifier = Modifier.size(24.dp),
                     tint = Color.Black
                 )
@@ -134,10 +165,18 @@ fun SearchPanel(
             },
             modifier = Modifier.padding(start = 8.dp)
         ) {
-            Text(
-                text = "Search",
-
-                )
+            Text(text = stringResource(R.string.feature_drinks_search))
         }
     }
+}
+
+@Preview
+@Composable
+fun DrinksScreenPreview(
+    @PreviewParameter(DrinksDataPreviewProvider::class) drinks: List<DrinkUi>
+) {
+    val state = DrinksContract.State(
+        drinks = drinks,
+    )
+    DrinksScreen(state = state, onEvent = {})
 }

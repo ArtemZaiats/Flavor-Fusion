@@ -2,7 +2,6 @@ import com.flavorfusion.gradleplugins.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
-import kotlin.text.get
 
 class AndroidHiltConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {

@@ -1,4 +1,4 @@
-package com.flavorfusion.drinks.drinksFeature.presentation.model
+package com.flavorfusion.drinks.model
 
 enum class Alcohol(val type: String) {
     ALCOHOLIC("Alcoholic"),
