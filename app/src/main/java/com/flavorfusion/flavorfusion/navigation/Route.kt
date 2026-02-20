@@ -4,16 +4,21 @@ import kotlinx.serialization.Serializable
 
 sealed interface Route {
 
+    @Serializable
+    data object Main : Route
+
     // Bottom navigation
     @Serializable
     data object Drinks : Route
+
     @Serializable
     data object Recipes : Route
+
     @Serializable
     data object Favorite : Route
 
     @Serializable
-    data object Main: Route
+    data object Settings : Route
 
 }
 
@@ -32,4 +37,7 @@ sealed interface Screen {
 
     @Serializable
     data object Recipes : Screen
+
+    @Serializable
+    data object Settings : Screen
 }

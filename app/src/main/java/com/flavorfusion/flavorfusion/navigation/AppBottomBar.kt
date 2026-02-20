@@ -45,6 +45,7 @@ fun AppBottomBar(
                         is Route.Drinks -> navDestination.hasRoute<Route.Drinks>()
                         is Route.Recipes -> navDestination.hasRoute<Route.Recipes>()
                         is Route.Favorite -> navDestination.hasRoute<Route.Favorite>()
+                        is Route.Settings -> navDestination.hasRoute<Route.Settings>()
                         else -> false
                     }
                 } == true
@@ -112,5 +113,10 @@ val bottomNavigationItems = listOf(
         title = "Favorite",
         icon = R.drawable.ic_favorite_navbar,
         route = Route.Favorite
+    ),
+    BottomNavigationItem(
+        title = "Settings",
+        icon = R.drawable.ic_settings_navbar,
+        route = Route.Settings
     )
 )

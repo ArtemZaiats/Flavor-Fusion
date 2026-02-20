@@ -7,6 +7,7 @@ import com.flavorfusion.flavorfusion.navigation.graphs.drinksNavGraph
 import com.flavorfusion.flavorfusion.navigation.graphs.favoritesNavGraph
 import com.flavorfusion.flavorfusion.navigation.graphs.mainContainer
 import com.flavorfusion.flavorfusion.navigation.graphs.recipesNavGraph
+import com.flavorfusion.flavorfusion.navigation.graphs.settingsNavGraph
 
 @Composable
 fun AppNavigation() {
@@ -17,6 +18,7 @@ fun AppNavigation() {
             drinksNavGraph(navController = bottomNavHostController)
             favoritesNavGraph(navController = bottomNavHostController)
             recipesNavGraph(navController = bottomNavHostController)
+            settingsNavGraph(navController = bottomNavHostController)
         }
     }
 }
