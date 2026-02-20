@@ -1,10 +1,20 @@
 package com.flavorfusion.drinks
 
+import androidx.lifecycle.viewModelScope
 import com.flavorfusion.common_domain.interactors.DrinksInteractor
+import com.flavorfusion.common_domain.model.onSuccess
 import com.flavorfusion.common_ui.Executor
 import com.flavorfusion.common_ui.model.drink.toUi
 import com.flavorfusion.core_ui.mvi.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
@@ -13,6 +23,8 @@ class DrinksViewModel @Inject constructor(
     private val executor: Executor,
     config: DrinksContract.Config
 ) : MviViewModel<DrinksContract.State, DrinksContract.Event>(config), Executor by executor {
+
+    private val searchQuery = MutableStateFlow("")
 
     override fun handleEvent(event: DrinksContract.Event) {
         when (event) {
@@ -24,6 +36,10 @@ class DrinksViewModel @Inject constructor(
         }
     }
 
+    init {
+        setupSearch()
+    }
+
     private fun getDrinks() {
         launch(
             action = { drinksInteractor.getDrinksByAlcoholic("Alcoholic") },
@@ -33,7 +49,11 @@ class DrinksViewModel @Inject constructor(
                         drinks = it?.toUi() ?: emptyList()
                     )
                 )
-                handleSearch(currentState.searchValue)
+                dispatch(
+                    DrinksContract.Action.UpdateSearchDrinks(
+                        searchDrinks = it?.toUi() ?: emptyList()
+                    )
+                )
             }
         )
     }
@@ -49,19 +69,35 @@ class DrinksViewModel @Inject constructor(
 
     private fun handleSearchValueChanged(searchValue: String) {
         dispatch(DrinksContract.Action.UpdateSearchValue(searchValue = searchValue))
-        handleSearch(searchValue)
+        if (searchValue.isEmpty()) {
+            dispatch(
+                DrinksContract.Action.UpdateSearchDrinks(
+                    searchDrinks = state.value.drinks
+                )
+            )
+            return
+        }
+        searchQuery.value = searchValue
     }
 
-    private fun handleSearch(searchValue: String) {
-        val allDrinks = currentState.drinks
-        val searchDrinks = if (searchValue.isEmpty()) {
-            allDrinks
-        } else {
-            allDrinks.filter { drink ->
-                drink.drinkName.contains(searchValue, ignoreCase = true)
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
+    private fun setupSearch() {
+        searchQuery
+            .debounce(300)
+            .distinctUntilChanged()
+            .flatMapLatest { query ->
+                drinksInteractor.getDrinkByNameFlow(query)
             }
-        }
-        dispatch(DrinksContract.Action.UpdateSearchDrinks(searchDrinks = searchDrinks))
+            .onEach { result ->
+                result.onSuccess { drinks ->
+                    dispatch(
+                        DrinksContract.Action.UpdateSearchDrinks(
+                            searchDrinks = drinks?.toUi() ?: emptyList()
+                        )
+                    )
+                }
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun handleOnSearchClose() {

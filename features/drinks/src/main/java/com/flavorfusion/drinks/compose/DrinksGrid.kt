@@ -7,7 +7,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -27,14 +28,22 @@ fun DrinksGrid(
             .fillMaxSize()
             .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
     ) {
-        items(drinks) {
-            DrinkItem(
-                drink = it,
-                onDrinkClick = onDrinkClick
-            )
-        }
-        item {
-            Spacer(modifier = Modifier.height(96.dp))
+        if (drinks.isEmpty()) {
+            item {
+                Text(text = "Empty list")
+            }
+        } else {
+            itemsIndexed(
+                items = drinks,
+                key = { _, it -> it.drinkId }) { index, drink ->
+                DrinkItem(
+                    drink = drink,
+                    onDrinkClick = onDrinkClick
+                )
+            }
+            item {
+                Spacer(modifier = Modifier.height(96.dp))
+            }
         }
     }
 }

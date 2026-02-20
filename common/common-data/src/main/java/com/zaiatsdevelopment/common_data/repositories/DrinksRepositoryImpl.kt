@@ -9,6 +9,14 @@ import com.zaiatsdevelopment.common_data.remote.model.ResponseHandler
 import com.zaiatsdevelopment.common_data.remote.model.drinks.toDomain
 import com.zaiatsdevelopment.common_data.remote.model.error.asDataError
 import com.zaiatsdevelopment.common_data.remote.services.DrinksApiService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -41,14 +49,13 @@ class DrinksRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getDrinkByName(name: String): Result<List<Drink>?> {
-        return service.getDrinksByName(name).fold(
-            onSuccess = { response ->
-                responseHandler.handleResponse(response) {
-                    it?.toDomain()
-                }
-            },
-            onFailure = { Result.Error(it.asDataError()) }
+    override fun getDrinkByNameFlow(name: String): Flow<Result<List<Drink>?>> = flow {
+        val response = service.getDrinksByName(name)
+        emit(
+            response.fold(
+                onSuccess = { responseHandler.handleResponse(it) { it?.toDomain() } },
+                onFailure = { Result.Error(it.asDataError()) }
+            )
         )
-    }
+    }.flowOn(Dispatchers.IO)
 }
