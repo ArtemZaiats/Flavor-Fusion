@@ -1,13 +1,35 @@
 package com.flavorfusion.flavorfusion.navigation
 
-import android.annotation.SuppressLint
 import kotlinx.serialization.Serializable
 
-sealed class Route {
-    @Serializable data object DrinksScreen: Route()
+sealed interface Route {
 
-    @SuppressLint("UnsafeOptInUsageError")
-    @Serializable data class DrinkDetailsScreen(
+    // Bottom navigation
+    @Serializable
+    data object Drinks : Route
+    @Serializable
+    data object Recipes : Route
+    @Serializable
+    data object Favorite : Route
+
+    @Serializable
+    data object Main: Route
+
+}
+
+// Screens
+sealed interface Screen {
+    @Serializable
+    data object Drinks : Screen
+
+    @Serializable
+    data class DrinkDetails(
         val drinkId: String,
-    ): Route()
+    ) : Screen
+
+    @Serializable
+    data object Favorites : Screen
+
+    @Serializable
+    data object Recipes : Screen
 }

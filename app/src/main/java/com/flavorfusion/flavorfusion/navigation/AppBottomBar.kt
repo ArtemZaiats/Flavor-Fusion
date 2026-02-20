@@ -1,12 +1,9 @@
 package com.flavorfusion.flavorfusion.navigation
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarDefaults
@@ -18,36 +15,45 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.flavorfusion.flavorfusion.R
 
 @Composable
 fun AppBottomBar(
-    modifier: Modifier = Modifier,
     navController: NavController
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
     NavigationBar(
         modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .clip(shape = RoundedCornerShape(50.dp))
-            .height(72.dp),
+            .clip(shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
         containerColor = Color.Black,
         windowInsets = NavigationBarDefaults.windowInsets.only(WindowInsetsSides.Horizontal)
     ) {
         bottomNavigationItems.forEach { item ->
-            val isSelected = navBackStackEntry?.destination?.route == item.title.lowercase()
+            val isSelected = navBackStackEntry
+                ?.destination
+                ?.hierarchy
+                ?.any { navDestination ->
+                    when (item.route) {
+                        is Route.Drinks -> navDestination.hasRoute<Route.Drinks>()
+                        is Route.Recipes -> navDestination.hasRoute<Route.Recipes>()
+                        is Route.Favorite -> navDestination.hasRoute<Route.Favorite>()
+                        else -> false
+                    }
+                } == true
 
             NavigationBarItem(
+                modifier = Modifier.padding(vertical = 8.dp),
                 selected = isSelected,
                 onClick = {
-                    navController.navigate(item.title.lowercase()) {
+                    navController.navigate(item.route) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }
@@ -87,20 +93,24 @@ fun AppBottomBar(
 
 data class BottomNavigationItem(
     val title: String,
-    val icon: Int
+    val icon: Int,
+    val route: Route
 )
 
 val bottomNavigationItems = listOf(
     BottomNavigationItem(
         title = "Recipes",
-        icon = R.drawable.ic_food_navbar
+        icon = R.drawable.ic_food_navbar,
+        route = Route.Recipes
     ),
     BottomNavigationItem(
         title = "Drinks",
-        icon = R.drawable.ic_cocktail_navbar
+        icon = R.drawable.ic_cocktail_navbar,
+        route = Route.Drinks
     ),
     BottomNavigationItem(
         title = "Favorite",
-        icon = R.drawable.ic_favorite_navbar
+        icon = R.drawable.ic_favorite_navbar,
+        route = Route.Favorite
     )
 )

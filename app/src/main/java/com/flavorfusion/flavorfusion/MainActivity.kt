@@ -5,12 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.FabPosition
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.rememberNavController
-import com.flavorfusion.flavorfusion.navigation.AppBottomBar
 import com.flavorfusion.flavorfusion.navigation.AppNavigation
 import com.flavorfusion.flavorfusion.ui.theme.FlavorFusionTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,18 +18,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FlavorFusionTheme {
-                val rootNavController = rememberNavController()
-                Scaffold(
+                Surface(
                     modifier = Modifier.fillMaxSize(),
-                    floatingActionButton = {
-                        AppBottomBar(navController = rootNavController)
-                    },
-                    floatingActionButtonPosition = FabPosition.Center
-                ) { innerPadding ->
-                    AppNavigation(
-                        modifier = Modifier.padding(innerPadding),
-                        rootNavController = rootNavController
-                    )
+                ) {
+                    AppNavigation()
                 }
             }
         }

@@ -1,44 +1,39 @@
 package com.flavorfusion.flavorfusion.navigation.graphs
 
-import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.NavHost
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import com.flavorfusion.drinks.drinkDetails.DrinkDetailsScreen
 import com.flavorfusion.drinks.DrinksScreen
 import com.flavorfusion.flavorfusion.navigation.Route
+import com.flavorfusion.flavorfusion.navigation.Screen
 
-@Composable
-fun DrinksNavHost() {
-    val navController = rememberNavController()
+fun NavGraphBuilder.drinksNavGraph(navController: NavHostController) {
 
-    NavHost(
-        navController = navController,
-        startDestination = Route.DrinksScreen
-    ) {
+    navigation<Route.Drinks>(startDestination = Screen.Drinks) {
         drinksScreen(navigateToDrinkDetails = navController::navigateToDrinkDetails)
         drinkDetailsScreen(navigateBack = navController::popBackStack)
     }
 }
 
-fun NavGraphBuilder.drinksScreen(
+private fun NavGraphBuilder.drinksScreen(
     navigateToDrinkDetails: (String) -> Unit
 ) {
-    composable<Route.DrinksScreen> {
+    composable<Screen.Drinks> {
         DrinksScreen(
             navigateToDrinkDetails = navigateToDrinkDetails
         )
     }
 }
 
-fun NavGraphBuilder.drinkDetailsScreen(
+private fun NavGraphBuilder.drinkDetailsScreen(
     navigateBack: () -> Unit
 ) {
-    composable<Route.DrinkDetailsScreen> {
-        val args = it.toRoute<Route.DrinkDetailsScreen>()
+    composable<Screen.DrinkDetails> {
+        val args = it.toRoute<Screen.DrinkDetails>()
 
         DrinkDetailsScreen(
             drinkId = args.drinkId,
@@ -47,6 +42,6 @@ fun NavGraphBuilder.drinkDetailsScreen(
     }
 }
 
-fun NavController.navigateToDrinkDetails(drinkId: String) {
-    navigate(Route.DrinkDetailsScreen(drinkId = drinkId))
+private fun NavController.navigateToDrinkDetails(drinkId: String) {
+    navigate(Screen.DrinkDetails(drinkId = drinkId))
 }
