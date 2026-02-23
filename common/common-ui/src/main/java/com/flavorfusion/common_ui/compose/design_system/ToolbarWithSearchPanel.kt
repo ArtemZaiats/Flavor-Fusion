@@ -33,9 +33,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.flavorfusion.common_ui.compose.design_system.icons.AppIcons
 import com.flavorfusion.common_ui.compose.design_system.icons.Search
+import com.flavorfusion.common_ui.theme.FlavorFusionTheme
 
 @Composable
 fun ToolbarWithSearchPanel(
@@ -176,15 +178,17 @@ fun SearchPanel(
 }
 
 @Composable
-@Preview
+@PreviewLightDark
 fun ToolbarWithSearchPanelPreview() {
-    ToolbarWithSearchPanel(
-        searchIcon = AppIcons.Search,
-        title = "Search",
-        searchPanelVisible = true,
-        searchValue = "",
-        onSearchValueChanged = {},
-        searchPlaceholder = "Search",
-        actionVisible = false
-    )
+    FlavorFusionTheme {
+        ToolbarWithSearchPanel(
+            searchIcon = AppIcons.Search,
+            title = "Search",
+            searchPanelVisible = true,
+            searchValue = "",
+            onSearchValueChanged = {},
+            searchPlaceholder = "Search",
+            actionVisible = false
+        )
+    }
 }

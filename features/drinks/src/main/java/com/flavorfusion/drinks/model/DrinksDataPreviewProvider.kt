@@ -16,7 +16,7 @@ class DrinksDataPreviewProvider : PreviewParameterProvider<List<DrinkUi>> {
                 DrinkUi(
                     drinkName = "Beer",
                     drinkImage = "https://www.thecocktaildb.com/images/media/drink/wwqrsw1441248662.jpg",
-                    drinkId = "1001"
+                    drinkId = "1002"
                 )
             )
         )

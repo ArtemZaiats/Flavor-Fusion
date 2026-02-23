@@ -1,16 +1,14 @@
 package com.flavorfusion.drinks
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -21,6 +19,7 @@ import com.flavorfusion.common_ui.compose.design_system.ToolbarWithSearchPanel
 import com.flavorfusion.common_ui.compose.design_system.icons.AppIcons
 import com.flavorfusion.common_ui.compose.design_system.icons.Search
 import com.flavorfusion.common_ui.model.drink.DrinkUi
+import com.flavorfusion.common_ui.theme.FlavorFusionTheme
 import com.flavorfusion.core_ui.compose.OnLifecycleEvent
 import com.flavorfusion.drinks.compose.DrinksGrid
 import com.flavorfusion.drinks.model.DrinksDataPreviewProvider
@@ -61,7 +60,6 @@ fun DrinksScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color.White)
             .statusBarsPadding(),
     ) {
         ToolbarWithSearchPanel(
@@ -80,7 +78,7 @@ fun DrinksScreen(
     }
 }
 
-@Preview
+@PreviewLightDark
 @Composable
 fun DrinksScreenPreview(
     @PreviewParameter(DrinksDataPreviewProvider::class) drinks: List<DrinkUi>
@@ -88,5 +86,7 @@ fun DrinksScreenPreview(
     val state = DrinksContract.State(
         searchDrinks = drinks,
     )
-    DrinksScreen(state = state, onEvent = {})
+    FlavorFusionTheme {
+        DrinksScreen(state = state, onEvent = {})
+    }
 }
