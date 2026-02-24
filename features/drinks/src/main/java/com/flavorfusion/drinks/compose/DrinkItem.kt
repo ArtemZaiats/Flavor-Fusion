@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.flavorfusion.common_ui.model.drink.DrinkUi
+import com.flavorfusion.common_ui.theme.FlavorFusionTheme
 
 @Composable
 fun DrinkItem(
@@ -35,9 +36,9 @@ fun DrinkItem(
             .fillMaxWidth()
             .clickable { onDrinkClick(drink) },
         elevation = CardDefaults.cardElevation(2.dp),
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = FlavorFusionTheme.colors.cardBackground
         )
     ) {
         AsyncImage(
@@ -46,22 +47,22 @@ fun DrinkItem(
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(16 / 11f)
+                .aspectRatio(16 / 10f)
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp)
+                .padding(16.dp)
         ) {
             Text(
                 text = drink.drinkName,
                 style = TextStyle(
                     fontFamily = FontFamily.SansSerif,
                     fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black
+                    fontWeight = FontWeight(500),
+                    color = FlavorFusionTheme.colors.textPrimary
                 ),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,

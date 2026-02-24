@@ -11,7 +11,13 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 // Light
-val ColorBackgroundMainLight = Color(0xFFFFFFFF)
+val ColorBackgroundPrimaryLight = Color(0xFFFCF8F5)
+val ColorBackgroundSecondaryLight = Color(0xFFF1F0EC)
+val ColorCardBackgroundLight = Color(0xFFFFFFFF)
+val ColorTextPrimaryLight = Color(0xFF1F1F1F)
 
 // Dark
-val ColorBackgroundMainDark = Color(0xFF0D0F11)
+val ColorBackgroundPrimaryDark = Color(0xFF1C1C1A)
+val ColorBackgroundSecondaryDark = Color(0xFF242422)
+val ColorCardBackgroundDark = Color(0xFF2C2C2A)
+val ColorTextPrimaryDark = Color(0xFFF2F2EE)

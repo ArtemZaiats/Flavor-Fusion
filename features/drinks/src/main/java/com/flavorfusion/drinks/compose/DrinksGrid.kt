@@ -16,7 +16,6 @@ import com.flavorfusion.common_ui.model.drink.DrinkUi
 
 @Composable
 fun DrinksGrid(
-    modifier: Modifier = Modifier,
     drinks: List<DrinkUi>,
     onDrinkClick: (DrinkUi) -> Unit
 ) {
@@ -24,9 +23,9 @@ fun DrinksGrid(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         columns = GridCells.Fixed(2),
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
-            .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+            .padding(start = 16.dp, end = 16.dp, bottom = 0.dp),
     ) {
         if (drinks.isEmpty()) {
             item {
@@ -40,9 +39,6 @@ fun DrinksGrid(
                     drink = drink,
                     onDrinkClick = onDrinkClick
                 )
-            }
-            item {
-                Spacer(modifier = Modifier.height(96.dp))
             }
         }
     }

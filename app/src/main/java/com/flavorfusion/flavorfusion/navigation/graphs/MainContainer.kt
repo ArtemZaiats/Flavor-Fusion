@@ -7,6 +7,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -17,7 +18,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.NavDestination.Companion.hasRoute
-import com.flavorfusion.flavorfusion.navigation.AppBottomBar
+import com.flavorfusion.flavorfusion.navigation.bottom_bar.AppBottomBar
 import com.flavorfusion.flavorfusion.navigation.Route
 import com.flavorfusion.flavorfusion.navigation.Screen
 
@@ -57,6 +58,7 @@ fun NavGraphBuilder.mainContainer(
             NavHost(
                 navController = bottomNavHostController,
                 startDestination = Route.Drinks,
+                modifier = Modifier.padding(it)
             ) {
                 content.invoke(this, bottomNavHostController)
             }

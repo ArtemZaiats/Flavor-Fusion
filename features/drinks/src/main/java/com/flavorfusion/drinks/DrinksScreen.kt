@@ -1,9 +1,11 @@
 package com.flavorfusion.drinks
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -60,7 +62,9 @@ fun DrinksScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier
             .fillMaxSize()
-            .statusBarsPadding(),
+            .background(color = FlavorFusionTheme.colors.background)
+            .statusBarsPadding()
+            .navigationBarsPadding(),
     ) {
         ToolbarWithSearchPanel(
             title = stringResource(R.string.feature_drinks_title),

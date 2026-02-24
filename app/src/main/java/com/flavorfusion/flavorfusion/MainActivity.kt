@@ -20,11 +20,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             FlavorFusionTheme {
                 Surface(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            FlavorFusionTheme.colors.background
-                        ),
+                    modifier = Modifier.fillMaxSize()
                 ) {
                     AppNavigation()
                 }

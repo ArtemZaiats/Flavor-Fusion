@@ -1,4 +1,4 @@
-package com.flavorfusion.flavorfusion.navigation
+package com.flavorfusion.flavorfusion.navigation.bottom_bar
 
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.only
@@ -22,7 +22,9 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.flavorfusion.common_ui.theme.FlavorFusionTheme
 import com.flavorfusion.flavorfusion.R
+import com.flavorfusion.flavorfusion.navigation.Route
 
 @Composable
 fun AppBottomBar(
@@ -33,8 +35,7 @@ fun AppBottomBar(
     NavigationBar(
         modifier = Modifier
             .clip(shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
-        containerColor = Color.Black,
-        windowInsets = NavigationBarDefaults.windowInsets.only(WindowInsetsSides.Horizontal)
+        containerColor = FlavorFusionTheme.colors.backgroundSecondary
     ) {
         bottomNavigationItems.forEach { item ->
             val isSelected = navBackStackEntry
@@ -51,7 +52,6 @@ fun AppBottomBar(
                 } == true
 
             NavigationBarItem(
-                modifier = Modifier.padding(vertical = 8.dp),
                 selected = isSelected,
                 onClick = {
                     navController.navigate(item.route) {
