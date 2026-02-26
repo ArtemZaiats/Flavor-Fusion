@@ -42,6 +42,7 @@ dependencies {
     implementation(projects.common.commonData)
     implementation(projects.common.commonDomain)
     implementation(projects.features.drinks)
+    implementation(projects.features.settings)
 
     implementation(libs.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
