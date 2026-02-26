@@ -70,12 +70,10 @@ fun DrinkDetailsScreen(
     state: DrinkDetailsContract.State,
     onEvent: (DrinkDetailsContract.Event) -> Unit
 ) {
-
     Column(
         Modifier
             .fillMaxSize()
             .statusBarsPadding()
-            .background(color = Color.White)
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Top
     ) {

@@ -1,18 +1,17 @@
 package com.flavorfusion.drinks
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.flavorfusion.common_ui.R
@@ -58,27 +57,33 @@ fun DrinksScreen(
     state: DrinksContract.State,
     onEvent: (DrinksContract.Event) -> Unit
 ) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+    Scaffold (
         modifier = Modifier
             .fillMaxSize()
-            .background(color = FlavorFusionTheme.colors.background)
-            .statusBarsPadding()
-            .navigationBarsPadding(),
-    ) {
-        ToolbarWithSearchPanel(
-            title = stringResource(R.string.feature_drinks_title),
-            searchIcon = AppIcons.Search,
-            searchPlaceholder = stringResource(R.string.feature_drinks_search),
-            searchPanelVisible = state.showSearch,
-            searchValue = state.searchValue,
-            onSearchIconClicked = { onEvent.invoke(DrinksContract.Event.OnSearchClicked) },
-            onSearchValueChanged = { onEvent.invoke(DrinksContract.Event.OnSearchValueChanged(it)) }
-        )
-        DrinksGrid(
-            drinks = state.searchDrinks,
-            onDrinkClick = { onEvent.invoke(DrinksContract.Event.OnDrinkClicked(it)) }
-        )
+            .statusBarsPadding(),
+        contentWindowInsets = WindowInsets(bottom = 0),
+        topBar = {
+            ToolbarWithSearchPanel(
+                title = stringResource(R.string.feature_drinks_title),
+                searchIcon = AppIcons.Search,
+                searchPlaceholder = stringResource(R.string.feature_drinks_search),
+                searchPanelVisible = state.showSearch,
+                searchValue = state.searchValue,
+                onSearchIconClicked = { onEvent.invoke(DrinksContract.Event.OnSearchClicked) },
+                onSearchValueChanged = { onEvent.invoke(DrinksContract.Event.OnSearchValueChanged(it)) }
+            )
+        }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+        ) {
+            DrinksGrid(
+                drinks = state.searchDrinks,
+                onDrinkClick = { onEvent.invoke(DrinksContract.Event.OnDrinkClicked(it)) }
+            )
+        }
     }
 }
 

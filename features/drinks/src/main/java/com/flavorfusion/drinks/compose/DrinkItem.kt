@@ -62,7 +62,7 @@ fun DrinkItem(
                     fontFamily = FontFamily.SansSerif,
                     fontSize = 18.sp,
                     fontWeight = FontWeight(500),
-                    color = FlavorFusionTheme.colors.textPrimary
+                    color = FlavorFusionTheme.colors.contentPrimary
                 ),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,

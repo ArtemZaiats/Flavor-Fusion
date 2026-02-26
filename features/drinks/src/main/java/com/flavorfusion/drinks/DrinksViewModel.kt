@@ -12,6 +12,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -86,7 +87,12 @@ class DrinksViewModel @Inject constructor(
             .debounce(300)
             .distinctUntilChanged()
             .flatMapLatest { query ->
-                drinksInteractor.getDrinkByNameFlow(query)
+                if (query.isNotEmpty()) {
+                    drinksInteractor.getDrinkByNameFlow(query)
+                }
+                else {
+                    emptyFlow()
+                }
             }
             .onEach { result ->
                 result.onSuccess { drinks ->

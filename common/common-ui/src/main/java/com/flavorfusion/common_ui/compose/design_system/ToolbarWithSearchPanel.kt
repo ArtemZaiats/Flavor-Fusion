@@ -61,12 +61,12 @@ fun ToolbarWithSearchPanel(
     ) {
         IconButton(
             modifier = Modifier.align(Alignment.CenterStart),
-            onClick = { onSearchIconClicked() }
+            onClick = onSearchIconClicked
         ) {
             Icon(
                 imageVector = searchIcon,
                 contentDescription = "Navigation icon",
-                tint = Color.Black
+                tint = FlavorFusionTheme.colors.contentPrimary
             )
         }
         Box(modifier = Modifier.align(Alignment.Center)) {
@@ -116,13 +116,12 @@ fun ToolbarWithSearchPanel(
                     Icon(
                         imageVector = it,
                         contentDescription = "Action icon",
-                        tint = Color.Black
+                        tint = FlavorFusionTheme.colors.contentPrimary
                     )
                 }
             }
         }
     }
-
 }
 
 @Composable
@@ -146,13 +145,7 @@ fun SearchPanel(
             .border(
                 width = 1.dp,
                 shape = RoundedCornerShape(16.dp),
-                brush = Brush.linearGradient(
-                    colors = listOf(
-                        Color(0xFF35F8E6),
-                        Color(0xFF57F55E),
-                        Color.Blue
-                    )
-                )
+                color = FlavorFusionTheme.colors.inputFieldBorderActive
             )
             .focusRequester(focusRequester),
         shape = RoundedCornerShape(16.dp),

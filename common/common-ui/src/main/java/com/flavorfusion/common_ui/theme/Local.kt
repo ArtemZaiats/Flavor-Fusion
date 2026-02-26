@@ -6,26 +6,35 @@ import androidx.compose.ui.graphics.Color
 
 @Immutable
 data class FlavorFusionColors(
-    val background: Color,
+    val colorPrimary: Color,
+    val backgroundPrimary: Color,
     val backgroundSecondary: Color,
     val cardBackground: Color,
-    val textPrimary: Color,
+    val contentPrimary: Color,
+    val contentSecondary: Color,
+    val inputFieldBorderActive: Color,
     val isDark: Boolean
 )
 
 fun lightFlavorFusionColorScheme() = FlavorFusionColors(
-    background = ColorBackgroundPrimaryLight,
+    colorPrimary = ColorPrimary,
+    backgroundPrimary = ColorBackgroundPrimaryLight,
     backgroundSecondary = ColorBackgroundSecondaryLight,
     cardBackground = ColorCardBackgroundLight,
-    textPrimary = ColorTextPrimaryLight,
+    contentPrimary = ColorContentPrimaryLight,
+    contentSecondary = ColorContentSecondaryLight,
+    inputFieldBorderActive = ColorInputFieldBorderActiveLight,
     isDark = false
 )
 
 fun darkFlavorFusionColorScheme() = FlavorFusionColors(
-    background = ColorBackgroundPrimaryDark,
+    colorPrimary = ColorPrimary,
+    backgroundPrimary = ColorBackgroundPrimaryDark,
     cardBackground = ColorCardBackgroundDark,
     backgroundSecondary = ColorBackgroundSecondaryDark,
-    textPrimary = ColorTextPrimaryDark,
+    contentPrimary = ColorContentPrimaryDark,
+    contentSecondary = ColorContentSecondaryDark,
+    inputFieldBorderActive = ColorInputFieldBorderActiveDark,
     isDark = true
 )
 

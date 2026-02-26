@@ -33,8 +33,6 @@ fun AppBottomBar(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
     NavigationBar(
-        modifier = Modifier
-            .clip(shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
         containerColor = FlavorFusionTheme.colors.backgroundSecondary
     ) {
         bottomNavigationItems.forEach { item ->
@@ -51,6 +49,9 @@ fun AppBottomBar(
                     }
                 } == true
 
+            val tint = if (isSelected) FlavorFusionTheme.colors.colorPrimary
+            else FlavorFusionTheme.colors.contentSecondary
+
             NavigationBarItem(
                 selected = isSelected,
                 onClick = {
@@ -66,21 +67,13 @@ fun AppBottomBar(
                     Icon(
                         painter = painterResource(id = item.icon),
                         contentDescription = item.title,
-                        tint = if (isSelected) {
-                            Color(0xFF5770FF)
-                        } else {
-                            Color.Gray
-                        }
+                        tint = tint
                     )
                 },
                 label = {
                     Text(
                         text = item.title,
-                        color = if (isSelected) {
-                            Color(0xFF5770FF)
-                        } else {
-                            Color.Gray
-                        }
+                        color = tint
                     )
                 },
                 colors = NavigationBarItemDefaults.colors(
