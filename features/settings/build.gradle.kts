@@ -6,3 +6,7 @@ plugins {
 android {
     namespace = "com.flavorfusion.settings"
 }
+
+dependencies {
+    implementation(libs.coil.compose)
+}

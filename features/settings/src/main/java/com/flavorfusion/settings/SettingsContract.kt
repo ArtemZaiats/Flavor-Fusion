@@ -1,7 +1,7 @@
 package com.flavorfusion.settings
 
+import com.flavorfusion.common_ui.model.profile.ProfileUi
 import com.flavorfusion.core_ui.mvi.MviConfig
-import com.flavorfusion.core_ui.mvi.Reducer
 import com.flavorfusion.core_ui.mvi.UiAction
 import com.flavorfusion.core_ui.mvi.UiEffect
 import com.flavorfusion.core_ui.mvi.UiEvent
@@ -16,8 +16,13 @@ interface SettingsContract {
     }
 
     data class State(
+        val profile: ProfileUi = ProfileUi(
+            email = "john.adams@example-pet-store.com",
+            firstName = "John",
+            lastName = "Doe"
+        ),
         val categories: List<SettingsCategory> = emptyList()
-    ): UiState
+    ) : UiState
 
     sealed interface Event : UiEvent {
         data class OnItemClicked(val id: Int) : Event

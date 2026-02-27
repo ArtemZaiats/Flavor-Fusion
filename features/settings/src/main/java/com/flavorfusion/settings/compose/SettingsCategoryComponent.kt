@@ -96,7 +96,8 @@ fun SettingsMenuItemComponent(
             Text(
                 text = item.title,
                 style = MaterialTheme.typography.bodyMedium,
-                color = FlavorFusionTheme.colors.contentPrimary
+                color = FlavorFusionTheme.colors.contentPrimary,
+                lineHeight = 20.sp
             )
         }
         Spacer(modifier = Modifier.weight(1f))

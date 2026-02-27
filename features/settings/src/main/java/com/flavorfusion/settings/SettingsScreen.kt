@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.flavorfusion.common_ui.theme.FlavorFusionTheme
+import com.flavorfusion.settings.compose.ProfileHeader
 import com.flavorfusion.settings.compose.SettingsCategoryComponent
 import com.flavorfusion.settings.model.SettingsDataPreviewProvider
 
@@ -45,9 +46,10 @@ fun SettingsScreen(
             modifier = Modifier
                 .navigationBarsPadding()
                 .padding(it)
+                .padding(16.dp)
         ) {
-            Column(verticalArrangement = Arrangement.spacedBy(30.dp),
-                modifier = Modifier.padding(16.dp)) {
+            ProfileHeader(profile = state.profile)
+            Column(verticalArrangement = Arrangement.spacedBy(30.dp)) {
                 state.categories.forEach { category ->
                     SettingsCategoryComponent(
                         category = category.title,
