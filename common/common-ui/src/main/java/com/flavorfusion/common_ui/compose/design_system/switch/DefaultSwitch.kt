@@ -23,6 +23,7 @@ fun BaseSwitch(
     onCheckedChange: (Boolean) -> Unit
 ) {
     Switch(
+        modifier = modifier,
         enabled = enabled,
         checked = checked,
         thumbContent = {},
