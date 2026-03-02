@@ -47,6 +47,8 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.chuck)
+    implementation(libs.datastore.preferences)
+    implementation(libs.datastore.preferences.core)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit.ext)

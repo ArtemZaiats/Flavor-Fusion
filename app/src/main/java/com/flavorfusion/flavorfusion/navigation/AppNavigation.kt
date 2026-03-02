@@ -15,9 +15,9 @@ fun AppNavigation() {
 
     NavHost(navController = rootNavController, startDestination = Route.Main) {
         mainContainer { bottomNavHostController ->
+            recipesNavGraph(navController = bottomNavHostController)
             drinksNavGraph(navController = bottomNavHostController)
             favoritesNavGraph(navController = bottomNavHostController)
-            recipesNavGraph(navController = bottomNavHostController)
             settingsNavGraph(navController = bottomNavHostController)
         }
     }

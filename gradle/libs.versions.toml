@@ -36,6 +36,7 @@ kotlinPluginParcelize = "1.8.10"
 appcompat = "1.7.1"
 material = "1.13.0"
 kotlin-coroutines = "1.6.4"
+datastoreRreferences = "1.2.0"
 
 [libraries]
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleRuntimeKtx" }
@@ -74,6 +75,8 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 androidx-ui-text-google-fonts = { module = "androidx.compose.ui:ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
 kotlin-compose-compiler = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlin-coroutines" }
+datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastoreRreferences" }
+datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastoreRreferences" }
 
 # Di
 

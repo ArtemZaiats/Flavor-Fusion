@@ -1,25 +1,35 @@
-package com.flavorfusion.flavorfusion
+package com.flavorfusion.flavorfusion.main
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
+import android.graphics.Color
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.fragment.app.FragmentActivity
-import com.flavorfusion.flavorfusion.navigation.AppNavigation
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.flavorfusion.common_ui.theme.FlavorFusionTheme
+import com.flavorfusion.flavorfusion.navigation.AppNavigation
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
+
+    private val viewModel: MainViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT),
+            navigationBarStyle = SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT)
+        )
         setContent {
-            FlavorFusionTheme {
+            val state = viewModel.state.collectAsStateWithLifecycle().value
+
+            FlavorFusionTheme(appTheme = state.appTheme.theme.type) {
                 Surface(
                     modifier = Modifier.fillMaxSize()
                 ) {

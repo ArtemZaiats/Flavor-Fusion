@@ -13,13 +13,16 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.flavorfusion.common_ui.compose.EffectHandler
 import com.flavorfusion.common_ui.theme.FlavorFusionTheme
 import com.flavorfusion.settings.compose.ProfileHeader
 import com.flavorfusion.settings.compose.SettingsCategoryComponent
 import com.flavorfusion.settings.model.SettingsDataPreviewProvider
 
 @Composable
-fun SettingsScreen() {
+fun SettingsScreen(
+    navigateToAppTheme: () -> Unit
+) {
     val viewModel: SettingsViewModel = hiltViewModel()
     val state = viewModel.state.collectAsStateWithLifecycle().value
 
@@ -27,6 +30,12 @@ fun SettingsScreen() {
         state = state,
         onEvent = viewModel::handleEvent
     )
+
+    EffectHandler(viewModel = viewModel) {
+        when (it) {
+            is SettingsContract.Effect.NavigateToAppTheme -> navigateToAppTheme.invoke()
+        }
+    }
 
     SettingsScreen(state = state, onEvent = viewModel::handleEvent)
 }

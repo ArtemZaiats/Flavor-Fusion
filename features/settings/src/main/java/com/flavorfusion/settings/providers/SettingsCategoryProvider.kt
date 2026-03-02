@@ -6,13 +6,14 @@ import com.flavorfusion.common_ui.compose.design_system.icons.settings.SettingsA
 import com.flavorfusion.common_ui.compose.design_system.icons.settings.SettingsLanguage
 import com.flavorfusion.common_ui.compose.design_system.icons.settings.SettingsPrivacyPolicy
 import com.flavorfusion.common_ui.compose.design_system.icons.settings.SettingsTermsOfUse
+import com.flavorfusion.common_ui.utils.DataProvider
 import com.flavorfusion.settings.model.Category
 import com.flavorfusion.settings.model.CategoryItem
 import com.flavorfusion.settings.model.MenuItem
 import com.flavorfusion.settings.model.SettingsCategory
 
-class SettingsCategoryProvider {
-    fun provideData(): List<SettingsCategory> {
+class SettingsCategoryProvider : DataProvider<List<SettingsCategory>> {
+    override fun provideData(): List<SettingsCategory> {
         val appCategoriesItems = listOf(
             MenuItem(
                 id = CategoryItem.LANGUAGE.id,
