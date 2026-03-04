@@ -16,12 +16,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.flavorfusion.common_ui.R
 import com.flavorfusion.common_ui.compose.EffectHandler
-import com.flavorfusion.common_ui.compose.design_system.ToolbarWithSearchPanel
+import com.flavorfusion.common_ui.compose.design_system.toolbar.ToolbarWithSearchPanel
 import com.flavorfusion.common_ui.compose.design_system.icons.AppIcons
 import com.flavorfusion.common_ui.compose.design_system.icons.Search
+import com.flavorfusion.common_ui.compose.design_system.pull_to_refresh.BoxWithPullToRefresh
 import com.flavorfusion.common_ui.model.drink.DrinkUi
 import com.flavorfusion.common_ui.theme.FlavorFusionTheme
-import com.flavorfusion.core_ui.compose.OnLifecycleEvent
 import com.flavorfusion.drinks.compose.DrinksGrid
 import com.flavorfusion.drinks.model.DrinksDataPreviewProvider
 
@@ -53,7 +53,7 @@ fun DrinksScreen(
     state: DrinksContract.State,
     onEvent: (DrinksContract.Event) -> Unit
 ) {
-    Scaffold (
+    Scaffold(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding(),
@@ -70,10 +70,12 @@ fun DrinksScreen(
             )
         }
     ) { innerPadding ->
-        Column(
+        BoxWithPullToRefresh(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding),
+                .padding(innerPadding)
+                .fillMaxSize(),
+            isRefreshing = state.refreshProgress,
+            onRefresh = { onEvent.invoke(DrinksContract.Event.OnRefresh) }
         ) {
             DrinksGrid(
                 drinks = state.searchDrinks,

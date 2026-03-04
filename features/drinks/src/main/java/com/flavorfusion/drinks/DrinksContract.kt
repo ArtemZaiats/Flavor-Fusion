@@ -10,7 +10,7 @@ import com.flavorfusion.core_ui.mvi.UiState
 import javax.inject.Inject
 
 interface DrinksContract {
-    class Config @Inject constructor(): MviConfig<State>{
+    class Config @Inject constructor() : MviConfig<State> {
         override fun initialState(): State = State()
         override fun reducer(): Reducer<State> = DrinksReducer()
     }
@@ -22,25 +22,27 @@ interface DrinksContract {
         val searchValue: String = "",
         val showSearch: Boolean = false,
         val searchDrinks: List<DrinkUi> = emptyList()
-    ): UiState
+    ) : UiState
 
-    sealed interface Event: UiEvent {
-        data class OnSearchValueChanged(val value: String): Event
-        data class OnDrinkClicked(val drink: DrinkUi): Event
-        data object OnSearchClicked: Event
-        data object OnSearchCloseClicked: Event
-        data object OnRefresh: Event
+    sealed interface Event : UiEvent {
+        data class OnSearchValueChanged(val value: String) : Event
+        data class OnDrinkClicked(val drink: DrinkUi) : Event
+        data object OnSearchClicked : Event
+        data object OnSearchCloseClicked : Event
+        data object OnRefresh : Event
     }
 
-    sealed interface Action: UiAction {
+    sealed interface Action : UiAction {
         data class Progress(val show: Boolean) : Action
+        data class RefreshProgress(val showRefreshing: Boolean) : Action
         data class UpdateDrinks(val drinks: List<DrinkUi>) : Action
         data class UpdateSearchDrinks(val searchDrinks: List<DrinkUi>) : Action
         data class UpdateSearchValue(val searchValue: String) : Action
         data class UpdateShowSearch(val showSearch: Boolean) : Action
+        data object HideAllProgress : Action
     }
 
-    sealed interface Effect: UiEffect {
-        data class NavigateToDrinkDetails(val drinkId: String): Effect
+    sealed interface Effect : UiEffect {
+        data class NavigateToDrinkDetails(val drinkId: String) : Effect
     }
 }

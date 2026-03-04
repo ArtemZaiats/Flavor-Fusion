@@ -19,8 +19,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,14 +30,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.flavorfusion.common_ui.compose.EffectHandler
+import com.flavorfusion.common_ui.compose.design_system.icons.AppIcons
+import com.flavorfusion.common_ui.compose.design_system.icons.Close
 import com.flavorfusion.common_ui.model.drink.DrinkDetailsUi
+import com.flavorfusion.common_ui.theme.FlavorFusionTheme
 import com.flavorfusion.common_ui.theme.NunitoFontFontFamily
 
 @Composable
@@ -126,10 +127,12 @@ fun DrinkHeader(
                     )
             ) {
                 Icon(
-                    imageVector = Icons.Default.Close,
+                    imageVector = AppIcons.Close,
                     contentDescription = null,
                     modifier = Modifier
                         .size(24.dp)
+                        .padding(4.dp),
+                    tint = FlavorFusionTheme.colors.contentPrimary
                 )
             }
             Box(
@@ -233,7 +236,7 @@ fun DrinkDetails(
     }
 }
 
-@Preview
+@PreviewLightDark
 @Composable
 fun DrinkDetailsPreview() {
     DrinkDetailsScreen(

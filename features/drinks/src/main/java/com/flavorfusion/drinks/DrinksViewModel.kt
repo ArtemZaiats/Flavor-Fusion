@@ -36,7 +36,7 @@ class DrinksViewModel @Inject constructor(
             is DrinksContract.Event.OnSearchValueChanged -> handleSearchValueChanged(event.value)
             DrinksContract.Event.OnSearchClicked -> handleSearchPanelVisibility()
             DrinksContract.Event.OnSearchCloseClicked -> handleOnSearchClose()
-            DrinksContract.Event.OnRefresh -> getDrinks()
+            DrinksContract.Event.OnRefresh -> getDrinks(isInitial = false, isRefreshing = true)
         }
     }
 
@@ -45,9 +45,11 @@ class DrinksViewModel @Inject constructor(
         getDrinks()
     }
 
-    private fun getDrinks() {
+    private fun getDrinks(isInitial: Boolean = true, isRefreshing: Boolean = false) {
         launch(
             action = {
+                dispatch(DrinksContract.Action.Progress(isInitial))
+                dispatch(DrinksContract.Action.RefreshProgress(isRefreshing))
                 drinksInteractor.getDrinksByAlcoholic(
                     showAlcoholic = settingsInteractor.getShowAlcoholicFlow().first()
                 )
@@ -63,6 +65,10 @@ class DrinksViewModel @Inject constructor(
                         searchDrinks = it?.toUi() ?: emptyList()
                     )
                 )
+                dispatch(DrinksContract.Action.HideAllProgress)
+            },
+            onError = {
+                dispatch(DrinksContract.Action.HideAllProgress)
             }
         )
     }

@@ -9,10 +9,12 @@ class DrinksReducer : Reducer<DrinksContract.State> {
 
         return when (action) {
             is DrinksContract.Action.Progress -> copy(progress = action.show)
+            is DrinksContract.Action.RefreshProgress -> copy(refreshProgress = action.showRefreshing)
             is DrinksContract.Action.UpdateDrinks -> copy(drinks = action.drinks)
             is DrinksContract.Action.UpdateSearchDrinks -> copy(searchDrinks = action.searchDrinks)
             is DrinksContract.Action.UpdateSearchValue -> copy(searchValue = action.searchValue)
             is DrinksContract.Action.UpdateShowSearch -> copy(showSearch = action.showSearch)
+            DrinksContract.Action.HideAllProgress -> copy(progress = false, refreshProgress = false)
         }
     }
 }

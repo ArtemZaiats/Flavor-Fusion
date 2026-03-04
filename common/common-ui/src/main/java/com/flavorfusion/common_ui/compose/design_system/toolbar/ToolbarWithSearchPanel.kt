@@ -1,4 +1,4 @@
-package com.flavorfusion.common_ui.compose.design_system
+package com.flavorfusion.common_ui.compose.design_system.toolbar
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -14,8 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -28,14 +26,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.flavorfusion.common_ui.compose.design_system.icons.AppIcons
+import com.flavorfusion.common_ui.compose.design_system.icons.CloseCrossFilled
 import com.flavorfusion.common_ui.compose.design_system.icons.Search
 import com.flavorfusion.common_ui.theme.FlavorFusionTheme
 
@@ -154,7 +152,8 @@ fun SearchPanel(
         trailingIcon = {
             if (searchValue.isNotEmpty() || searchValue.isNotBlank())
                 Image(
-                    imageVector = Icons.Default.Close,
+                    imageVector = AppIcons.CloseCrossFilled,
+                    colorFilter = ColorFilter.tint(FlavorFusionTheme.colors.contentPrimary),
                     contentDescription = "",
                     modifier = Modifier.clickable(
                         enabled = true,
