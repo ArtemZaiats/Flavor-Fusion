@@ -9,7 +9,11 @@ import com.flavorfusion.common_data.remote.model.ResponseHandler
 import com.flavorfusion.common_data.remote.model.drinks.toDomain
 import com.flavorfusion.common_data.remote.model.error.asDataError
 import com.flavorfusion.common_data.remote.services.DrinksApiService
+import com.flavorfusion.common_domain.model.combineResults
+import com.flavorfusion.common_domain.model.drinks.DrinkAlcoholicType
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -19,20 +23,37 @@ import kotlin.fold
 
 @Singleton
 class DrinksRepositoryImpl @Inject constructor(
-    @DrinksClient
+    @param:DrinksClient
     private val service: DrinksApiService,
     private val responseHandler: ResponseHandler
 ) : DrinksRepository {
 
-    override suspend fun getDrinksByAlcoholic(alcoholic: String): Result<List<Drink>?> {
-        return service.getDrinksByAlcoholic(alcoholic).fold(
-            onSuccess = { response ->
-                responseHandler.handleResponse(response) {
-                    it?.toDomain()
-                }
-            },
-            onFailure = { Result.Error(it.asDataError()) }
-        )
+    override suspend fun getDrinksByAlcoholic(showAlcoholic: Boolean): Result<List<Drink>?> {
+        return coroutineScope {
+
+            suspend fun request(type: DrinkAlcoholicType): Result<List<Drink>?> {
+                return service.getDrinksByAlcoholic(type.type).fold(
+                    onSuccess = { response ->
+                        responseHandler.handleResponse(response) { it?.toDomain() }
+                    },
+                    onFailure = { Result.Error(it.asDataError()) }
+                )
+            }
+
+            if (!showAlcoholic) {
+                return@coroutineScope request(DrinkAlcoholicType.NON_ALCOHOLIC)
+            }
+
+            val nonAlcoholicDeferred = async { request(DrinkAlcoholicType.NON_ALCOHOLIC) }
+            val alcoholicDeferred = async { request(DrinkAlcoholicType.ALCOHOLIC) }
+            val optionalDeferred = async { request(DrinkAlcoholicType.OPTIONAL) }
+
+            combineResults(
+                nonAlcoholicDeferred.await(),
+                alcoholicDeferred.await(),
+                optionalDeferred.await()
+            )
+        }
     }
 
     override suspend fun getDrinkById(id: String): Result<List<DrinkDetails>?> {

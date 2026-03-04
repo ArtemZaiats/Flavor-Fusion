@@ -8,13 +8,16 @@ import javax.inject.Inject
 
 class SettingsRepositoryImpl @Inject constructor(
     private val dataStoreHelper: DataStoreHelper
-): SettingsRepository {
+) : SettingsRepository {
 
     override fun getCurrentAppThemeFlow(): Flow<AppTheme?> = dataStoreHelper.appThemeFlow
+    override fun getIsShowAlcoholicFlow(): Flow<Boolean> = dataStoreHelper.showAlcoholicFlow
 
-    override suspend fun setAppTheme(appTheme: AppTheme) {
+    override suspend fun setAppTheme(appTheme: AppTheme) =
         dataStoreHelper.updateTheme(appTheme)
-    }
+
+    override suspend fun setShowAlcoholic(showAlcoholic: Boolean) =
+        dataStoreHelper.setShowAlcoholic(showAlcoholic)
 
     override suspend fun clearData() = dataStoreHelper.clearAllData()
 }

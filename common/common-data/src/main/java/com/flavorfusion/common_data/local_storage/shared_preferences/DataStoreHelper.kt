@@ -3,6 +3,7 @@ package com.flavorfusion.common_data.local_storage.shared_preferences
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -27,6 +28,7 @@ class DataStoreHelper @Inject constructor(
     @param:ApplicationContext private val context: Context
 ) {
     private val themeKey = stringPreferencesKey("theme")
+    private val alcoholicKey = booleanPreferencesKey("show_alcoholic")
 
     val appThemeFlow: Flow<AppTheme> = context.dataStore.data.map { preferences ->
         val json = preferences[themeKey]
@@ -45,6 +47,16 @@ class DataStoreHelper @Inject constructor(
         val json = Json.encodeToString(appTheme.toEntity())
         context.dataStore.edit { preferences ->
             preferences[themeKey] = json
+        }
+    }
+
+    val showAlcoholicFlow: Flow<Boolean> = context.dataStore.data.map { preferences ->
+        preferences[alcoholicKey] ?: false
+    }
+
+    suspend fun setShowAlcoholic(showAlcoholic: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[alcoholicKey] = showAlcoholic
         }
     }
 

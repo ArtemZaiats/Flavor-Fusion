@@ -8,7 +8,7 @@ import javax.inject.Inject
 class DrinksInteractor @Inject constructor(
     private val drinksRepository: DrinksRepository
 ) {
-    suspend fun getDrinksByAlcoholic(alcoholic: String) = drinksRepository.getDrinksByAlcoholic(alcoholic)
+    suspend fun getDrinksByAlcoholic(showAlcoholic: Boolean) = drinksRepository.getDrinksByAlcoholic(showAlcoholic)
     suspend fun getDrinkById(id: String) = drinksRepository.getDrinkById(id)
     fun getDrinkByNameFlow(name: String) = drinksRepository.getDrinkByNameFlow(name)
 }

@@ -2,6 +2,7 @@ package com.flavorfusion.drinks
 
 import androidx.lifecycle.viewModelScope
 import com.flavorfusion.common_domain.interactors.DrinksInteractor
+import com.flavorfusion.common_domain.interactors.SettingsInteractor
 import com.flavorfusion.common_domain.model.onSuccess
 import com.flavorfusion.common_ui.Executor
 import com.flavorfusion.common_ui.model.drink.toUi
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -21,6 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DrinksViewModel @Inject constructor(
     private val drinksInteractor: DrinksInteractor,
+    private val settingsInteractor: SettingsInteractor,
     private val executor: Executor,
     config: DrinksContract.Config
 ) : MviViewModel<DrinksContract.State, DrinksContract.Event>(config), Executor by executor {
@@ -39,15 +42,20 @@ class DrinksViewModel @Inject constructor(
 
     init {
         setupSearch()
+        getDrinks()
     }
 
     private fun getDrinks() {
         launch(
-            action = { drinksInteractor.getDrinksByAlcoholic("Alcoholic") },
+            action = {
+                drinksInteractor.getDrinksByAlcoholic(
+                    showAlcoholic = settingsInteractor.getShowAlcoholicFlow().first()
+                )
+            },
             onSuccess = {
                 dispatch(
                     DrinksContract.Action.UpdateDrinks(
-                        drinks = it?.toUi() ?: emptyList()
+                        drinks = it?.toUi()?.sortedBy { it.drinkName } ?: emptyList()
                     )
                 )
                 dispatch(
@@ -89,8 +97,7 @@ class DrinksViewModel @Inject constructor(
             .flatMapLatest { query ->
                 if (query.isNotEmpty()) {
                     drinksInteractor.getDrinkByNameFlow(query)
-                }
-                else {
+                } else {
                     emptyFlow()
                 }
             }

@@ -32,10 +32,6 @@ fun DrinksScreen(
     val viewModel: DrinksViewModel = hiltViewModel()
     val state = viewModel.state.collectAsStateWithLifecycle().value
 
-    OnLifecycleEvent(
-        onCreate = { viewModel.setEvent(DrinksContract.Event.OnRefresh) }
-    )
-
     EffectHandler(viewModel = viewModel) {
         when (it) {
             is DrinksContract.Effect.NavigateToDrinkDetails -> navigateToDrinkDetails(it.drinkId)

@@ -1,15 +1,21 @@
 package com.flavorfusion.settings
 
+import androidx.lifecycle.viewModelScope
+import com.flavorfusion.common_domain.interactors.SettingsInteractor
 import com.flavorfusion.common_ui.Executor
 import com.flavorfusion.core_ui.mvi.MviViewModel
 import com.flavorfusion.settings.model.CategoryItem
 import com.flavorfusion.settings.providers.SettingsCategoryProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val executor: Executor,
+    private val settingsInteractor: SettingsInteractor,
     config: SettingsContract.Config
 ) : MviViewModel<SettingsContract.State, SettingsContract.Event>(config) {
 
@@ -22,6 +28,7 @@ class SettingsViewModel @Inject constructor(
 
     init {
         updateCategories()
+        observeAlcoholic()
     }
 
     private fun handleItemClicked(id: Int) {
@@ -32,8 +39,31 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    private fun onAlcoholicSwitchChanged() {
+    private fun observeAlcoholic() {
+        settingsInteractor.getShowAlcoholicFlow().onEach { show ->
+            updateAlcoholicSwitch(show)
+        }.launchIn(viewModelScope)
+    }
 
+    private fun onAlcoholicSwitchChanged() {
+        viewModelScope.launch {
+            val showAlcoholic = settingsInteractor.getShowAlcoholicFlow().first()
+            settingsInteractor.setShowAlcoholic(showAlcoholic.not())
+        }
+    }
+
+    private fun updateAlcoholicSwitch(enabled: Boolean) {
+        val categories = state.value.categories.map { category ->
+            val updatedItems = category.items.map { item ->
+                if (item.id == CategoryItem.SHOW_ALCOHOLIC.id) {
+                    item.copy(isSwitchActive = enabled)
+                } else {
+                    item
+                }
+            }
+            category.copy(items = updatedItems)
+        }
+        dispatch(SettingsContract.Action.UpdateCategories(categories))
     }
 
     private fun updateCategories() {

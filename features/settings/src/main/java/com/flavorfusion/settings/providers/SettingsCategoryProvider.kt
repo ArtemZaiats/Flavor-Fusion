@@ -3,6 +3,7 @@ package com.flavorfusion.settings.providers
 import com.flavorfusion.common_ui.compose.design_system.icons.AppIcons
 import com.flavorfusion.common_ui.compose.design_system.icons.settings.SettingsAlcoholic
 import com.flavorfusion.common_ui.compose.design_system.icons.settings.SettingsAppTheme
+import com.flavorfusion.common_ui.compose.design_system.icons.settings.SettingsGlass
 import com.flavorfusion.common_ui.compose.design_system.icons.settings.SettingsLanguage
 import com.flavorfusion.common_ui.compose.design_system.icons.settings.SettingsPrivacyPolicy
 import com.flavorfusion.common_ui.compose.design_system.icons.settings.SettingsTermsOfUse
@@ -34,7 +35,7 @@ class SettingsCategoryProvider : DataProvider<List<SettingsCategory>> {
             MenuItem(
                 id = CategoryItem.SHOW_ALCOHOLIC.id,
                 title = "Show alcoholic drinks",
-                icon = AppIcons.SettingsAlcoholic,
+                icon = AppIcons.SettingsGlass,
                 category = Category.CONTENT_PREFERENCES,
                 showSwitch = true,
                 isSwitchActive = true
