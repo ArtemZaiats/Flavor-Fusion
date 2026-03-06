@@ -17,6 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AppThemeViewModel @Inject constructor(
     private val settingsInteractor: SettingsInteractor,
+    private val themesDataProvider: AppThemesDataProvider,
     private val executor: Executor,
     config: AppThemeContract.Config
 ) : MviViewModel<AppThemeContract.State, AppThemeContract.Event>(config), Executor by executor {
@@ -40,7 +41,7 @@ class AppThemeViewModel @Inject constructor(
     }
 
     private fun updateThemes(theme: AppThemeUi) {
-        val themes = AppThemesDataProvider().provideData()
+        val themes = themesDataProvider.provideData()
             .map {
                 it.copy(isSelected = it.theme.type == theme.theme.type)
             }

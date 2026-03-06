@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -22,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.flavorfusion.common_domain.model.app_theme.AppTheme
 import com.flavorfusion.common_domain.model.app_theme.ThemeType
+import com.flavorfusion.common_ui.R
 import com.flavorfusion.common_ui.compose.EffectHandler
 import com.flavorfusion.common_ui.compose.design_system.icons.AppIcons
 import com.flavorfusion.common_ui.compose.design_system.icons.ArrowLeft
@@ -58,7 +60,7 @@ fun AppThemeScreen(
         topBar = {
             ToolbarWithSingleAction(
                 navigationIcon = AppIcons.ArrowLeft,
-                title = "App Theme",
+                title = stringResource(R.string.feature_settings_app_theme_screen_title),
                 onNavigationIconClick = { onEvent.invoke(AppThemeContract.Event.OnBackClicked) }
             )
         }
@@ -91,7 +93,7 @@ fun ThemeItem(modifier: Modifier = Modifier, item: AppThemeUi, onClick: (AppThem
             .clickable {
                 onClick.invoke(item)
             }
-        .padding(horizontal = 20.dp),
+            .padding(horizontal = 20.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
@@ -102,7 +104,7 @@ fun ThemeItem(modifier: Modifier = Modifier, item: AppThemeUi, onClick: (AppThem
         if (item.isSelected) {
             Icon(
                 imageVector = AppIcons.Check,
-                contentDescription = "check mark",
+                contentDescription = stringResource(R.string.feature_settings_app_theme_check_mark),
                 tint = FlavorFusionTheme.colors.colorPrimary,
             )
         }

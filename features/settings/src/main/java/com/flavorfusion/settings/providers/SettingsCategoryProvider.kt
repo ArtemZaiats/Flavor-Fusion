@@ -1,5 +1,7 @@
 package com.flavorfusion.settings.providers
 
+import android.content.Context
+import com.flavorfusion.common_ui.R
 import com.flavorfusion.common_ui.compose.design_system.icons.AppIcons
 import com.flavorfusion.common_ui.compose.design_system.icons.settings.SettingsAlcoholic
 import com.flavorfusion.common_ui.compose.design_system.icons.settings.SettingsAppTheme
@@ -12,20 +14,24 @@ import com.flavorfusion.settings.model.Category
 import com.flavorfusion.settings.model.CategoryItem
 import com.flavorfusion.settings.model.MenuItem
 import com.flavorfusion.settings.model.SettingsCategory
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class SettingsCategoryProvider : DataProvider<List<SettingsCategory>> {
+class SettingsCategoryProvider @Inject constructor(
+    @param:ApplicationContext private val context: Context
+) : DataProvider<List<SettingsCategory>> {
     override fun provideData(): List<SettingsCategory> {
         val appCategoriesItems = listOf(
             MenuItem(
                 id = CategoryItem.LANGUAGE.id,
                 isActive = false,
-                title = "Language",
+                title = context.getString(R.string.feature_settings_category_item_language),
                 icon = AppIcons.SettingsLanguage,
                 category = Category.APP,
             ),
             MenuItem(
                 id = CategoryItem.APP_THEME.id,
-                title = "App theme",
+                title = context.getString(R.string.feature_settings_category_item_app_theme),
                 icon = AppIcons.SettingsAppTheme,
                 category = Category.APP,
             ),
@@ -34,7 +40,7 @@ class SettingsCategoryProvider : DataProvider<List<SettingsCategory>> {
         val contentPreferencesItems = listOf(
             MenuItem(
                 id = CategoryItem.SHOW_ALCOHOLIC.id,
-                title = "Show alcoholic drinks",
+                title = context.getString(R.string.feature_settings_category_item_show_alcoholic),
                 icon = AppIcons.SettingsGlass,
                 category = Category.CONTENT_PREFERENCES,
                 showSwitch = true,
@@ -45,13 +51,13 @@ class SettingsCategoryProvider : DataProvider<List<SettingsCategory>> {
         val aboutItems = listOf(
             MenuItem(
                 id = CategoryItem.PRIVACY_POLICY.id,
-                title = "Privacy policy",
+                title = context.getString(R.string.feature_settings_category_item_privacy_policy),
                 icon = AppIcons.SettingsPrivacyPolicy,
                 category = Category.ABOUT,
             ),
             MenuItem(
                 id = CategoryItem.TERMS_OF_USE.id,
-                title = "Terms of use",
+                title = context.getString(R.string.feature_settings_category_item_terms_of_use),
                 icon = AppIcons.SettingsTermsOfUse,
                 category = Category.ABOUT,
             ),

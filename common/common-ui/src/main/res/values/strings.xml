@@ -14,4 +14,19 @@
     <string name="feature_drinks_search_drinks">Search drinks</string>
     <string name="feature_drinks_search">Search</string>
     <string name="feature_drinks_title">Drinks</string>
+    <string name="feature_drinks_empty_list">Empty list</string>
+    <string name="feature_drinks_close">Close"</string>
+    <string name="feature_settings_app_theme_screen_title">App Theme</string>
+    <string name="feature_settings_app_theme_light">Light</string>
+    <string name="feature_settings_app_theme_dark">Dark</string>
+    <string name="feature_settings_app_theme_system">System</string>
+    <string name="feature_settings_app_theme_check_mark">Check mark</string>
+    <string name="feature_settings_profile_header_image_description">"Profile image"</string>
+    <string name="feature_settings_menu_item_icon">Menu item icon</string>
+    <string name="feature_settings_category_item_language">Language</string>
+    <string name="feature_settings_category_item_app_theme">App theme</string>
+    <string name="feature_settings_category_item_show_alcoholic">Show alcoholic drinks</string>
+    <string name="feature_settings_category_item_privacy_policy">Privacy policy</string>
+    <string name="feature_settings_category_item_terms_of_use">Terms of use</string>
+
 </resources>

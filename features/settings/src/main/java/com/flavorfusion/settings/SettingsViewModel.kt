@@ -16,6 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val settingsInteractor: SettingsInteractor,
+    private val settingsCategoryProvider: SettingsCategoryProvider,
     config: SettingsContract.Config
 ) : MviViewModel<SettingsContract.State, SettingsContract.Event>(config) {
 
@@ -67,7 +68,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun updateCategories() {
-        val categories = SettingsCategoryProvider().provideData()
+        val categories = settingsCategoryProvider.provideData()
         dispatch(SettingsContract.Action.UpdateCategories(categories))
     }
 }

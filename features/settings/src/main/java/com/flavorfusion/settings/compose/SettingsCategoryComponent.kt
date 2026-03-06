@@ -20,10 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.flavorfusion.common_ui.R
 import com.flavorfusion.common_ui.compose.design_system.icons.AppIcons
 import com.flavorfusion.common_ui.compose.design_system.icons.ArrowRight
 import com.flavorfusion.common_ui.compose.design_system.icons.settings.SettingsAppTheme
@@ -90,7 +92,7 @@ fun SettingsMenuItemComponent(
         Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             Icon(
                 imageVector = item.icon,
-                contentDescription = "menu item icon",
+                contentDescription = stringResource(R.string.feature_settings_menu_item_icon),
                 modifier = Modifier.size(20.dp),
                 tint = FlavorFusionTheme.colors.contentPrimary
             )

@@ -14,10 +14,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.flavorfusion.common_ui.R
 import com.flavorfusion.common_ui.compose.design_system.icons.AppIcons
 import com.flavorfusion.common_ui.compose.design_system.icons.PersonPlaceholder
 import com.flavorfusion.common_ui.model.profile.ProfileUi
@@ -36,14 +38,14 @@ fun ProfileHeader(
         if (profile.profileImage?.isEmpty() == true) {
             Image(
                 imageVector = AppIcons.PersonPlaceholder,
-                contentDescription = "Profile image",
+                contentDescription = stringResource(R.string.feature_settings_profile_header_image_description),
                 modifier = Modifier.size(60.dp),
                 colorFilter = ColorFilter.tint(FlavorFusionTheme.colors.contentPrimary)
             )
         } else {
             AsyncImage(
                 model = profile.profileImage,
-                contentDescription = "Profile image",
+                contentDescription = stringResource(R.string.feature_settings_profile_header_image_description),
                 modifier = Modifier.size(60.dp)
             )
         }
