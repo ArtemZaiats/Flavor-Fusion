@@ -1,8 +1,8 @@
 package com.flavorfusion.flavorfusion.main
 
+import com.flavorfusion.common_ui.error.ErrorMessage
 import com.flavorfusion.common_ui.model.AppThemeUi
 import com.flavorfusion.core_ui.mvi.MviConfig
-import com.flavorfusion.core_ui.mvi.Reducer
 import com.flavorfusion.core_ui.mvi.UiAction
 import com.flavorfusion.core_ui.mvi.UiEffect
 import com.flavorfusion.core_ui.mvi.UiEvent
@@ -17,7 +17,8 @@ interface MainContract {
     }
 
     data class State(
-        val appTheme: AppThemeUi = AppThemeUi()
+        val appTheme: AppThemeUi = AppThemeUi(),
+        val errorMessage: ErrorMessage? = null
     ) : UiState
 
     sealed interface Event : UiEvent {
@@ -26,6 +27,7 @@ interface MainContract {
 
     sealed interface Action : UiAction {
         data class UpdateAppTheme(val appTheme: AppThemeUi) : Action
+        data class UpdateErrorMessage(val errorMessage: ErrorMessage) : Action
     }
 
     sealed interface Effect : UiEffect {

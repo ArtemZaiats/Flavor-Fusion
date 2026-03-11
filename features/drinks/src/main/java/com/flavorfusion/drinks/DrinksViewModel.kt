@@ -5,6 +5,7 @@ import com.flavorfusion.common_domain.interactors.DrinksInteractor
 import com.flavorfusion.common_domain.interactors.SettingsInteractor
 import com.flavorfusion.common_domain.model.onSuccess
 import com.flavorfusion.common_ui.Executor
+import com.flavorfusion.common_ui.error.ErrorMessageProvider
 import com.flavorfusion.common_ui.model.drink.toUi
 import com.flavorfusion.core_ui.mvi.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,12 +19,14 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class DrinksViewModel @Inject constructor(
     private val drinksInteractor: DrinksInteractor,
     private val settingsInteractor: SettingsInteractor,
+    private val errorMessageProvider: ErrorMessageProvider,
     private val executor: Executor,
     config: DrinksContract.Config
 ) : MviViewModel<DrinksContract.State, DrinksContract.Event>(config), Executor by executor {
@@ -34,6 +37,7 @@ class DrinksViewModel @Inject constructor(
         when (event) {
             is DrinksContract.Event.OnDrinkClicked -> onDrinkClicked(event.drink.drinkId)
             is DrinksContract.Event.OnSearchValueChanged -> handleSearchValueChanged(event.value)
+            is DrinksContract.Event.OnRetryClicked -> getDrinks()
             DrinksContract.Event.OnSearchClicked -> handleSearchPanelVisibility()
             DrinksContract.Event.OnSearchCloseClicked -> handleOnSearchClose()
             DrinksContract.Event.OnRefresh -> getDrinks(isInitial = false, isRefreshing = true)
@@ -48,8 +52,8 @@ class DrinksViewModel @Inject constructor(
     private fun getDrinks(isInitial: Boolean = true, isRefreshing: Boolean = false) {
         launch(
             action = {
-                dispatch(DrinksContract.Action.Progress(isInitial))
-                dispatch(DrinksContract.Action.RefreshProgress(isRefreshing))
+                dispatch(DrinksContract.Action.Loading(show = isInitial, errorMessage = currentState.errorMessage))
+                dispatch(DrinksContract.Action.RefreshLoading(isRefreshing))
                 drinksInteractor.getDrinksByAlcoholic(
                     showAlcoholic = settingsInteractor.getShowAlcoholicFlow().first()
                 )
@@ -67,7 +71,8 @@ class DrinksViewModel @Inject constructor(
                 )
                 dispatch(DrinksContract.Action.HideAllProgress)
             },
-            onError = {
+            onError = { errorMessage ->
+                viewModelScope.launch {  errorMessageProvider.sendError(errorMessage, "") }
                 dispatch(DrinksContract.Action.HideAllProgress)
             }
         )

@@ -1,5 +1,6 @@
 package com.flavorfusion.drinks
 
+import com.flavorfusion.common_ui.error.ErrorMessage
 import com.flavorfusion.common_ui.model.drink.DrinkUi
 import com.flavorfusion.core_ui.mvi.MviConfig
 import com.flavorfusion.core_ui.mvi.Reducer
@@ -16,8 +17,9 @@ interface DrinksContract {
     }
 
     data class State(
-        val progress: Boolean = false,
-        val refreshProgress: Boolean = false,
+        val loading: Boolean = false,
+        val refreshLoading: Boolean = false,
+        val errorMessage: ErrorMessage? = null,
         val drinks: List<DrinkUi> = emptyList(),
         val searchValue: String = "",
         val showSearch: Boolean = false,
@@ -29,12 +31,13 @@ interface DrinksContract {
         data class OnDrinkClicked(val drink: DrinkUi) : Event
         data object OnSearchClicked : Event
         data object OnSearchCloseClicked : Event
+        data object OnRetryClicked : Event
         data object OnRefresh : Event
     }
 
     sealed interface Action : UiAction {
-        data class Progress(val show: Boolean) : Action
-        data class RefreshProgress(val showRefreshing: Boolean) : Action
+        data class Loading(val show: Boolean, val errorMessage: ErrorMessage?) : Action
+        data class RefreshLoading(val showRefreshing: Boolean) : Action
         data class UpdateDrinks(val drinks: List<DrinkUi>) : Action
         data class UpdateSearchDrinks(val searchDrinks: List<DrinkUi>) : Action
         data class UpdateSearchValue(val searchValue: String) : Action

@@ -8,13 +8,20 @@ class DrinksReducer : Reducer<DrinksContract.State> {
         val action = (action as? DrinksContract.Action) ?: return this
 
         return when (action) {
-            is DrinksContract.Action.Progress -> copy(progress = action.show)
-            is DrinksContract.Action.RefreshProgress -> copy(refreshProgress = action.showRefreshing)
+            is DrinksContract.Action.Loading -> copy(
+                loading = action.show,
+                errorMessage = action.errorMessage
+            )
+            is DrinksContract.Action.RefreshLoading -> copy(refreshLoading = action.showRefreshing)
             is DrinksContract.Action.UpdateDrinks -> copy(drinks = action.drinks)
             is DrinksContract.Action.UpdateSearchDrinks -> copy(searchDrinks = action.searchDrinks)
             is DrinksContract.Action.UpdateSearchValue -> copy(searchValue = action.searchValue)
             is DrinksContract.Action.UpdateShowSearch -> copy(showSearch = action.showSearch)
-            DrinksContract.Action.HideAllProgress -> copy(progress = false, refreshProgress = false)
+            DrinksContract.Action.HideAllProgress -> copy(
+                loading = false,
+                refreshLoading = false,
+                errorMessage = null
+            )
         }
     }
 }

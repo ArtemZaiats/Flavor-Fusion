@@ -1,7 +1,6 @@
 package com.flavorfusion.drinks
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -19,6 +18,7 @@ import com.flavorfusion.common_ui.compose.EffectHandler
 import com.flavorfusion.common_ui.compose.design_system.toolbar.ToolbarWithSearchPanel
 import com.flavorfusion.common_ui.compose.design_system.icons.AppIcons
 import com.flavorfusion.common_ui.compose.design_system.icons.Search
+import com.flavorfusion.common_ui.compose.design_system.placeholder.DefaultPlaceholder
 import com.flavorfusion.common_ui.compose.design_system.pull_to_refresh.BoxWithPullToRefresh
 import com.flavorfusion.common_ui.model.drink.DrinkUi
 import com.flavorfusion.common_ui.theme.FlavorFusionTheme
@@ -53,34 +53,48 @@ fun DrinksScreen(
     state: DrinksContract.State,
     onEvent: (DrinksContract.Event) -> Unit
 ) {
-    Scaffold(
+    DefaultPlaceholder(
         modifier = Modifier
-            .fillMaxSize()
-            .statusBarsPadding(),
-        contentWindowInsets = WindowInsets(bottom = 0),
-        topBar = {
-            ToolbarWithSearchPanel(
-                title = stringResource(R.string.feature_drinks_title),
-                searchIcon = AppIcons.Search,
-                searchPlaceholder = stringResource(R.string.feature_drinks_search),
-                searchPanelVisible = state.showSearch,
-                searchValue = state.searchValue,
-                onSearchIconClicked = { onEvent.invoke(DrinksContract.Event.OnSearchClicked) },
-                onSearchValueChanged = { onEvent.invoke(DrinksContract.Event.OnSearchValueChanged(it)) }
-            )
-        }
-    ) { innerPadding ->
-        BoxWithPullToRefresh(
+            .fillMaxSize(),
+        loading = state.loading,
+        errorMessage = state.errorMessage,
+        onRetry = { onEvent.invoke(DrinksContract.Event.OnRefresh) }
+    ) {
+        Scaffold(
             modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize(),
-            isRefreshing = state.refreshProgress,
-            onRefresh = { onEvent.invoke(DrinksContract.Event.OnRefresh) }
-        ) {
-            DrinksGrid(
-                drinks = state.searchDrinks,
-                onDrinkClick = { onEvent.invoke(DrinksContract.Event.OnDrinkClicked(it)) }
-            )
+                .fillMaxSize()
+                .statusBarsPadding(),
+            contentWindowInsets = WindowInsets(bottom = 0),
+            topBar = {
+                ToolbarWithSearchPanel(
+                    title = stringResource(R.string.feature_drinks_title),
+                    searchIcon = AppIcons.Search,
+                    searchPlaceholder = stringResource(R.string.feature_drinks_search),
+                    searchPanelVisible = state.showSearch,
+                    searchValue = state.searchValue,
+                    onSearchIconClicked = { onEvent.invoke(DrinksContract.Event.OnSearchClicked) },
+                    onSearchValueChanged = {
+                        onEvent.invoke(
+                            DrinksContract.Event.OnSearchValueChanged(
+                                it
+                            )
+                        )
+                    }
+                )
+            }
+        ) { innerPadding ->
+            BoxWithPullToRefresh(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+                isRefreshing = state.refreshLoading,
+                onRefresh = { onEvent.invoke(DrinksContract.Event.OnRefresh) }
+            ) {
+                DrinksGrid(
+                    drinks = state.searchDrinks,
+                    onDrinkClick = { onEvent.invoke(DrinksContract.Event.OnDrinkClicked(it)) }
+                )
+            }
         }
     }
 }
