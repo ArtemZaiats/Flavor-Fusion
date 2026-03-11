@@ -1,8 +1,11 @@
 package com.flavorfusion.common_ui.theme
 
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import com.flavorfusion.common_ui.error.ErrorMessageExtractor
+import com.flavorfusion.common_ui.error.FakeErrorMessageExtractor
 
 @Immutable
 data class FlavorFusionColors(
@@ -39,3 +42,5 @@ fun darkFlavorFusionColorScheme() = FlavorFusionColors(
 )
 
 val LocalFlavorFusionColors = staticCompositionLocalOf<FlavorFusionColors> { error("No colors provided") }
+
+val LocalErrorMessageExtractor = compositionLocalOf<ErrorMessageExtractor> { FakeErrorMessageExtractor() }

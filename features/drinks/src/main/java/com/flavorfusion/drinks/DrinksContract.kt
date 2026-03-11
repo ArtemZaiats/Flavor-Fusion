@@ -24,7 +24,10 @@ interface DrinksContract {
         val searchValue: String = "",
         val showSearch: Boolean = false,
         val searchDrinks: List<DrinkUi> = emptyList()
-    ) : UiState
+    ) : UiState {
+        val hasProgress: Boolean
+            get() = loading || refreshLoading
+    }
 
     sealed interface Event : UiEvent {
         data class OnSearchValueChanged(val value: String) : Event
@@ -42,7 +45,7 @@ interface DrinksContract {
         data class UpdateSearchDrinks(val searchDrinks: List<DrinkUi>) : Action
         data class UpdateSearchValue(val searchValue: String) : Action
         data class UpdateShowSearch(val showSearch: Boolean) : Action
-        data object HideAllProgress : Action
+        data object HideAllLoadings : Action
     }
 
     sealed interface Effect : UiEffect {

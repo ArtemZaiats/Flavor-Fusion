@@ -1,7 +1,6 @@
 package com.flavorfusion.common_ui.error
 
 import android.content.Context
-import android.content.res.loader.ResourcesProvider
 import com.flavorfusion.common_domain.model.RootError
 import com.flavorfusion.common_domain.model.error.DataError
 import com.flavorfusion.common_ui.R
@@ -56,5 +55,14 @@ class DefaultMessageExtractor @Inject constructor(
             else -> defaultErrorMessage
         }
     }
+}
 
+class FakeErrorMessageExtractor(): ErrorMessageExtractor {
+    override fun extract(rootError: RootError): ErrorMessage {
+        return ErrorMessage(
+            title = "fake title",
+            errorText = "fake error",
+            buttonText = "done",
+        )
+    }
 }

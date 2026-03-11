@@ -9,16 +9,23 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.flavorfusion.common_ui.compose.EffectHandler
+import com.flavorfusion.common_ui.error.ErrorMessageExtractor
 import com.flavorfusion.common_ui.theme.FlavorFusionTheme
+import com.flavorfusion.common_ui.theme.LocalErrorMessageExtractor
 import com.flavorfusion.flavorfusion.navigation.AppNavigation
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
+
+    @Inject
+    lateinit var errorMessageExtractor: ErrorMessageExtractor
 
     private val viewModel: MainViewModel by viewModels()
 
@@ -31,23 +38,27 @@ class MainActivity : FragmentActivity() {
         setContent {
             val state = viewModel.state.collectAsStateWithLifecycle().value
 
-            EffectHandler(viewModel = viewModel) {
-                when (it) {
-                    is MainContract.Effect.ShowErrorDialog -> {
-                        Toast.makeText(
-                            this@MainActivity,
-                            "Error! ${state.errorMessage}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-            }
+//            EffectHandler(viewModel = viewModel) {
+//                when (it) {
+//                    is MainContract.Effect.ShowErrorDialog -> {
+//                        Toast.makeText(
+//                            this@MainActivity,
+//                            "Error! ${state.errorMessage?.title}",
+//                            Toast.LENGTH_SHORT
+//                        ).show()
+//                    }
+//                }
+//            }
 
             FlavorFusionTheme(appTheme = state.appTheme.theme.type) {
-                Surface(
-                    modifier = Modifier.fillMaxSize()
+                CompositionLocalProvider(
+                    LocalErrorMessageExtractor provides errorMessageExtractor
                 ) {
-                    AppNavigation()
+                    Surface(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        AppNavigation()
+                    }
                 }
             }
         }

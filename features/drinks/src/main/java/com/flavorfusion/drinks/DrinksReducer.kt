@@ -17,7 +17,7 @@ class DrinksReducer : Reducer<DrinksContract.State> {
             is DrinksContract.Action.UpdateSearchDrinks -> copy(searchDrinks = action.searchDrinks)
             is DrinksContract.Action.UpdateSearchValue -> copy(searchValue = action.searchValue)
             is DrinksContract.Action.UpdateShowSearch -> copy(showSearch = action.showSearch)
-            DrinksContract.Action.HideAllProgress -> copy(
+            DrinksContract.Action.HideAllLoadings -> copy(
                 loading = false,
                 refreshLoading = false,
                 errorMessage = null

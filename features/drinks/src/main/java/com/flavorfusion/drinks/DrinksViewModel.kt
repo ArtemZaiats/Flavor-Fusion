@@ -69,11 +69,17 @@ class DrinksViewModel @Inject constructor(
                         searchDrinks = it?.toUi() ?: emptyList()
                     )
                 )
-                dispatch(DrinksContract.Action.HideAllProgress)
+                dispatch(DrinksContract.Action.HideAllLoadings)
             },
             onError = { errorMessage ->
-                viewModelScope.launch {  errorMessageProvider.sendError(errorMessage, "") }
-                dispatch(DrinksContract.Action.HideAllProgress)
+                if (currentState.drinks.isEmpty()) {
+                    dispatch(DrinksContract.Action.Loading(show = false, errorMessage = errorMessage))
+                } else {
+                    if (currentState.hasProgress) {
+                        viewModelScope.launch { errorMessageProvider.sendError(errorMessage, "") }
+                    }
+                    dispatch(DrinksContract.Action.HideAllLoadings)
+                }
             }
         )
     }
