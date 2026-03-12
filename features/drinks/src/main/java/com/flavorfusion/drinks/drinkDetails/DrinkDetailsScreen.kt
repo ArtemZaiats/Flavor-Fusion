@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.flavorfusion.common_ui.compose.CocktailLoading
 import com.flavorfusion.common_ui.compose.EffectHandler
 import com.flavorfusion.common_ui.compose.design_system.icons.AppIcons
 import com.flavorfusion.common_ui.compose.design_system.icons.Close
@@ -41,7 +42,8 @@ import com.flavorfusion.common_ui.theme.FlavorFusionTheme
 
 @Composable
 fun DrinkDetailsScreen(
-    drinkId: String, onBackClick: () -> Unit
+    drinkId: String,
+    onBackClick: () -> Unit
 ) {
     val viewModel: DrinkDetailsViewModel = hiltViewModel()
     val state = viewModel.state.collectAsStateWithLifecycle().value
@@ -63,22 +65,27 @@ fun DrinkDetailsScreen(
 
 @Composable
 fun DrinkDetailsScreen(
-    state: DrinkDetailsContract.State, onEvent: (DrinkDetailsContract.Event) -> Unit
+    state: DrinkDetailsContract.State,
+    onEvent: (DrinkDetailsContract.Event) -> Unit
 ) {
-    Column(
-        Modifier
-            .fillMaxSize()
-            .statusBarsPadding()
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.Top
-    ) {
-        DrinkHeader(
-            drinkImage = state.drink.drinkImage ?: "",
-            drinkName = state.drink.drinkName,
-            drink = state.drink,
-            onBackClick = { onEvent(DrinkDetailsContract.Event.OnIconBackClicked) })
-        DrinkDetails(drink = state.drink)
-        Spacer(modifier = Modifier.height(96.dp))
+    if (state.loading) {
+        CocktailLoading()
+    } else {
+        Column(
+            Modifier
+                .fillMaxSize()
+                .statusBarsPadding()
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.Top
+        ) {
+            DrinkHeader(
+                drinkImage = state.drink.drinkImage ?: "",
+                drinkName = state.drink.drinkName,
+                drink = state.drink,
+                onBackClick = { onEvent(DrinkDetailsContract.Event.OnIconBackClicked) })
+            DrinkDetails(drink = state.drink)
+            Spacer(modifier = Modifier.height(96.dp))
+        }
     }
 }
 

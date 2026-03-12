@@ -1,6 +1,5 @@
 package com.flavorfusion.drinks.compose
 
-import android.R.attr.maxLines
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -12,12 +11,17 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import coil.request.CachePolicy
+import coil.request.ImageRequest
+import com.flavorfusion.common_ui.R
 import com.flavorfusion.common_ui.model.drink.DrinkUi
 import com.flavorfusion.common_ui.theme.FlavorFusionTheme
 
@@ -27,6 +31,17 @@ fun DrinkItem(
     drink: DrinkUi,
     onDrinkClick: (DrinkUi) -> Unit,
 ) {
+    val context = LocalContext.current
+    val imageRequest = remember(drink.drinkImage) {
+        ImageRequest.Builder(context)
+            .data(drink.drinkImage)
+            .crossfade(true)
+            .placeholder(R.drawable.cocktail_placeholder)
+            .error(R.drawable.cocktail_placeholder)
+            .diskCachePolicy(CachePolicy.ENABLED)
+            .memoryCachePolicy(CachePolicy.ENABLED)
+            .build()
+    }
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -38,7 +53,7 @@ fun DrinkItem(
         )
     ) {
         AsyncImage(
-            model = drink.drinkImage,
+            model = imageRequest,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier

@@ -31,5 +31,6 @@ interface DrinkDetailsContract {
 
     sealed interface Action : UiAction {
         data class UpdateDrink(val drink: DrinkDetailsUi) : Action
+        data class UpdateLoading(val loading: Boolean) : Action
     }
 }

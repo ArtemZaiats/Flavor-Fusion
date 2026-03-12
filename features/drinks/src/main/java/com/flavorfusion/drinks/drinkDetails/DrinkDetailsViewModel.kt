@@ -25,6 +25,7 @@ class DrinkDetailsViewModel @Inject constructor(
     }
 
     private fun loadDrink(drinkId: String) {
+        dispatch(DrinkDetailsContract.Action.UpdateLoading(true))
         launch(
             action = { drinksInteractor.getDrinkById(drinkId) },
             onSuccess = {
@@ -33,6 +34,10 @@ class DrinkDetailsViewModel @Inject constructor(
                         drink = it?.toUi()?.first() ?: DrinkDetailsUi()
                     )
                 )
+                dispatch(DrinkDetailsContract.Action.UpdateLoading(false))
+            },
+            onError = {
+                dispatch(DrinkDetailsContract.Action.UpdateLoading(false))
             }
         )
     }
