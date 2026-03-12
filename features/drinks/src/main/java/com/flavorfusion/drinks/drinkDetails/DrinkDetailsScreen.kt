@@ -127,7 +127,7 @@ fun DrinkHeader(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
+                .padding(16.dp)
         ) {
             Text(
                 text = drinkName,
@@ -199,14 +199,16 @@ fun DrinkDetails(
 @PreviewLightDark
 @Composable
 fun DrinkDetailsPreview() {
-    DrinkDetailsScreen(
-        state = DrinkDetailsContract.State(
-            drink = DrinkDetailsUi(
-                drinkName = "A1",
-                drinkImage = "",
-                category = "Cocktail",
-            )
-        ),
-        onEvent = {}
-    )
+    FlavorFusionTheme {
+        DrinkDetailsScreen(
+            state = DrinkDetailsContract.State(
+                drink = DrinkDetailsUi(
+                    drinkName = "A1",
+                    drinkImage = "",
+                    category = "Cocktail",
+                )
+            ),
+            onEvent = {}
+        )
+    }
 }
