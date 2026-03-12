@@ -19,7 +19,6 @@ class AndroidApplicationComposeConventionPlugin: Plugin<Project> {
                 configureAndroidCompose(this)
                 dependencies {
                     add("implementation", libs.findLibrary("activity.compose").get())
-                    add("implementation", libs.findLibrary("compose.navigation").get())
                 }
             }
         }
