@@ -101,7 +101,10 @@ fun ToolbarWithSearchPanel(
             ) {
                 Text(
                     text = title,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    style = FlavorFusionTheme.typography.bodyLMedium.copy(
+                        color = FlavorFusionTheme.colors.contentPrimary
+                    )
                 )
             }
         }

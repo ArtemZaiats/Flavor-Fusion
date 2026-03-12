@@ -28,11 +28,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
@@ -41,12 +38,10 @@ import com.flavorfusion.common_ui.compose.design_system.icons.AppIcons
 import com.flavorfusion.common_ui.compose.design_system.icons.Close
 import com.flavorfusion.common_ui.model.drink.DrinkDetailsUi
 import com.flavorfusion.common_ui.theme.FlavorFusionTheme
-import com.flavorfusion.common_ui.theme.NunitoFontFontFamily
 
 @Composable
 fun DrinkDetailsScreen(
-    drinkId: String,
-    onBackClick: () -> Unit
+    drinkId: String, onBackClick: () -> Unit
 ) {
     val viewModel: DrinkDetailsViewModel = hiltViewModel()
     val state = viewModel.state.collectAsStateWithLifecycle().value
@@ -68,8 +63,7 @@ fun DrinkDetailsScreen(
 
 @Composable
 fun DrinkDetailsScreen(
-    state: DrinkDetailsContract.State,
-    onEvent: (DrinkDetailsContract.Event) -> Unit
+    state: DrinkDetailsContract.State, onEvent: (DrinkDetailsContract.Event) -> Unit
 ) {
     Column(
         Modifier
@@ -82,8 +76,7 @@ fun DrinkDetailsScreen(
             drinkImage = state.drink.drinkImage ?: "",
             drinkName = state.drink.drinkName,
             drink = state.drink,
-            onBackClick = { onEvent(DrinkDetailsContract.Event.OnIconBackClicked) }
-        )
+            onBackClick = { onEvent(DrinkDetailsContract.Event.OnIconBackClicked) })
         DrinkDetails(drink = state.drink)
         Spacer(modifier = Modifier.height(96.dp))
     }
@@ -91,15 +84,11 @@ fun DrinkDetailsScreen(
 
 @Composable
 fun DrinkHeader(
-    drinkImage: String,
-    drinkName: String,
-    drink: DrinkDetailsUi,
-    onBackClick: () -> Unit
+    drinkImage: String, drinkName: String, drink: DrinkDetailsUi, onBackClick: () -> Unit
 ) {
     Column(
         Modifier
             .fillMaxWidth()
-            .background(color = Color.White)
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
             AsyncImage(
@@ -121,11 +110,8 @@ fun DrinkHeader(
                     .clickable { onBackClick() }
                     .background(color = Color.White, shape = CircleShape)
                     .border(
-                        width = 1.dp,
-                        color = Color.LightGray,
-                        shape = CircleShape
-                    )
-            ) {
+                        width = 1.dp, color = Color.LightGray, shape = CircleShape
+                    )) {
                 Icon(
                     imageVector = AppIcons.Close,
                     contentDescription = null,
@@ -135,43 +121,26 @@ fun DrinkHeader(
                     tint = FlavorFusionTheme.colors.contentPrimary
                 )
             }
-            Box(
-                modifier = Modifier
-                    .align(alignment = Alignment.BottomCenter)
-                    .fillMaxWidth()
-                    .height(16.dp)
-                    .background(
-                        color = Color.White,
-                        shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
-                    )
-            )
         }
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = Color.White)
                 .padding(horizontal = 16.dp)
         ) {
             Text(
                 text = drinkName,
-                style = TextStyle(
-                    fontFamily = NunitoFontFontFamily,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight(700),
-                    color = Color.Black
+                style = FlavorFusionTheme.typography.headingLMedium.copy(
+                    color = FlavorFusionTheme.colors.contentPrimary
                 ),
                 maxLines = 3,
                 modifier = Modifier.fillMaxWidth(0.6f)
             )
             Text(
                 text = drink.category,
-                style = TextStyle(
-                    fontFamily = NunitoFontFontFamily,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
-                    color = Color.Black
+                style = FlavorFusionTheme.typography.bodyLMedium.copy(
+                    color = FlavorFusionTheme.colors.contentPrimary
                 ),
                 modifier = Modifier
                     .padding(8.dp)
@@ -200,21 +169,15 @@ fun DrinkDetails(
             ) {
                 Text(
                     text = it.key.orEmpty(),
-                    style = TextStyle(
-                        fontFamily = NunitoFontFontFamily,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight(600),
-                        color = Color.Black
+                    style = FlavorFusionTheme.typography.bodyLMedium.copy(
+                        color = FlavorFusionTheme.colors.contentPrimary
                     ),
                     modifier = Modifier.fillMaxWidth(0.5f)
                 )
                 Text(
                     text = it.value ?: "",
-                    style = TextStyle(
-                        fontFamily = NunitoFontFontFamily,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight(600),
-                        color = Color.Black
+                    style = FlavorFusionTheme.typography.bodyLMedium.copy(
+                        color = FlavorFusionTheme.colors.contentPrimary
                     ),
                     modifier = Modifier.padding(start = 16.dp)
                 )
@@ -223,11 +186,8 @@ fun DrinkDetails(
 
         Text(
             text = drink.instructions.orEmpty(),
-            style = TextStyle(
-                fontFamily = NunitoFontFontFamily,
-                fontWeight = FontWeight(600),
-                fontSize = 18.sp,
-                color = Color.Black
+            style = FlavorFusionTheme.typography.bodyLMedium.copy(
+                color = FlavorFusionTheme.colors.contentPrimary
             ),
             modifier = Modifier
                 .fillMaxWidth()

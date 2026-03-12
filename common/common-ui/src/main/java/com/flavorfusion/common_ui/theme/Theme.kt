@@ -32,6 +32,10 @@ object FlavorFusionTheme {
     val colors: FlavorFusionColors
         @Composable
         get() = LocalFlavorFusionColors.current
+
+    val typography: FlavorFusionTypography
+        @Composable
+        get() = LocalFlavorFusionTypography.current
 }
 
 
@@ -76,7 +80,8 @@ fun FlavorFusionTheme(
 
 
     CompositionLocalProvider(
-        LocalFlavorFusionColors provides flavorFusionColors
+        LocalFlavorFusionColors provides flavorFusionColors,
+        LocalFlavorFusionTypography provides flavorFusionTypography
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
