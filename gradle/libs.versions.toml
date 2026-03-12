@@ -37,6 +37,8 @@ appcompat = "1.7.1"
 material = "1.13.0"
 kotlin-coroutines = "1.6.4"
 datastoreRreferences = "1.2.0"
+nav3Core = "1.0.1"
+lifecycleViewmodelNav3 = "2.10.0"
 
 [libraries]
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleRuntimeKtx" }
@@ -77,6 +79,11 @@ kotlin-compose-compiler = { module = "org.jetbrains.kotlin:compose-compiler-grad
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlin-coroutines" }
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastoreRreferences" }
 datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastoreRreferences" }
+
+# Navigation 3
+androidx-navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "nav3Core" }
+androidx-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "nav3Core" }
+androidx-lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecycleViewmodelNav3" }
 
 # Di
 

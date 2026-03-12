@@ -15,7 +15,7 @@ internal fun Project.configureKotlinAndroid(
 ) {
     commonExtension.apply {
         defaultConfig {
-            compileSdk = 34
+            compileSdk = 36
             minSdk = 26
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }

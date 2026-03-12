@@ -1,8 +1,9 @@
 package com.flavorfusion.flavorfusion.navigation
 
+import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
-sealed interface Route {
+sealed interface Route : NavKey {
 
     @Serializable
     data object Main : Route
@@ -23,7 +24,7 @@ sealed interface Route {
 }
 
 // Screens
-sealed interface Screen {
+sealed interface Screen : NavKey {
     @Serializable
     data object Drinks : Screen
 

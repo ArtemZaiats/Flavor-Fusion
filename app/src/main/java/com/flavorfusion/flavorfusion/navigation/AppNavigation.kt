@@ -1,24 +1,26 @@
 package com.flavorfusion.flavorfusion.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
-import com.flavorfusion.flavorfusion.navigation.graphs.drinksNavGraph
-import com.flavorfusion.flavorfusion.navigation.graphs.favoritesNavGraph
-import com.flavorfusion.flavorfusion.navigation.graphs.mainContainer
-import com.flavorfusion.flavorfusion.navigation.graphs.recipesNavGraph
-import com.flavorfusion.flavorfusion.navigation.graphs.settingsNavGraph
+import androidx.compose.runtime.remember
+import com.flavorfusion.flavorfusion.navigation.graphs.MainContainer
 
 @Composable
 fun AppNavigation() {
-    val rootNavController = rememberNavController()
+    val navigationState = rememberNavigationState(
+        startRoute = Route.Drinks,
+        topLevelRoutes = setOf(
+            Route.Recipes,
+            Route.Drinks,
+            Route.Favorite,
+            Route.Settings
+        )
+    )
 
-    NavHost(navController = rootNavController, startDestination = Route.Main) {
-        mainContainer { bottomNavHostController ->
-            recipesNavGraph(navController = bottomNavHostController)
-            drinksNavGraph(navController = bottomNavHostController)
-            favoritesNavGraph(navController = bottomNavHostController)
-            settingsNavGraph(navController = bottomNavHostController)
-        }
-    }
+    val navigator = remember { Navigator(navigationState) }
+    val entryProvider = appEntryProvider(navigator)
+
+    MainContainer(
+        navigator = navigator,
+        entries = navigationState.toEntries(entryProvider)
+    )
 }

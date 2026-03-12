@@ -29,10 +29,12 @@ class MainViewModel @Inject constructor(
     }
 
     private fun observeAppTheme() {
-        settingsInteractor.getCurrentAppThemeFlow().onEach { theme ->
-            theme ?: return@onEach
-            dispatch(MainContract.Action.UpdateAppTheme(theme.toUi()))
-        }.launchIn(viewModelScope)
+        settingsInteractor.getCurrentAppThemeFlow()
+            .onEach { theme ->
+                theme ?: return@onEach
+                dispatch(MainContract.Action.UpdateAppTheme(theme.toUi()))
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun observeErrors() {

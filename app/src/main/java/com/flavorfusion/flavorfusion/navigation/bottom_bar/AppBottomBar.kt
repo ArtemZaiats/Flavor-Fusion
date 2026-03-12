@@ -1,53 +1,27 @@
 package com.flavorfusion.flavorfusion.navigation.bottom_bar
 
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.currentBackStackEntryAsState
 import com.flavorfusion.common_ui.theme.FlavorFusionTheme
 import com.flavorfusion.flavorfusion.R
+import com.flavorfusion.flavorfusion.navigation.Navigator
 import com.flavorfusion.flavorfusion.navigation.Route
 
 @Composable
 fun AppBottomBar(
-    navController: NavController
+    navigator: Navigator
 ) {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-
     NavigationBar(
         containerColor = FlavorFusionTheme.colors.backgroundSecondary
     ) {
         bottomNavigationItems.forEach { item ->
-            val isSelected = navBackStackEntry
-                ?.destination
-                ?.hierarchy
-                ?.any { navDestination ->
-                    when (item.route) {
-                        is Route.Drinks -> navDestination.hasRoute<Route.Drinks>()
-                        is Route.Recipes -> navDestination.hasRoute<Route.Recipes>()
-                        is Route.Favorite -> navDestination.hasRoute<Route.Favorite>()
-                        is Route.Settings -> navDestination.hasRoute<Route.Settings>()
-                        else -> false
-                    }
-                } == true
+            val isSelected = item.route == navigator.state.topLevelRoute
 
             val tint = if (isSelected) FlavorFusionTheme.colors.colorPrimary
             else FlavorFusionTheme.colors.contentSecondary
@@ -55,13 +29,7 @@ fun AppBottomBar(
             NavigationBarItem(
                 selected = isSelected,
                 onClick = {
-                    navController.navigate(item.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
+                    navigator.navigate(item.route)
                 },
                 icon = {
                     Icon(
