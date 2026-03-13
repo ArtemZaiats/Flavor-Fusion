@@ -8,13 +8,17 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import coil.request.CachePolicy
+import coil.request.ImageRequest
+import com.flavorfusion.common_ui.R
 import com.flavorfusion.core_ui.mvi.CommonEffect
 import com.flavorfusion.core_ui.mvi.MviViewModel
 import com.flavorfusion.core_ui.mvi.UiEffect
@@ -82,3 +86,15 @@ private fun openUrl(
         Toast.makeText(context, "No app was found capable of opening the URL!", Toast.LENGTH_SHORT).show()
     }
 }
+
+@Composable
+fun coilImageRequest(context: Context, data: Any?) = remember(data) {
+        ImageRequest.Builder(context)
+            .data(data)
+            .crossfade(true)
+            .placeholder(R.drawable.cocktail_placeholder)
+            .error(R.drawable.cocktail_placeholder)
+            .diskCachePolicy(CachePolicy.ENABLED)
+            .memoryCachePolicy(CachePolicy.ENABLED)
+            .build()
+    }

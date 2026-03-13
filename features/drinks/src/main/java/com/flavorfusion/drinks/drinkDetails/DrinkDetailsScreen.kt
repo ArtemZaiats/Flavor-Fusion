@@ -28,12 +28,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.flavorfusion.common_ui.compose.CocktailLoading
+import com.flavorfusion.common_ui.compose.coilImageRequest
 import com.flavorfusion.common_ui.compose.EffectHandler
 import com.flavorfusion.common_ui.compose.design_system.icons.AppIcons
 import com.flavorfusion.common_ui.compose.design_system.icons.Close
@@ -79,8 +81,6 @@ fun DrinkDetailsScreen(
             verticalArrangement = Arrangement.Top
         ) {
             DrinkHeader(
-                drinkImage = state.drink.drinkImage ?: "",
-                drinkName = state.drink.drinkName,
                 drink = state.drink,
                 onBackClick = { onEvent(DrinkDetailsContract.Event.OnIconBackClicked) })
             DrinkDetails(drink = state.drink)
@@ -91,15 +91,16 @@ fun DrinkDetailsScreen(
 
 @Composable
 fun DrinkHeader(
-    drinkImage: String, drinkName: String, drink: DrinkDetailsUi, onBackClick: () -> Unit
+    drink: DrinkDetailsUi,
+    onBackClick: () -> Unit
 ) {
-    Column(
-        Modifier
-            .fillMaxWidth()
-    ) {
+    Column(Modifier.fillMaxWidth()) {
         Box(modifier = Modifier.fillMaxWidth()) {
+            val context = LocalContext.current
+            val imageRequest = coilImageRequest(context, drink.drinkImage)
+
             AsyncImage(
-                model = drinkImage,
+                model = imageRequest,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -137,7 +138,7 @@ fun DrinkHeader(
                 .padding(16.dp)
         ) {
             Text(
-                text = drinkName,
+                text = drink.drinkName,
                 style = FlavorFusionTheme.typography.headingLMedium.copy(
                     color = FlavorFusionTheme.colors.contentPrimary
                 ),
@@ -213,6 +214,7 @@ fun DrinkDetailsPreview() {
                     drinkName = "A1",
                     drinkImage = "",
                     category = "Cocktail",
+                    instructions = "Shift the cocoa and sugar together into a medium-sized saucepan. Dissolve the cornstarch in the water, and stir into the cocoa and sugar until it is a smooth paste. Begin heating the mixture, stirring it with a whisk, and gradually pour in the milk. Continue stirring with the whisk as you bring the liquid to a simmer. Allow the chocolate to simmer for about 10 minutes, stirring often, until it is thick, glossy and completely smooth. Serve steaming hot in coffee mug. Serves six."
                 )
             ),
             onEvent = {}
