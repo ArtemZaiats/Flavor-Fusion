@@ -38,7 +38,12 @@ jobs:
       - name: Send APK to Telegram
         if: startsWith(github.ref, 'refs/tags/test.')
         run: |
-          APK_PATH=$(find . -name "*.apk" -path "*/debug/*" | head -1)
+          APK_PATH=$(find app/build/outputs/apk/debug -name "*.apk" | head -1)
+          if [ -z "$APK_PATH" ]; then
+            echo "APK not found!"
+            exit 1
+          fi
+          echo "Sending APK: $APK_PATH"
           curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendDocument" \
             -F chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
             -F document=@"$APK_PATH" \
