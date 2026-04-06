@@ -1,6 +1,8 @@
 package com.flavorfusion.settings
 
+import android.R.attr.action
 import androidx.lifecycle.viewModelScope
+import com.flavorfusion.common_domain.interactors.AuthInteractor
 import com.flavorfusion.common_domain.interactors.SettingsInteractor
 import com.flavorfusion.common_ui.Executor
 import com.flavorfusion.core_ui.mvi.MviViewModel
@@ -16,13 +18,15 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val settingsInteractor: SettingsInteractor,
+    private val authInteractor: AuthInteractor,
     private val settingsCategoryProvider: SettingsCategoryProvider,
-    config: SettingsContract.Config
-) : MviViewModel<SettingsContract.State, SettingsContract.Event>(config) {
+    config: SettingsContract.Config,
+    executor: Executor
+) : MviViewModel<SettingsContract.State, SettingsContract.Event>(config), Executor by executor {
 
     override fun handleEvent(event: SettingsContract.Event) {
         when (event) {
-            SettingsContract.Event.OnLogOutClicked -> {}
+            SettingsContract.Event.OnLogOutClicked -> onLogout()
             is SettingsContract.Event.OnItemClicked -> handleItemClicked(event.id)
         }
     }
@@ -70,5 +74,11 @@ class SettingsViewModel @Inject constructor(
     private fun updateCategories() {
         val categories = settingsCategoryProvider.provideData()
         dispatch(SettingsContract.Action.UpdateCategories(categories))
+    }
+
+    private fun onLogout() {
+        viewModelScope.launch {
+            authInteractor.logout()
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.flavorfusion.flavorfusion.main
 
 import androidx.lifecycle.viewModelScope
+import com.flavorfusion.common_domain.interactors.AuthInteractor
 import com.flavorfusion.common_domain.interactors.SettingsInteractor
 import com.flavorfusion.common_ui.error.ErrorMessageProvider
 import com.flavorfusion.common_ui.model.toUi
@@ -13,6 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val settingsInteractor: SettingsInteractor,
+    private val authInteractor: AuthInteractor,
     private val errorMessageProvider: ErrorMessageProvider,
     config: MainContract.Config
 ) : MviViewModel<MainContract.State, MainContract.Event>(config) {
@@ -26,6 +28,7 @@ class MainViewModel @Inject constructor(
     init {
         observeAppTheme()
         observeErrors()
+        observeAuthState()
     }
 
     private fun observeAppTheme() {
@@ -33,6 +36,14 @@ class MainViewModel @Inject constructor(
             .onEach { theme ->
                 theme ?: return@onEach
                 dispatch(MainContract.Action.UpdateAppTheme(theme.toUi()))
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeAuthState() {
+        authInteractor.getAuthStateFlow()
+            .onEach { isAuthenticated ->
+                dispatch(MainContract.Action.UpdateAuthState(isAuthenticated))
             }
             .launchIn(viewModelScope)
     }

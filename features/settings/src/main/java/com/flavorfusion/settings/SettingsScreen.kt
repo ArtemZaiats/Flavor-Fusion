@@ -2,10 +2,12 @@ package com.flavorfusion.settings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.flavorfusion.common_ui.compose.EffectHandler
+import com.flavorfusion.common_ui.compose.design_system.button.PrimaryButton
 import com.flavorfusion.common_ui.theme.FlavorFusionTheme
 import com.flavorfusion.settings.compose.ProfileHeader
 import com.flavorfusion.settings.compose.SettingsCategoryComponent
@@ -53,7 +56,6 @@ fun SettingsScreen(
         Column(
             verticalArrangement = Arrangement.spacedBy(30.dp),
             modifier = Modifier
-                .navigationBarsPadding()
                 .padding(it)
                 .padding(16.dp)
         ) {
@@ -67,6 +69,11 @@ fun SettingsScreen(
                     )
                 }
             }
+            Spacer(modifier = Modifier.weight(1f))
+            PrimaryButton(
+                text = "Log out",
+                onClick = { onEvent.invoke(SettingsContract.Event.OnLogOutClicked) },
+            )
         }
     }
 }

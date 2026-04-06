@@ -10,6 +10,10 @@ class MainReducer : Reducer<MainContract.State> {
         return when (action) {
             is MainContract.Action.UpdateAppTheme -> copy(appTheme = action.appTheme)
             is MainContract.Action.UpdateErrorMessage -> copy(errorMessage = action.errorMessage)
+            is MainContract.Action.UpdateAuthState -> copy(
+                isAuthenticated = action.isAuthenticated,
+                authStateLoaded = true
+            )
         }
     }
 }

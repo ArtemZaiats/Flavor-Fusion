@@ -2,7 +2,6 @@ package com.flavorfusion.flavorfusion.main
 
 import android.os.Bundle
 import android.graphics.Color
-import android.widget.Toast
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -13,10 +12,11 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.flavorfusion.common_ui.compose.EffectHandler
 import com.flavorfusion.common_ui.error.ErrorMessageExtractor
 import com.flavorfusion.common_ui.theme.FlavorFusionTheme
 import com.flavorfusion.common_ui.theme.LocalErrorMessageExtractor
+import com.flavorfusion.auth.AuthScreen
+import com.flavorfusion.common_ui.compose.CocktailLoading
 import com.flavorfusion.flavorfusion.navigation.AppNavigation
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -57,7 +57,11 @@ class MainActivity : FragmentActivity() {
                     Surface(
                         modifier = Modifier.fillMaxSize()
                     ) {
-                        AppNavigation()
+                        when {
+                            !state.authStateLoaded -> CocktailLoading()
+                            state.isAuthenticated -> AppNavigation()
+                            else -> AuthScreen(onAuthSuccess = {})
+                        }
                     }
                 }
             }

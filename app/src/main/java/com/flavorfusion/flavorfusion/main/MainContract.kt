@@ -18,7 +18,9 @@ interface MainContract {
 
     data class State(
         val appTheme: AppThemeUi = AppThemeUi(),
-        val errorMessage: ErrorMessage? = null
+        val errorMessage: ErrorMessage? = null,
+        val isAuthenticated: Boolean = false,
+        val authStateLoaded: Boolean = false
     ) : UiState
 
     sealed interface Event : UiEvent {
@@ -28,6 +30,7 @@ interface MainContract {
     sealed interface Action : UiAction {
         data class UpdateAppTheme(val appTheme: AppThemeUi) : Action
         data class UpdateErrorMessage(val errorMessage: ErrorMessage) : Action
+        data class UpdateAuthState(val isAuthenticated: Boolean) : Action
     }
 
     sealed interface Effect : UiEffect {

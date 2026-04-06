@@ -17,6 +17,7 @@ data class FlavorFusionColors(
     val contentPrimary: Color,
     val contentSecondary: Color,
     val inputFieldBorderActive: Color,
+    val error: Color = ColorError,
     val isDark: Boolean
 )
 
