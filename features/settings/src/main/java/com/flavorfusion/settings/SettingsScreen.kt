@@ -4,10 +4,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -52,12 +50,12 @@ fun SettingsScreen(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
-    ) {
+    ) { paddingValues ->
         Column(
             verticalArrangement = Arrangement.spacedBy(30.dp),
             modifier = Modifier
-                .padding(it)
-                .padding(16.dp)
+                .padding(paddingValues)
+                .padding(start = 16.dp, end = 16.dp, top = 30.dp)
         ) {
             ProfileHeader(profile = state.profile)
             Column(verticalArrangement = Arrangement.spacedBy(30.dp)) {

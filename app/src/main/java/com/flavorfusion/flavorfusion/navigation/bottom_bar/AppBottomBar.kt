@@ -61,6 +61,11 @@ data class BottomNavigationItem(
 
 val bottomNavigationItems = listOf(
     BottomNavigationItem(
+        title = "Home",
+        icon = R.drawable.ic_home_navbar,
+        route = Route.Home
+    ),
+    BottomNavigationItem(
         title = "Recipes",
         icon = R.drawable.ic_food_navbar,
         route = Route.Recipes

@@ -27,7 +27,8 @@ fun MainContainer(
     val showBottomBar = currentRoute == Route.Drinks ||
             currentRoute == Route.Recipes ||
             currentRoute == Route.Favorite ||
-            currentRoute == Route.Settings
+            currentRoute == Route.Settings ||
+            currentRoute == Route.Home
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),

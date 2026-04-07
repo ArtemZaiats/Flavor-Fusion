@@ -5,6 +5,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.NavEntry
 import com.flavorfusion.drinks.DrinksScreen
 import com.flavorfusion.drinks.drinkDetails.DrinkDetailsScreen
+import com.flavorfusion.home.HomeScreen
 import com.flavorfusion.settings.SettingsScreen
 import com.flavorfusion.settings.category.app_theme.AppThemeScreen
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +18,10 @@ import com.flavorfusion.flavorfusion.navigation.animation.screenMetadata
 import com.flavorfusion.flavorfusion.navigation.animation.tabMetadata
 
 fun appEntryProvider(navigator: Navigator): (NavKey) -> NavEntry<NavKey> = entryProvider {
+
+    entry<Route.Home>(metadata = tabMetadata) {
+        HomeScreen()
+    }
 
     entry<Route.Recipes>(metadata = tabMetadata) {
         Column(

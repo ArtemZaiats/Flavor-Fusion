@@ -7,8 +7,9 @@ import com.flavorfusion.flavorfusion.navigation.graphs.MainContainer
 @Composable
 fun AppNavigation() {
     val navigationState = rememberNavigationState(
-        startRoute = Route.Drinks,
+        startRoute = Route.Home,
         topLevelRoutes = setOf(
+            Route.Home,
             Route.Recipes,
             Route.Drinks,
             Route.Favorite,

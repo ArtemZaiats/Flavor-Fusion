@@ -10,6 +10,9 @@ sealed interface Route : NavKey {
 
     // Bottom navigation
     @Serializable
+    data object Home : Route
+
+    @Serializable
     data object Drinks : Route
 
     @Serializable
