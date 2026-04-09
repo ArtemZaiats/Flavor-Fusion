@@ -1,7 +1,5 @@
 package com.flavorfusion.common_domain.interactors
 
-import com.flavorfusion.common_domain.model.drinks.Drink
-import com.flavorfusion.common_domain.model.drinks.DrinkDetails
 import com.flavorfusion.common_domain.repositories.DrinksRepository
 import javax.inject.Inject
 

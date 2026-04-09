@@ -42,6 +42,7 @@ dependencies {
     implementation(projects.common.commonData)
     implementation(projects.common.commonDomain)
     implementation(projects.features.drinks)
+    implementation(projects.features.meals)
     implementation(projects.features.settings)
     implementation(projects.features.auth)
     implementation(projects.features.home)

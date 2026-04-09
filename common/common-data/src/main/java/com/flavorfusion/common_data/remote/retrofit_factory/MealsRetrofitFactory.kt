@@ -9,14 +9,14 @@ import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
-class DrinksRetrofitFactory(private val context: Context) : RetrofitFactory {
+class MealsRetrofitFactory(private val context: Context): RetrofitFactory {
     private val json = Json { ignoreUnknownKeys = true }
 
     override fun createRetrofit(): Retrofit {
         val client = OKHttpClient(context).provideOkHttpClient()
 
         return Retrofit.Builder()
-            .baseUrl(BuildConfig.COCKTAILS_BASE_URL)
+            .baseUrl(BuildConfig.MEALS_BASE_URL)
             .client(client)
             .addCallAdapterFactory(ResultCallAdapterFactory.create())
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))

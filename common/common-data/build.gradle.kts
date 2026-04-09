@@ -29,6 +29,11 @@ android {
             )
             buildConfigField(
                 type = "String",
+                name = "MEALS_BASE_URL",
+                value = "\"https://www.themealdb.com/api/json/v1/1/\""
+            )
+            buildConfigField(
+                type = "String",
                 name = "SUPABASE_URL",
                 value = "\"${getKey("SUPABASE_URL")}\""
             )
@@ -43,6 +48,11 @@ android {
                 type = "String",
                 name = "COCKTAILS_BASE_URL",
                 value = "\"https://www.thecocktaildb.com/api/json/v1/1/\""
+            )
+            buildConfigField(
+                type = "String",
+                name = "MEALS_BASE_URL",
+                value = "\"https://www.themealdb.com/api/json/v1/1/\""
             )
             buildConfigField(
                 type = "String",

@@ -5,6 +5,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.NavEntry
 import com.flavorfusion.drinks.DrinksAdaptiveScreen
 import com.flavorfusion.drinks.drinkDetails.DrinkDetailsScreen
+import com.flavorfusion.meals.MealsScreen
 import com.flavorfusion.home.HomeScreen
 import com.flavorfusion.settings.SettingsScreen
 import com.flavorfusion.settings.category.app_theme.AppThemeScreen
@@ -24,13 +25,7 @@ fun appEntryProvider(navigator: Navigator): (NavKey) -> NavEntry<NavKey> = entry
     }
 
     entry<Route.Recipes>(metadata = tabMetadata) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Text(text = "Recipes")
-        }
+        MealsScreen()
     }
 
     entry<Route.Favorite>(metadata = tabMetadata) {
