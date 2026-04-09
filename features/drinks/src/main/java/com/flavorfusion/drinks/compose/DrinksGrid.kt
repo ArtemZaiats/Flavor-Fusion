@@ -20,7 +20,7 @@ fun DrinksGrid(
     LazyVerticalGrid(
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
-        columns = GridCells.Fixed(2),
+        columns = GridCells.Adaptive(150.dp),
         contentPadding = PaddingValues(
             horizontal = 16.dp,
             vertical = 8.dp

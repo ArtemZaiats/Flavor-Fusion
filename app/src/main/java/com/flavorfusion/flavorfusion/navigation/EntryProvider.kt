@@ -3,7 +3,7 @@ package com.flavorfusion.flavorfusion.navigation
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.NavEntry
-import com.flavorfusion.drinks.DrinksScreen
+import com.flavorfusion.drinks.DrinksAdaptiveScreen
 import com.flavorfusion.drinks.drinkDetails.DrinkDetailsScreen
 import com.flavorfusion.home.HomeScreen
 import com.flavorfusion.settings.SettingsScreen
@@ -52,7 +52,7 @@ fun appEntryProvider(navigator: Navigator): (NavKey) -> NavEntry<NavKey> = entry
     }
 
     entry<Route.Drinks>(metadata = tabMetadata) {
-        DrinksScreen(
+        DrinksAdaptiveScreen(
             navigateToDrinkDetails = { drinkId ->
                 navigator.navigate(Screen.DrinkDetails(drinkId = drinkId))
             }
