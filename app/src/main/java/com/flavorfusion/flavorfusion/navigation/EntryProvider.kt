@@ -5,7 +5,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.NavEntry
 import com.flavorfusion.drinks.DrinksAdaptiveScreen
 import com.flavorfusion.drinks.drinkDetails.DrinkDetailsScreen
-import com.flavorfusion.meals.MealsScreen
+import com.flavorfusion.meals.mealDetails.MealDetailsScreen
 import com.flavorfusion.home.HomeScreen
 import com.flavorfusion.settings.SettingsScreen
 import com.flavorfusion.settings.category.app_theme.AppThemeScreen
@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.flavorfusion.flavorfusion.navigation.animation.screenMetadata
 import com.flavorfusion.flavorfusion.navigation.animation.tabMetadata
+import com.flavorfusion.meals.MealsAdaptiveScreen
 
 fun appEntryProvider(navigator: Navigator): (NavKey) -> NavEntry<NavKey> = entryProvider {
 
@@ -25,7 +26,9 @@ fun appEntryProvider(navigator: Navigator): (NavKey) -> NavEntry<NavKey> = entry
     }
 
     entry<Route.Recipes>(metadata = tabMetadata) {
-        MealsScreen()
+        MealsAdaptiveScreen(navigateToMealDetails = { mealId ->
+            navigator.navigate(Screen.MealDetails(mealId = mealId))
+        })
     }
 
     entry<Route.Favorite>(metadata = tabMetadata) {
@@ -57,6 +60,13 @@ fun appEntryProvider(navigator: Navigator): (NavKey) -> NavEntry<NavKey> = entry
     entry<Screen.DrinkDetails>(metadata = screenMetadata) { key ->
         DrinkDetailsScreen(
             drinkId = key.drinkId,
+            onBackClick = { navigator.goBack() }
+        )
+    }
+
+    entry<Screen.MealDetails>(metadata = screenMetadata) { key ->
+        MealDetailsScreen(
+            mealId = key.mealId,
             onBackClick = { navigator.goBack() }
         )
     }

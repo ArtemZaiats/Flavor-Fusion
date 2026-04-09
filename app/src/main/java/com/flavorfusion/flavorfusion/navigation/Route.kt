@@ -28,8 +28,6 @@ sealed interface Route : NavKey {
 
 // Screens
 sealed interface Screen : NavKey {
-    @Serializable
-    data object Drinks : Screen
 
     @Serializable
     data class DrinkDetails(
@@ -37,13 +35,9 @@ sealed interface Screen : NavKey {
     ) : Screen
 
     @Serializable
-    data object Favorites : Screen
-
-    @Serializable
-    data object Recipes : Screen
-
-    @Serializable
-    data object Settings : Screen
+    data class MealDetails(
+        val mealId: String
+    ) : Screen
 
     @Serializable
     data object SettingsAppTheme : Screen

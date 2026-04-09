@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.flavorfusion.common_ui.R
+import com.flavorfusion.common_ui.compose.EffectHandler
 import com.flavorfusion.common_ui.compose.design_system.placeholder.DefaultPlaceholder
 import com.flavorfusion.common_ui.compose.design_system.pull_to_refresh.BoxWithPullToRefresh
 import com.flavorfusion.common_ui.compose.design_system.toolbar.ToolbarWithSingleAction
@@ -22,9 +23,17 @@ import com.flavorfusion.meals.compose.MealsGrid
 import com.flavorfusion.meals.model.MealsDataPreviewProvider
 
 @Composable
-fun MealsScreen() {
+fun MealsScreen(
+    navigateToMealDetails: (String) -> Unit
+) {
     val viewModel: MealsViewModel = hiltViewModel()
     val state = viewModel.state.collectAsStateWithLifecycle().value
+
+    EffectHandler(viewModel = viewModel) {
+        when (it) {
+            is MealsContract.Effect.NavigateToMealDetails -> navigateToMealDetails(it.mealId)
+        }
+    }
 
     MealsScreen(
         state = state,
@@ -65,7 +74,7 @@ fun MealsScreen(
             ) {
                 MealsGrid(
                     meals = state.meals,
-                    onMealClick = {}
+                    onMealClick = { onEvent(MealsContract.Event.OnMealClicked(it)) }
                 )
             }
         }

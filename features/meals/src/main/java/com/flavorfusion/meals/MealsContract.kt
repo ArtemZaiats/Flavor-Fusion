@@ -29,6 +29,7 @@ interface MealsContract {
     sealed interface Event : UiEvent {
         data object OnRefresh : Event
         data object OnRetryClicked : Event
+        data class OnMealClicked(val meal: MealUi) : Event
     }
 
     sealed interface Action : UiAction {
@@ -36,5 +37,9 @@ interface MealsContract {
         data class RefreshLoading(val show: Boolean) : Action
         data class UpdateMeals(val meals: List<MealUi>) : Action
         data object HideAllLoadings : Action
+    }
+
+    sealed interface Effect : UiEffect {
+        data class NavigateToMealDetails(val mealId: String) : Effect
     }
 }

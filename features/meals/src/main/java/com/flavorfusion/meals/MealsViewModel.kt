@@ -22,6 +22,9 @@ class MealsViewModel @Inject constructor(
         when (event) {
             MealsContract.Event.OnRefresh -> getMeals(isInitial = false, isRefreshing = true)
             MealsContract.Event.OnRetryClicked -> getMeals()
+            is MealsContract.Event.OnMealClicked -> publish {
+                MealsContract.Effect.NavigateToMealDetails(event.meal.mealId)
+            }
         }
     }
 
@@ -30,6 +33,7 @@ class MealsViewModel @Inject constructor(
             action = {
                 dispatch(MealsContract.Action.Loading(show = isInitial, errorMessage = currentState.errorMessage))
                 dispatch(MealsContract.Action.RefreshLoading(show = isRefreshing))
+                // TODO: Refactor categories logic
                 mealsInteractor.getMealsByCategory("Seafood")
             },
             onSuccess = {
