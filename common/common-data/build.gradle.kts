@@ -24,7 +24,7 @@ android {
         debug {
             buildConfigField(
                 type = "String",
-                name = "BASE_URL",
+                name = "COCKTAILS_BASE_URL",
                 value = "\"https://www.thecocktaildb.com/api/json/v1/1/\""
             )
             buildConfigField(
@@ -41,7 +41,7 @@ android {
         release {
             buildConfigField(
                 type = "String",
-                name = "BASE_URL",
+                name = "COCKTAILS_BASE_URL",
                 value = "\"https://www.thecocktaildb.com/api/json/v1/1/\""
             )
             buildConfigField(
