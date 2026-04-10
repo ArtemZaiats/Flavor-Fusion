@@ -33,4 +33,5 @@
     <string name="feature_meals_title">Recipes</string>
     <string name="feature_meals_empty_list">Empty list</string>
     <string name="feature_meals_search">Search</string>
+    <string name="feature_meals_categories">Categories</string>
 </resources>

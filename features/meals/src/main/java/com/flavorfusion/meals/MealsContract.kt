@@ -1,6 +1,7 @@
 package com.flavorfusion.meals
 
 import com.flavorfusion.common_ui.error.ErrorMessage
+import com.flavorfusion.common_ui.model.meal.MealCategoryUi
 import com.flavorfusion.common_ui.model.meal.MealUi
 import com.flavorfusion.core_ui.mvi.MviConfig
 import com.flavorfusion.core_ui.mvi.Reducer
@@ -23,7 +24,9 @@ interface MealsContract {
         val meals: List<MealUi> = emptyList(),
         val searchValue: String = "",
         val showSearch: Boolean = false,
-        val searchMeals: List<MealUi> = emptyList()
+        val searchMeals: List<MealUi> = emptyList(),
+        val selectedCategory: MealCategoryUi = MealCategoryUi(),
+        val categories: List<MealCategoryUi> = emptyList()
     ) : UiState {
         val hasProgress: Boolean
             get() = loading || refreshLoading
@@ -34,8 +37,10 @@ interface MealsContract {
         data object OnRetryClicked : Event
         data object OnSearchClicked : Event
         data object OnSearchCloseClicked : Event
+        data object OnCategoryClicked : Event
         data class OnSearchValueChanged(val value: String) : Event
         data class OnMealClicked(val meal: MealUi) : Event
+        data class OnCategorySelected(val category: MealCategoryUi) : Event
     }
 
     sealed interface Action : UiAction {
@@ -45,10 +50,13 @@ interface MealsContract {
         data class UpdateSearchValue(val searchValue: String) : Action
         data class UpdateShowSearch(val showSearch: Boolean) : Action
         data class UpdateSearchMeals(val searchMeals: List<MealUi>) : Action
+        data class UpdateSelectedCategory(val category: MealCategoryUi) : Action
+        data class UpdateCategories(val categories: List<MealCategoryUi>) : Action
         data object HideAllLoadings : Action
     }
 
     sealed interface Effect : UiEffect {
         data class NavigateToMealDetails(val mealId: String) : Effect
+        data object ShowCategoriesDialog : Effect
     }
 }

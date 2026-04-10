@@ -17,6 +17,8 @@ class MealsReducer : Reducer<MealsContract.State> {
             is MealsContract.Action.UpdateSearchMeals -> copy(searchMeals = action.searchMeals)
             is MealsContract.Action.UpdateSearchValue -> copy(searchValue = action.searchValue)
             is MealsContract.Action.UpdateShowSearch -> copy(showSearch = action.showSearch)
+            is MealsContract.Action.UpdateSelectedCategory -> copy(selectedCategory = action.category)
+            is MealsContract.Action.UpdateCategories -> copy(categories = action.categories)
             MealsContract.Action.HideAllLoadings -> copy(
                 loading = false,
                 refreshLoading = false,

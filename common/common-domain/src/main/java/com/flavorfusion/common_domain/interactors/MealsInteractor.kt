@@ -8,5 +8,6 @@ class MealsInteractor @Inject constructor(
 ) {
     suspend fun getMealsByCategory(category: String) = mealsRepository.getMealsByCategory(category)
     suspend fun getMealById(id: String) = mealsRepository.getMealById(id)
+    suspend fun getCategories() = mealsRepository.getCategories()
     fun getMealByNameFlow(name: String) = mealsRepository.getMealByNameFlow(name)
 }

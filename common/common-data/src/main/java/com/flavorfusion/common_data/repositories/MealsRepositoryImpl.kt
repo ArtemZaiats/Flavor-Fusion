@@ -7,6 +7,7 @@ import com.flavorfusion.common_data.remote.model.meals.toDomain
 import com.flavorfusion.common_domain.model.Result
 import com.flavorfusion.common_data.remote.services.MealsApiService
 import com.flavorfusion.common_domain.model.meals.Meal
+import com.flavorfusion.common_domain.model.meals.MealCategory
 import com.flavorfusion.common_domain.model.meals.MealDetails
 import com.flavorfusion.common_domain.repositories.MealsRepository
 import kotlinx.coroutines.Dispatchers
@@ -34,6 +35,15 @@ class MealsRepositoryImpl @Inject constructor(
 
     override suspend fun getMealById(id: String): Result<List<MealDetails>?> {
         return service.getMealById(id).fold(
+            onSuccess = { response ->
+                responseHandler.handleResponse(response) { it?.toDomain() }
+            },
+            onFailure = { Result.Error(it.asDataError()) }
+        )
+    }
+
+    override suspend fun getCategories(): Result<List<MealCategory>?> {
+        return service.getCategories().fold(
             onSuccess = { response ->
                 responseHandler.handleResponse(response) { it?.toDomain() }
             },
