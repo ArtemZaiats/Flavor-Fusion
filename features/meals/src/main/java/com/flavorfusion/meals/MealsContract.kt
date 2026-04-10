@@ -20,7 +20,10 @@ interface MealsContract {
         val loading: Boolean = false,
         val refreshLoading: Boolean = false,
         val errorMessage: ErrorMessage? = null,
-        val meals: List<MealUi> = emptyList()
+        val meals: List<MealUi> = emptyList(),
+        val searchValue: String = "",
+        val showSearch: Boolean = false,
+        val searchMeals: List<MealUi> = emptyList()
     ) : UiState {
         val hasProgress: Boolean
             get() = loading || refreshLoading
@@ -29,6 +32,9 @@ interface MealsContract {
     sealed interface Event : UiEvent {
         data object OnRefresh : Event
         data object OnRetryClicked : Event
+        data object OnSearchClicked : Event
+        data object OnSearchCloseClicked : Event
+        data class OnSearchValueChanged(val value: String) : Event
         data class OnMealClicked(val meal: MealUi) : Event
     }
 
@@ -36,6 +42,9 @@ interface MealsContract {
         data class Loading(val show: Boolean, val errorMessage: ErrorMessage?) : Action
         data class RefreshLoading(val show: Boolean) : Action
         data class UpdateMeals(val meals: List<MealUi>) : Action
+        data class UpdateSearchValue(val searchValue: String) : Action
+        data class UpdateShowSearch(val showSearch: Boolean) : Action
+        data class UpdateSearchMeals(val searchMeals: List<MealUi>) : Action
         data object HideAllLoadings : Action
     }
 

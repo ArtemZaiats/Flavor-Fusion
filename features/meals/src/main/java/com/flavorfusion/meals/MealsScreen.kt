@@ -1,5 +1,6 @@
 package com.flavorfusion.meals
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -16,7 +17,7 @@ import com.flavorfusion.common_ui.R
 import com.flavorfusion.common_ui.compose.EffectHandler
 import com.flavorfusion.common_ui.compose.design_system.placeholder.DefaultPlaceholder
 import com.flavorfusion.common_ui.compose.design_system.pull_to_refresh.BoxWithPullToRefresh
-import com.flavorfusion.common_ui.compose.design_system.toolbar.ToolbarWithSingleAction
+import com.flavorfusion.common_ui.compose.design_system.toolbar.ToolbarWithSearchPanel
 import com.flavorfusion.common_ui.model.meal.MealUi
 import com.flavorfusion.common_ui.theme.FlavorFusionTheme
 import com.flavorfusion.meals.compose.MealsGrid
@@ -33,6 +34,10 @@ fun MealsScreen(
         when (it) {
             is MealsContract.Effect.NavigateToMealDetails -> navigateToMealDetails(it.mealId)
         }
+    }
+
+    BackHandler(state.showSearch) {
+        viewModel.setEvent(MealsContract.Event.OnSearchCloseClicked)
     }
 
     MealsScreen(
@@ -58,10 +63,15 @@ fun MealsScreen(
                 .statusBarsPadding(),
             contentWindowInsets = WindowInsets(bottom = 0),
             topBar = {
-                ToolbarWithSingleAction(
-                    navigationIcon = null,
-                    actionVisible = false,
-                    title = stringResource(R.string.feature_meals_title)
+                ToolbarWithSearchPanel(
+                    title = stringResource(R.string.feature_meals_title),
+                    searchPlaceholder = stringResource(R.string.feature_meals_search),
+                    searchPanelVisible = state.showSearch,
+                    searchValue = state.searchValue,
+                    onSearchIconClicked = { onEvent.invoke(MealsContract.Event.OnSearchClicked) },
+                    onSearchValueChanged = {
+                        onEvent.invoke(MealsContract.Event.OnSearchValueChanged(it))
+                    }
                 )
             }
         ) { innerPadding ->
@@ -73,7 +83,7 @@ fun MealsScreen(
                 onRefresh = { onEvent(MealsContract.Event.OnRefresh) }
             ) {
                 MealsGrid(
-                    meals = state.meals,
+                    meals = state.searchMeals,
                     onMealClick = { onEvent(MealsContract.Event.OnMealClicked(it)) }
                 )
             }

@@ -40,7 +40,7 @@ import com.flavorfusion.common_ui.theme.FlavorFusionTheme
 @Composable
 fun ToolbarWithSearchPanel(
     modifier: Modifier = Modifier,
-    searchIcon: ImageVector,
+    searchIcon: ImageVector = AppIcons.Search,
     actionIcon: ImageVector? = null,
     title: String,
     searchPanelVisible: Boolean = false,

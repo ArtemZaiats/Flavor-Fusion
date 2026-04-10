@@ -51,7 +51,8 @@ fun ToolbarWithSingleAction(
             Text(
                 text = title,
                 textAlign = TextAlign.Center,
-                color = FlavorFusionTheme.colors.contentPrimary
+                color = FlavorFusionTheme.colors.contentPrimary,
+                style = FlavorFusionTheme.typography.headingMMedium
             )
         },
         actions = {

@@ -9,6 +9,10 @@ import com.flavorfusion.common_data.remote.services.MealsApiService
 import com.flavorfusion.common_domain.model.meals.Meal
 import com.flavorfusion.common_domain.model.meals.MealDetails
 import com.flavorfusion.common_domain.repositories.MealsRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -36,4 +40,14 @@ class MealsRepositoryImpl @Inject constructor(
             onFailure = { Result.Error(it.asDataError()) }
         )
     }
+
+    override fun getMealByNameFlow(name: String): Flow<Result<List<Meal>?>> = flow {
+        val response = service.getMealsByName(name)
+        emit(
+            response.fold(
+                onSuccess = { responseHandler.handleResponse(it) { it?.toDomain() } },
+                onFailure = { Result.Error(it.asDataError()) }
+            )
+        )
+    }.flowOn(Dispatchers.IO)
 }

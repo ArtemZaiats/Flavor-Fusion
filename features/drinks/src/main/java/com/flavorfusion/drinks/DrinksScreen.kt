@@ -68,7 +68,6 @@ fun DrinksScreen(
             topBar = {
                 ToolbarWithSearchPanel(
                     title = stringResource(R.string.feature_drinks_title),
-                    searchIcon = AppIcons.Search,
                     searchPlaceholder = stringResource(R.string.feature_drinks_search),
                     searchPanelVisible = state.showSearch,
                     searchValue = state.searchValue,
