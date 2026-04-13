@@ -37,8 +37,8 @@ class MealsViewModel @Inject constructor(
 
     init {
         setupSearch()
-        getCategories()
         observeFavoriteIds()
+        getCategories()
     }
 
     override fun handleEvent(event: MealsContract.Event) {

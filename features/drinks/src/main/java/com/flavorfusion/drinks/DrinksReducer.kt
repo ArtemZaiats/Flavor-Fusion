@@ -13,11 +13,16 @@ class DrinksReducer : Reducer<DrinksContract.State> {
                 errorMessage = action.errorMessage
             )
             is DrinksContract.Action.RefreshLoading -> copy(refreshLoading = action.showRefreshing)
-            is DrinksContract.Action.UpdateDrinks -> copy(drinks = action.drinks)
-            is DrinksContract.Action.UpdateSearchDrinks -> copy(searchDrinks = action.searchDrinks)
+            is DrinksContract.Action.UpdateDrinks -> copy(
+                drinks = action.drinks.map { it.copy(isFavorite = it.drinkId in favoriteIds) }
+            )
+            is DrinksContract.Action.UpdateSearchDrinks -> copy(
+                searchDrinks = action.searchDrinks.map { it.copy(isFavorite = it.drinkId in favoriteIds) }
+            )
             is DrinksContract.Action.UpdateSearchValue -> copy(searchValue = action.searchValue)
             is DrinksContract.Action.UpdateShowSearch -> copy(showSearch = action.showSearch)
             is DrinksContract.Action.UpdateFavoriteIds -> copy(
+                favoriteIds = action.favoriteIds,
                 drinks = drinks.map { it.copy(isFavorite = it.drinkId in action.favoriteIds) },
                 searchDrinks = searchDrinks.map { it.copy(isFavorite = it.drinkId in action.favoriteIds) }
             )

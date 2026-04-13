@@ -13,13 +13,18 @@ class MealsReducer : Reducer<MealsContract.State> {
                 errorMessage = action.errorMessage
             )
             is MealsContract.Action.RefreshLoading -> copy(refreshLoading = action.show)
-            is MealsContract.Action.UpdateMeals -> copy(meals = action.meals)
-            is MealsContract.Action.UpdateSearchMeals -> copy(searchMeals = action.searchMeals)
+            is MealsContract.Action.UpdateMeals -> copy(
+                meals = action.meals.map { it.copy(isFavorite = it.mealId in favoriteIds) }
+            )
+            is MealsContract.Action.UpdateSearchMeals -> copy(
+                searchMeals = action.searchMeals.map { it.copy(isFavorite = it.mealId in favoriteIds) }
+            )
             is MealsContract.Action.UpdateSearchValue -> copy(searchValue = action.searchValue)
             is MealsContract.Action.UpdateShowSearch -> copy(showSearch = action.showSearch)
             is MealsContract.Action.UpdateSelectedCategory -> copy(selectedCategory = action.category)
             is MealsContract.Action.UpdateCategories -> copy(categories = action.categories)
             is MealsContract.Action.UpdateFavoriteIds -> copy(
+                favoriteIds = action.favoriteIds,
                 meals = meals.map { it.copy(isFavorite = it.mealId in action.favoriteIds) },
                 searchMeals = searchMeals.map { it.copy(isFavorite = it.mealId in action.favoriteIds) }
             )

@@ -23,7 +23,8 @@ interface DrinksContract {
         val drinks: List<DrinkUi> = emptyList(),
         val searchValue: String = "",
         val showSearch: Boolean = false,
-        val searchDrinks: List<DrinkUi> = emptyList()
+        val searchDrinks: List<DrinkUi> = emptyList(),
+        val favoriteIds: Set<String> = emptySet()
     ) : UiState {
         val hasProgress: Boolean
             get() = loading || refreshLoading

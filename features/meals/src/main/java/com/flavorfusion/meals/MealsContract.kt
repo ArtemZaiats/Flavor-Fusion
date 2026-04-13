@@ -26,7 +26,8 @@ interface MealsContract {
         val showSearch: Boolean = false,
         val searchMeals: List<MealUi> = emptyList(),
         val selectedCategory: MealCategoryUi = MealCategoryUi(),
-        val categories: List<MealCategoryUi> = emptyList()
+        val categories: List<MealCategoryUi> = emptyList(),
+        val favoriteIds: Set<String> = emptySet()
     ) : UiState {
         val hasProgress: Boolean
             get() = loading || refreshLoading

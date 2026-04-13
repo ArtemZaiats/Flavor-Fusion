@@ -53,14 +53,19 @@ class DrinksViewModel @Inject constructor(
 
     init {
         setupSearch()
-        getDrinks()
         observeFavoriteIds()
+        getDrinks()
     }
 
     private fun getDrinks(isInitial: Boolean = true, isRefreshing: Boolean = false) {
         launch(
             action = {
-                dispatch(DrinksContract.Action.Loading(show = isInitial, errorMessage = currentState.errorMessage))
+                dispatch(
+                    DrinksContract.Action.Loading(
+                        show = isInitial,
+                        errorMessage = currentState.errorMessage
+                    )
+                )
                 dispatch(DrinksContract.Action.RefreshLoading(isRefreshing))
                 drinksInteractor.getDrinksByAlcoholic(
                     showAlcoholic = settingsInteractor.getShowAlcoholicFlow().first()
@@ -81,7 +86,12 @@ class DrinksViewModel @Inject constructor(
             },
             onError = { errorMessage ->
                 if (currentState.drinks.isEmpty()) {
-                    dispatch(DrinksContract.Action.Loading(show = false, errorMessage = errorMessage))
+                    dispatch(
+                        DrinksContract.Action.Loading(
+                            show = false,
+                            errorMessage = errorMessage
+                        )
+                    )
                 } else {
                     if (currentState.hasProgress) {
                         viewModelScope.launch { errorMessageProvider.sendError(errorMessage, "") }
