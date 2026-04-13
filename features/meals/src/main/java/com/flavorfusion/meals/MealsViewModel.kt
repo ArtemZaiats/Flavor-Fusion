@@ -1,13 +1,18 @@
 package com.flavorfusion.meals
 
 import androidx.lifecycle.viewModelScope
+import com.flavorfusion.common_domain.interactors.FavoritesInteractor
 import com.flavorfusion.common_domain.interactors.MealsInteractor
+import com.flavorfusion.common_domain.model.favorites.FavoriteItem
+import com.flavorfusion.common_domain.model.favorites.ItemType
 import com.flavorfusion.common_domain.model.onSuccess
 import com.flavorfusion.common_ui.Executor
 import com.flavorfusion.common_ui.model.meal.MealCategoryUi
+import com.flavorfusion.common_ui.model.meal.MealUi
 import com.flavorfusion.common_ui.model.meal.toUi
 import com.flavorfusion.core_ui.mvi.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,11 +22,13 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MealsViewModel @Inject constructor(
     private val mealsInteractor: MealsInteractor,
+    private val favoritesInteractor: FavoritesInteractor,
     private val executor: Executor,
     config: MealsContract.Config
 ) : MviViewModel<MealsContract.State, MealsContract.Event>(config), Executor by executor {
@@ -31,6 +38,7 @@ class MealsViewModel @Inject constructor(
     init {
         setupSearch()
         getCategories()
+        observeFavoriteIds()
     }
 
     override fun handleEvent(event: MealsContract.Event) {
@@ -51,6 +59,7 @@ class MealsViewModel @Inject constructor(
 
             is MealsContract.Event.OnSearchValueChanged -> handleSearchValueChanged(event.value)
             is MealsContract.Event.OnCategorySelected -> selectCategory(event.category)
+            is MealsContract.Event.OnFavoriteToggled -> toggleFavorite(event.meal)
         }
     }
 
@@ -192,5 +201,27 @@ class MealsViewModel @Inject constructor(
     private fun handleOnSearchClose() {
         dispatch(MealsContract.Action.UpdateShowSearch(showSearch = false))
         handleSearchValueChanged("")
+    }
+
+    private fun observeFavoriteIds() {
+        favoritesInteractor
+            .getFavoriteIdsByTypeFlow(ItemType.MEAL)
+            .onEach { ids ->
+                dispatch(MealsContract.Action.UpdateFavoriteIds(favoriteIds = ids))
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun toggleFavorite(meal: MealUi) {
+        viewModelScope.launch(Dispatchers.IO) {
+            favoritesInteractor.toggleFavorite(
+                FavoriteItem(
+                    id = meal.mealId,
+                    name = meal.mealName,
+                    imageUrl = meal.mealImage,
+                    itemType = ItemType.MEAL
+                )
+            )
+        }
     }
 }

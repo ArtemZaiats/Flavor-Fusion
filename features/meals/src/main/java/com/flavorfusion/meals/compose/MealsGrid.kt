@@ -15,7 +15,8 @@ import com.flavorfusion.common_ui.model.meal.MealUi
 @Composable
 fun MealsGrid(
     meals: List<MealUi>,
-    onMealClick: (MealUi) -> Unit
+    onMealClick: (MealUi) -> Unit,
+    onFavoriteClick: (MealUi) -> Unit
 ) {
     LazyVerticalGrid(
         verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -37,7 +38,8 @@ fun MealsGrid(
             ) { meal ->
                 MealItem(
                     meal = meal,
-                    onMealClick = onMealClick
+                    onMealClick = onMealClick,
+                    onFavoriteClick = onFavoriteClick
                 )
             }
         }

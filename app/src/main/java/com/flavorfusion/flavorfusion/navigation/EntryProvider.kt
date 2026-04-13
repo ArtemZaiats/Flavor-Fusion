@@ -9,14 +9,9 @@ import com.flavorfusion.meals.mealDetails.MealDetailsScreen
 import com.flavorfusion.home.HomeScreen
 import com.flavorfusion.settings.SettingsScreen
 import com.flavorfusion.settings.category.app_theme.AppThemeScreen
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import com.flavorfusion.flavorfusion.navigation.animation.screenMetadata
 import com.flavorfusion.flavorfusion.navigation.animation.tabMetadata
+import com.flavorfusion.favorites.FavoritesScreen
 import com.flavorfusion.meals.MealsAdaptiveScreen
 
 fun appEntryProvider(navigator: Navigator): (NavKey) -> NavEntry<NavKey> = entryProvider {
@@ -32,13 +27,7 @@ fun appEntryProvider(navigator: Navigator): (NavKey) -> NavEntry<NavKey> = entry
     }
 
     entry<Route.Favorite>(metadata = tabMetadata) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Text(text = "Favorites")
-        }
+        FavoritesScreen()
     }
 
     entry<Route.Settings>(metadata = tabMetadata) {

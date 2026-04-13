@@ -41,6 +41,7 @@ interface MealsContract {
         data class OnSearchValueChanged(val value: String) : Event
         data class OnMealClicked(val meal: MealUi) : Event
         data class OnCategorySelected(val category: MealCategoryUi) : Event
+        data class OnFavoriteToggled(val meal: MealUi) : Event
     }
 
     sealed interface Action : UiAction {
@@ -52,6 +53,7 @@ interface MealsContract {
         data class UpdateSearchMeals(val searchMeals: List<MealUi>) : Action
         data class UpdateSelectedCategory(val category: MealCategoryUi) : Action
         data class UpdateCategories(val categories: List<MealCategoryUi>) : Action
+        data class UpdateFavoriteIds(val favoriteIds: Set<String>) : Action
         data object HideAllLoadings : Action
     }
 

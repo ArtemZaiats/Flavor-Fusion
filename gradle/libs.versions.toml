@@ -35,6 +35,7 @@ kotlinPluginParcelize = "1.8.10"
 appcompat = "1.7.1"
 kotlin-coroutines = "1.6.4"
 datastoreRreferences = "1.2.0"
+room = "2.8.4"
 nav3Core = "1.0.1"
 lifecycleViewmodelNav3 = "2.10.0"
 kotlinxCoroutinesTest = "1.7.3"
@@ -80,6 +81,11 @@ kotlin-compose-compiler = { module = "org.jetbrains.kotlin:compose-compiler-grad
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlin-coroutines" }
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastoreRreferences" }
 datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastoreRreferences" }
+
+# Room
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 
 # Navigation 3
 androidx-navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "nav3Core" }

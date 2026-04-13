@@ -91,7 +91,8 @@ fun DrinksScreen(
             ) {
                 DrinksGrid(
                     drinks = state.searchDrinks,
-                    onDrinkClick = { onEvent.invoke(DrinksContract.Event.OnDrinkClicked(it)) }
+                    onDrinkClick = { onEvent.invoke(DrinksContract.Event.OnDrinkClicked(it)) },
+                    onFavoriteClick = { onEvent.invoke(DrinksContract.Event.OnFavoriteToggled(it)) }
                 )
             }
         }

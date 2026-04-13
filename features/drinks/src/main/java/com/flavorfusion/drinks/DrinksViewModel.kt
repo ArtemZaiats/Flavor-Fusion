@@ -2,13 +2,18 @@ package com.flavorfusion.drinks
 
 import androidx.lifecycle.viewModelScope
 import com.flavorfusion.common_domain.interactors.DrinksInteractor
+import com.flavorfusion.common_domain.interactors.FavoritesInteractor
 import com.flavorfusion.common_domain.interactors.SettingsInteractor
+import com.flavorfusion.common_domain.model.favorites.FavoriteItem
+import com.flavorfusion.common_domain.model.favorites.ItemType
 import com.flavorfusion.common_domain.model.onSuccess
 import com.flavorfusion.common_ui.Executor
 import com.flavorfusion.common_ui.error.ErrorMessageProvider
+import com.flavorfusion.common_ui.model.drink.DrinkUi
 import com.flavorfusion.common_ui.model.drink.toUi
 import com.flavorfusion.core_ui.mvi.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,6 +30,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DrinksViewModel @Inject constructor(
     private val drinksInteractor: DrinksInteractor,
+    private val favoritesInteractor: FavoritesInteractor,
     private val settingsInteractor: SettingsInteractor,
     private val errorMessageProvider: ErrorMessageProvider,
     private val executor: Executor,
@@ -41,12 +47,14 @@ class DrinksViewModel @Inject constructor(
             DrinksContract.Event.OnSearchClicked -> handleSearchPanelVisibility()
             DrinksContract.Event.OnSearchCloseClicked -> handleOnSearchClose()
             DrinksContract.Event.OnRefresh -> getDrinks(isInitial = false, isRefreshing = true)
+            is DrinksContract.Event.OnFavoriteToggled -> toggleFavorite(event.drink)
         }
     }
 
     init {
         setupSearch()
         getDrinks()
+        observeFavoriteIds()
     }
 
     private fun getDrinks(isInitial: Boolean = true, isRefreshing: Boolean = false) {
@@ -133,5 +141,27 @@ class DrinksViewModel @Inject constructor(
     private fun handleOnSearchClose() {
         dispatch(DrinksContract.Action.UpdateShowSearch(showSearch = false))
         handleSearchValueChanged("")
+    }
+
+    private fun observeFavoriteIds() {
+        favoritesInteractor
+            .getFavoriteIdsByTypeFlow(ItemType.DRINK)
+            .onEach { ids ->
+                dispatch(DrinksContract.Action.UpdateFavoriteIds(favoriteIds = ids))
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun toggleFavorite(drink: DrinkUi) {
+        viewModelScope.launch(Dispatchers.IO) {
+            favoritesInteractor.toggleFavorite(
+                FavoriteItem(
+                    id = drink.drinkId,
+                    name = drink.drinkName,
+                    imageUrl = drink.drinkImage,
+                    itemType = ItemType.DRINK
+                )
+            )
+        }
     }
 }

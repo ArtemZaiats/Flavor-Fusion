@@ -36,6 +36,7 @@ interface DrinksContract {
         data object OnSearchCloseClicked : Event
         data object OnRetryClicked : Event
         data object OnRefresh : Event
+        data class OnFavoriteToggled(val drink: DrinkUi) : Event
     }
 
     sealed interface Action : UiAction {
@@ -45,6 +46,7 @@ interface DrinksContract {
         data class UpdateSearchDrinks(val searchDrinks: List<DrinkUi>) : Action
         data class UpdateSearchValue(val searchValue: String) : Action
         data class UpdateShowSearch(val showSearch: Boolean) : Action
+        data class UpdateFavoriteIds(val favoriteIds: Set<String>) : Action
         data object HideAllLoadings : Action
     }
 

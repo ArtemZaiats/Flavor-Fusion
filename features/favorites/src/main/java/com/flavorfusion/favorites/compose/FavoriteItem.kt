@@ -1,6 +1,5 @@
-package com.flavorfusion.meals.compose
+package com.flavorfusion.favorites.compose
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -26,23 +24,20 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.flavorfusion.common_ui.compose.coilImageRequest
-import com.flavorfusion.common_ui.model.meal.MealUi
+import com.flavorfusion.common_ui.model.favorites.FavoriteItemUi
 import com.flavorfusion.common_ui.theme.FlavorFusionTheme
 
 @Composable
-fun MealItem(
-    modifier: Modifier = Modifier,
-    meal: MealUi,
-    onMealClick: (MealUi) -> Unit,
-    onFavoriteClick: (MealUi) -> Unit
+fun FavoriteItem(
+    item: FavoriteItemUi,
+    onRemoveClick: (FavoriteItemUi) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val imageRequest = coilImageRequest(context, meal.mealImage)
+    val imageRequest = coilImageRequest(context, item.imageUrl)
 
     Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable { onMealClick(meal) },
+        modifier = modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(2.dp),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
@@ -65,7 +60,7 @@ fun MealItem(
                 .padding(16.dp)
         ) {
             Text(
-                text = meal.mealName,
+                text = item.name,
                 style = FlavorFusionTheme.typography.bodyLMedium.copy(
                     color = FlavorFusionTheme.colors.contentPrimary
                 ),
@@ -74,13 +69,13 @@ fun MealItem(
                 modifier = Modifier.weight(1f)
             )
             IconButton(
-                onClick = { onFavoriteClick(meal) },
+                onClick = { onRemoveClick(item) },
                 modifier = Modifier.size(32.dp)
             ) {
                 Icon(
-                    imageVector = if (meal.isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
-                    contentDescription = if (meal.isFavorite) "Remove from favorites" else "Add to favorites",
-                    tint = if (meal.isFavorite) Color.Red else FlavorFusionTheme.colors.contentPrimary
+                    imageVector = Icons.Filled.Favorite,
+                    contentDescription = "Remove from favorites",
+                    tint = Color.Red
                 )
             }
         }

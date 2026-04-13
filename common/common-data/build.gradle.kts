@@ -91,6 +91,10 @@ dependencies {
     implementation(libs.datastore.preferences)
     implementation(libs.datastore.preferences.core)
 
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
+
     implementation(platform(libs.supabase.bom))
     implementation(libs.ktor.client.android)
     implementation(libs.ktor.client.core)

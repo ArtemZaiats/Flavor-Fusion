@@ -17,7 +17,8 @@ import com.flavorfusion.common_ui.model.drink.DrinkUi
 fun DrinksList(
     modifier: Modifier = Modifier,
     drinks: List<DrinkUi>,
-    onDrinkClick: (DrinkUi) -> Unit
+    onDrinkClick: (DrinkUi) -> Unit,
+    onFavoriteClick: (DrinkUi) -> Unit
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -29,7 +30,8 @@ fun DrinksList(
         items(drinks) {
             DrinkItem(
                 drink = it,
-                onDrinkClick = onDrinkClick
+                onDrinkClick = onDrinkClick,
+                onFavoriteClick = onFavoriteClick
             )
         }
         item {

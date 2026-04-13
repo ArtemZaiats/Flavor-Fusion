@@ -46,6 +46,7 @@ dependencies {
     implementation(projects.features.settings)
     implementation(projects.features.auth)
     implementation(projects.features.home)
+    implementation(projects.features.favorites)
 
     implementation(libs.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

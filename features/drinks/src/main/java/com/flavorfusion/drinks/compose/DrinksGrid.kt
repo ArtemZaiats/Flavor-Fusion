@@ -15,7 +15,8 @@ import com.flavorfusion.common_ui.R
 @Composable
 fun DrinksGrid(
     drinks: List<DrinkUi>,
-    onDrinkClick: (DrinkUi) -> Unit
+    onDrinkClick: (DrinkUi) -> Unit,
+    onFavoriteClick: (DrinkUi) -> Unit
 ) {
     LazyVerticalGrid(
         verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -36,7 +37,8 @@ fun DrinksGrid(
                 key = { it.drinkId }) { drink ->
                 DrinkItem(
                     drink = drink,
-                    onDrinkClick = onDrinkClick
+                    onDrinkClick = onDrinkClick,
+                    onFavoriteClick = onFavoriteClick
                 )
             }
         }

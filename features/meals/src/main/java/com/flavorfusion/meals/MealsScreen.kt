@@ -134,7 +134,8 @@ fun MealsScreen(
                     }
                     MealsGrid(
                         meals = state.searchMeals,
-                        onMealClick = { onEvent(MealsContract.Event.OnMealClicked(it)) }
+                        onMealClick = { onEvent(MealsContract.Event.OnMealClicked(it)) },
+                        onFavoriteClick = { onEvent(MealsContract.Event.OnFavoriteToggled(it)) }
                     )
                 }
             }

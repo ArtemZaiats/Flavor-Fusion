@@ -5,7 +5,8 @@ import com.flavorfusion.common_domain.model.meals.Meal
 data class MealUi(
     val mealName: String,
     val mealImage: String,
-    val mealId: String
+    val mealId: String,
+    val isFavorite: Boolean = false
 )
 
 fun Meal.toUi() = MealUi(

@@ -17,6 +17,10 @@ class DrinksReducer : Reducer<DrinksContract.State> {
             is DrinksContract.Action.UpdateSearchDrinks -> copy(searchDrinks = action.searchDrinks)
             is DrinksContract.Action.UpdateSearchValue -> copy(searchValue = action.searchValue)
             is DrinksContract.Action.UpdateShowSearch -> copy(showSearch = action.showSearch)
+            is DrinksContract.Action.UpdateFavoriteIds -> copy(
+                drinks = drinks.map { it.copy(isFavorite = it.drinkId in action.favoriteIds) },
+                searchDrinks = searchDrinks.map { it.copy(isFavorite = it.drinkId in action.favoriteIds) }
+            )
             DrinksContract.Action.HideAllLoadings -> copy(
                 loading = false,
                 refreshLoading = false,

@@ -19,6 +19,10 @@ class MealsReducer : Reducer<MealsContract.State> {
             is MealsContract.Action.UpdateShowSearch -> copy(showSearch = action.showSearch)
             is MealsContract.Action.UpdateSelectedCategory -> copy(selectedCategory = action.category)
             is MealsContract.Action.UpdateCategories -> copy(categories = action.categories)
+            is MealsContract.Action.UpdateFavoriteIds -> copy(
+                meals = meals.map { it.copy(isFavorite = it.mealId in action.favoriteIds) },
+                searchMeals = searchMeals.map { it.copy(isFavorite = it.mealId in action.favoriteIds) }
+            )
             MealsContract.Action.HideAllLoadings -> copy(
                 loading = false,
                 refreshLoading = false,
