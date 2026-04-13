@@ -72,7 +72,11 @@ class MealsViewModel @Inject constructor(
                     )
                 )
                 selectedCategory?.let {
-                    selectCategory(it)
+                    selectCategory(
+                        category = it,
+                        isInitial = true,
+                        isRefreshing = false
+                    )
                 }
             },
             onError = { errorMessage ->
@@ -86,9 +90,17 @@ class MealsViewModel @Inject constructor(
         )
     }
 
-    private fun selectCategory(category: MealCategoryUi) {
+    private fun selectCategory(
+        category: MealCategoryUi,
+        isInitial: Boolean = false,
+        isRefreshing: Boolean = false
+    ) {
         dispatch(MealsContract.Action.UpdateSelectedCategory(category = category))
-        getMeals(category)
+        getMeals(
+            category = category,
+            isInitial = isInitial,
+            isRefreshing = isRefreshing
+        )
     }
 
     private fun getMeals(

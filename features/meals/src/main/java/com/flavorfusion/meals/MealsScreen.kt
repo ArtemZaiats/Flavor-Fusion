@@ -4,6 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -15,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -31,6 +33,7 @@ import com.flavorfusion.common_ui.model.meal.MealCategoryUi
 import com.flavorfusion.common_ui.model.meal.MealUi
 import com.flavorfusion.common_ui.theme.FlavorFusionTheme
 import com.flavorfusion.meals.compose.CategoriesBottomSheet
+import com.flavorfusion.meals.compose.CategoryDropDownButton
 import com.flavorfusion.meals.compose.MealsGrid
 import com.flavorfusion.meals.model.MealsDataPreviewProvider
 
@@ -113,17 +116,22 @@ fun MealsScreen(
                     verticalArrangement = Arrangement.spacedBy(20.dp),
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    Text(
-                        modifier = Modifier
-                            .padding(start = 16.dp, top = 16.dp)
-                            .clickable {
-                                onEvent(MealsContract.Event.OnCategoryClicked)
-                            },
-                        text = state.selectedCategory.name,
-                        style = FlavorFusionTheme.typography.bodyMMedium.copy(
-                            color = FlavorFusionTheme.colors.contentPrimary
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    ) {
+                        Text(
+                            text = "Category: ",
+                            style = FlavorFusionTheme.typography.bodyMMedium.copy(
+                                color = FlavorFusionTheme.colors.contentPrimary
+                            )
                         )
-                    )
+                        CategoryDropDownButton(
+                            title = state.selectedCategory.name,
+                            onClick = { onEvent(MealsContract.Event.OnCategoryClicked) }
+                        )
+                    }
                     MealsGrid(
                         meals = state.searchMeals,
                         onMealClick = { onEvent(MealsContract.Event.OnMealClicked(it)) }
