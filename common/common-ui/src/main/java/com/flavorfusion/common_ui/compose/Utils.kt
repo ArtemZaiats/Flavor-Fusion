@@ -46,6 +46,7 @@ fun EffectHandler(
                                 effect.message,
                                 Toast.LENGTH_SHORT
                             ).show()
+
                             is CommonEffect.CopyToClipboard -> copyToClipboard(context, effect.text)
                             is CommonEffect.HideKeyboard -> focusManager.clearFocus(force = true)
                             is CommonEffect.OpenUrl -> openUrl(context, effect.url)
@@ -83,18 +84,42 @@ private fun openUrl(
     try {
         context.startActivity(intent)
     } catch (e: ActivityNotFoundException) {
-        Toast.makeText(context, "No app was found capable of opening the URL!", Toast.LENGTH_SHORT).show()
+        Toast.makeText(
+            context,
+            "No app was found capable of opening the URL!",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 }
 
 @Composable
 fun coilImageRequest(context: Context, data: Any?) = remember(data) {
-        ImageRequest.Builder(context)
-            .data(data)
-            .crossfade(true)
-            .placeholder(R.drawable.cocktail_placeholder)
-            .error(R.drawable.cocktail_placeholder)
-            .diskCachePolicy(CachePolicy.ENABLED)
-            .memoryCachePolicy(CachePolicy.ENABLED)
-            .build()
+    ImageRequest.Builder(context)
+        .data(data)
+        .crossfade(true)
+        .placeholder(R.drawable.cocktail_placeholder)
+        .error(R.drawable.cocktail_placeholder)
+        .diskCachePolicy(CachePolicy.ENABLED)
+        .memoryCachePolicy(CachePolicy.ENABLED)
+        .build()
+}
+
+/**
+ * Extension function to extract YouTube Video ID from a URL.
+ * Supports:
+ * - https://www.youtube.com/watch?v=VIDEO_ID
+ * - https://youtu.be/VIDEO_ID
+ * - https://www.youtube.com/embed/VIDEO_ID
+ */
+fun String.extractYoutubeVideoId(): String {
+    val regex =
+        "^(?:https?:\\/\\/)?(?:www\\.|m\\.)?(?:youtube\\.com\\/(?:[\\w\\-]+\\?v=|embed\\/|v\\/)|youtu\\.be\\/)([\\w\\-]{11})(?:\\S+)?$"
+    val pattern = java.util.regex.Pattern.compile(regex, java.util.regex.Pattern.CASE_INSENSITIVE)
+    val matcher = pattern.matcher(this)
+
+    return if (matcher.find()) {
+        matcher.group(1)
+    } else {
+        ""
     }
+}

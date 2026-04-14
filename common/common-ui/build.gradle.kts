@@ -12,6 +12,7 @@ android {
 dependencies {
     api(projects.core.coreUi)
     implementation(projects.common.commonDomain)
+    implementation(libs.youtube.player)
 
     implementation(libs.core.ktx)
     implementation(libs.appcompat)

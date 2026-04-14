@@ -42,6 +42,7 @@ kotlinxCoroutinesTest = "1.7.3"
 mockk = "1.13.10"
 supabase = "3.0.2"
 ktor = "3.0.3"
+youtubePlayer = "13.0.0"
 
 [libraries]
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleRuntimeKtx" }
@@ -81,6 +82,7 @@ kotlin-compose-compiler = { module = "org.jetbrains.kotlin:compose-compiler-grad
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlin-coroutines" }
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastoreRreferences" }
 datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastoreRreferences" }
+youtube-player = { module = "com.pierfrancescosoffritti.androidyoutubeplayer:core", version.ref = "youtubePlayer" }
 
 # Room
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }

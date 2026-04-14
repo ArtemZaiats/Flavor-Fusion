@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -32,6 +33,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.flavorfusion.common_ui.compose.CocktailLoading
@@ -39,6 +41,8 @@ import com.flavorfusion.common_ui.compose.EffectHandler
 import com.flavorfusion.common_ui.compose.coilImageRequest
 import com.flavorfusion.common_ui.compose.design_system.icons.AppIcons
 import com.flavorfusion.common_ui.compose.design_system.icons.Close
+import com.flavorfusion.common_ui.compose.design_system.video.YoutubePlayer
+import com.flavorfusion.common_ui.compose.extractYoutubeVideoId
 import com.flavorfusion.common_ui.model.meal.MealDetailsUi
 import com.flavorfusion.common_ui.theme.FlavorFusionTheme
 
@@ -70,6 +74,8 @@ fun MealDetailsScreen(
     state: MealDetailsContract.State,
     onEvent: (MealDetailsContract.Event) -> Unit
 ) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+
     if (state.loading) {
         CocktailLoading()
     } else {
@@ -77,6 +83,7 @@ fun MealDetailsScreen(
             Modifier
                 .fillMaxSize()
                 .statusBarsPadding()
+                .navigationBarsPadding()
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.Top
         ) {
@@ -85,7 +92,15 @@ fun MealDetailsScreen(
                 onBackClick = { onEvent(MealDetailsContract.Event.OnIconBackClicked) }
             )
             MealDetails(meal = state.meal)
-            Spacer(modifier = Modifier.height(96.dp))
+            Spacer(modifier = Modifier.height(40.dp))
+
+            state.meal.videoUrl?.let {
+                YoutubePlayer(
+                    videoId = it.extractYoutubeVideoId(),
+                    lifecycleOwner = lifecycleOwner
+                )
+            }
+            Spacer(modifier = Modifier.height(40.dp))
         }
     }
 }
@@ -157,7 +172,10 @@ fun MealHeader(
                         color = FlavorFusionTheme.colors.contentPrimary
                     ),
                     modifier = Modifier
-                        .background(color = Color(0xFF81E6F3), shape = RoundedCornerShape(50.dp))
+                        .background(
+                            color = Color(0xFF81E6F3),
+                            shape = RoundedCornerShape(50.dp)
+                        )
                         .padding(horizontal = 8.dp, vertical = 4.dp)
                 )
                 if (!meal.area.isNullOrBlank()) {
@@ -167,7 +185,10 @@ fun MealHeader(
                             color = FlavorFusionTheme.colors.contentPrimary
                         ),
                         modifier = Modifier
-                            .background(color = Color(0xFFFFC107).copy(alpha = 0.3f), shape = RoundedCornerShape(50.dp))
+                            .background(
+                                color = Color(0xFFFFC107).copy(alpha = 0.3f),
+                                shape = RoundedCornerShape(50.dp)
+                            )
                             .padding(horizontal = 8.dp, vertical = 4.dp)
                     )
                 }
