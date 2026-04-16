@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.flavorfusion.common_ui.compose.ListItem
 import com.flavorfusion.common_ui.model.favorites.FavoriteItemUi
 
 @Composable
@@ -27,7 +28,14 @@ fun FavoritesList(
             items = favorites,
             key = { "${it.itemType.name}:${it.id}" }
         ) { item ->
-            FavoriteItem(item = item, onRemoveClick = onRemoveClick)
+            ListItem(
+                item = item,
+                name = item.name,
+                isFavorite = true,
+                image = item.imageUrl,
+                onItemClick = {},
+                onFavoriteClick = onRemoveClick
+            )
         }
     }
 }
