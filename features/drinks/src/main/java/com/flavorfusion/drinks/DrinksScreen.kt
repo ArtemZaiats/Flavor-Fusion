@@ -16,8 +16,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.flavorfusion.common_ui.R
 import com.flavorfusion.common_ui.compose.EffectHandler
 import com.flavorfusion.common_ui.compose.design_system.toolbar.ToolbarWithSearchPanel
-import com.flavorfusion.common_ui.compose.design_system.icons.AppIcons
-import com.flavorfusion.common_ui.compose.design_system.icons.Search
 import com.flavorfusion.common_ui.compose.design_system.placeholder.DefaultPlaceholder
 import com.flavorfusion.common_ui.compose.design_system.pull_to_refresh.BoxWithPullToRefresh
 import com.flavorfusion.common_ui.model.drink.DrinkUi

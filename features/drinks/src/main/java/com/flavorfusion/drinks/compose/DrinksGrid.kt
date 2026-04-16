@@ -11,6 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flavorfusion.common_ui.model.drink.DrinkUi
 import com.flavorfusion.common_ui.R
+import com.flavorfusion.common_ui.compose.ListItem
 
 @Composable
 fun DrinksGrid(
@@ -35,9 +36,12 @@ fun DrinksGrid(
             items(
                 items = drinks,
                 key = { it.drinkId }) { drink ->
-                DrinkItem(
-                    drink = drink,
-                    onDrinkClick = onDrinkClick,
+                ListItem(
+                    item = drink,
+                    name = drink.drinkName,
+                    image = drink.drinkImage,
+                    isFavorite = drink.isFavorite,
+                    onItemClick = onDrinkClick,
                     onFavoriteClick = onFavoriteClick
                 )
             }

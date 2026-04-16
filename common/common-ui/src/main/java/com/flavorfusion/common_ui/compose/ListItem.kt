@@ -1,4 +1,4 @@
-package com.flavorfusion.meals.compose
+package com.flavorfusion.common_ui.compose
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,24 +25,25 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.flavorfusion.common_ui.compose.coilImageRequest
-import com.flavorfusion.common_ui.model.meal.MealUi
 import com.flavorfusion.common_ui.theme.FlavorFusionTheme
 
 @Composable
-fun MealItem(
+fun <T> ListItem(
     modifier: Modifier = Modifier,
-    meal: MealUi,
-    onMealClick: (MealUi) -> Unit,
-    onFavoriteClick: (MealUi) -> Unit
+    name: String,
+    image: String,
+    isFavorite: Boolean,
+    item: T,
+    onItemClick: (T) -> Unit,
+    onFavoriteClick: (T) -> Unit
 ) {
     val context = LocalContext.current
-    val imageRequest = coilImageRequest(context, meal.mealImage)
+    val imageRequest = coilImageRequest(context, image)
 
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { onMealClick(meal) },
+            .clickable { onItemClick(item) },
         elevation = CardDefaults.cardElevation(2.dp),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
@@ -65,7 +66,7 @@ fun MealItem(
                 .padding(16.dp)
         ) {
             Text(
-                text = meal.mealName,
+                text = name,
                 style = FlavorFusionTheme.typography.bodyLMedium.copy(
                     color = FlavorFusionTheme.colors.contentPrimary
                 ),
@@ -74,13 +75,13 @@ fun MealItem(
                 modifier = Modifier.weight(1f)
             )
             IconButton(
-                onClick = { onFavoriteClick(meal) },
+                onClick = { onFavoriteClick(item) },
                 modifier = Modifier.size(32.dp)
             ) {
                 Icon(
-                    imageVector = if (meal.isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
-                    contentDescription = if (meal.isFavorite) "Remove from favorites" else "Add to favorites",
-                    tint = if (meal.isFavorite) Color.Red else FlavorFusionTheme.colors.contentPrimary
+                    imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                    contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites",
+                    tint = if (isFavorite) Color.Red else FlavorFusionTheme.colors.contentPrimary
                 )
             }
         }

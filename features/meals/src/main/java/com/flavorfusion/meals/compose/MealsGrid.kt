@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flavorfusion.common_ui.R
+import com.flavorfusion.common_ui.compose.ListItem
 import com.flavorfusion.common_ui.model.meal.MealUi
 
 @Composable
@@ -36,9 +37,12 @@ fun MealsGrid(
                 items = meals,
                 key = { it.mealId }
             ) { meal ->
-                MealItem(
-                    meal = meal,
-                    onMealClick = onMealClick,
+                ListItem(
+                    item = meal,
+                    name = meal.mealName,
+                    image = meal.mealImage,
+                    isFavorite = meal.isFavorite,
+                    onItemClick = onMealClick,
                     onFavoriteClick = onFavoriteClick
                 )
             }
