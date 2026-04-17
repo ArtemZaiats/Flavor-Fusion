@@ -43,7 +43,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.flavorfusion.common_ui.compose.design_system.icons.AppIcons
-import com.flavorfusion.common_ui.compose.design_system.icons.Close
+import com.flavorfusion.common_ui.compose.design_system.icons.ArrowLeft
 import com.flavorfusion.common_ui.compose.design_system.video.YoutubePlayer
 import com.flavorfusion.common_ui.model.ItemDetailsUi
 import com.flavorfusion.common_ui.theme.ColorTagPrimary
@@ -62,7 +62,6 @@ fun ItemDetailsContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .statusBarsPadding()
                 .navigationBarsPadding()
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.Top
@@ -96,7 +95,7 @@ private fun ItemHeader(item: ItemDetailsUi, onBackClick: () -> Unit) {
     val context = LocalContext.current
 
     val heroScrim = Brush.verticalGradient(
-        colors = listOf(Color.Transparent, Color(0xCC000000))
+        colors = listOf(Color.Transparent, Color.Black)
     )
 
     var isImageLoading by remember { mutableStateOf(true) }
@@ -141,16 +140,18 @@ private fun ItemHeader(item: ItemDetailsUi, onBackClick: () -> Unit) {
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .align(Alignment.TopStart)
-                .padding(12.dp)
+                .statusBarsPadding()
+                .padding(start = 8.dp)
                 .minimumInteractiveComponentSize()
                 .clip(CircleShape)
                 .background(Color.White.copy(alpha = 0.85f), CircleShape)
                 .clickable { onBackClick() }
         ) {
             Icon(
-                imageVector = AppIcons.Close,
+                imageVector = AppIcons.ArrowLeft,
                 contentDescription = "Back",
-                tint = FlavorFusionTheme.colors.contentPrimary
+                tint = Color.Black,
+                modifier = Modifier.padding(4.dp)
             )
         }
 
