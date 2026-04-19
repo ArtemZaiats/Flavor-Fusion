@@ -1,10 +1,10 @@
 package com.flavorfusion.settings
 
-import android.R.attr.action
 import androidx.lifecycle.viewModelScope
 import com.flavorfusion.common_domain.interactors.AuthInteractor
 import com.flavorfusion.common_domain.interactors.SettingsInteractor
 import com.flavorfusion.common_ui.Executor
+import com.flavorfusion.common_ui.model.profile.toUi
 import com.flavorfusion.core_ui.mvi.MviViewModel
 import com.flavorfusion.settings.model.CategoryItem
 import com.flavorfusion.settings.providers.SettingsCategoryProvider
@@ -34,6 +34,7 @@ class SettingsViewModel @Inject constructor(
     init {
         updateCategories()
         observeAlcoholic()
+        loadUserProfile()
     }
 
     private fun handleItemClicked(id: Int) {
@@ -74,6 +75,13 @@ class SettingsViewModel @Inject constructor(
     private fun updateCategories() {
         val categories = settingsCategoryProvider.provideData()
         dispatch(SettingsContract.Action.UpdateCategories(categories))
+    }
+
+    private fun loadUserProfile() {
+        viewModelScope.launch {
+            val profile = authInteractor.getUserProfile().toUi()
+            dispatch(SettingsContract.Action.UpdateProfile(profile))
+        }
     }
 
     private fun onLogout() {

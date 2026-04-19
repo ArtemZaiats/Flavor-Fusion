@@ -1,11 +1,14 @@
 package com.flavorfusion.common_data.repositories
 
 import com.flavorfusion.common_domain.model.Result
+import com.flavorfusion.common_domain.model.UserProfile
 import com.flavorfusion.common_domain.model.error.DataError
 import com.flavorfusion.common_domain.repositories.AuthRepository
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
+import io.github.jan.supabase.auth.providers.Google
 import io.github.jan.supabase.auth.providers.builtin.Email
+import io.github.jan.supabase.auth.providers.builtin.IDToken
 import io.github.jan.supabase.auth.status.SessionStatus
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -49,5 +52,39 @@ class AuthRepositoryImpl @Inject constructor(
         return supabaseClient.auth.sessionStatus.map { status ->
             status is SessionStatus.Authenticated
         }
+    }
+
+    override suspend fun signInWithGoogle(idToken: String, rawNonce: String): Result<Unit> {
+        return try {
+            supabaseClient.auth.signInWith(IDToken) {
+                this.idToken = idToken
+                this.provider = Google
+                this.nonce = rawNonce
+            }
+            Result.Success(Unit)
+        } catch (e: Exception) {
+            Result.Error(DataError.Network.CustomServerError(e.message ?: "Google sign-in failed"))
+        }
+    }
+
+    override suspend fun getUserProfile(): UserProfile {
+        val user = supabaseClient.auth.currentUserOrNull() ?: return UserProfile(
+            id = "",
+            email = "",
+            firstName = "",
+            lastName = "",
+            avatarUrl = ""
+        )
+        val meta = user.userMetadata
+        println("User metadata: $meta")
+        return UserProfile(
+            id = user.id,
+            email = user.email ?: "",
+            firstName = meta?.get("given_name")?.toString()?.trim('"')
+                ?: meta?.get("full_name")?.toString()?.trim('"')?.substringBefore(" ") ?: "",
+            lastName = meta?.get("family_name")?.toString()?.trim('"')
+                ?: meta?.get("full_name")?.toString()?.trim('"')?.substringAfter(" ", "") ?: "",
+            avatarUrl = meta?.get("avatar_url")?.toString()?.trim('"') ?: ""
+        )
     }
 }

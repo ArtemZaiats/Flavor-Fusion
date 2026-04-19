@@ -25,6 +25,7 @@ class AuthViewModel @Inject constructor(
             is AuthContract.Event.OnConfirmPasswordChanged -> dispatch(AuthContract.Action.UpdateConfirmPassword(event.value))
             is AuthContract.Event.OnTabChanged -> dispatch(AuthContract.Action.UpdateTab(event.isLogin))
             AuthContract.Event.OnSubmitClicked -> onSubmit()
+            is AuthContract.Event.OnGoogleSignInClicked -> onGoogleSignIn(event.idToken, event.rawNonce)
         }
     }
 
@@ -46,6 +47,15 @@ class AuthViewModel @Inject constructor(
                 is Result.Success -> publish { AuthContract.Effect.NavigateToMain }
                 is Result.Error -> publish { CommonEffect.Toast(result.error.toString()) }
             }
+        }
+    }
+
+    private fun onGoogleSignIn(idToken: String, rawNonce: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            dispatch(AuthContract.Action.ShowLoading(true))
+            val result = authInteractor.signInWithGoogle(idToken, rawNonce)
+            dispatch(AuthContract.Action.ShowLoading(false))
+            if (result is Result.Error) publish { CommonEffect.Toast(result.error.toString()) }
         }
     }
 

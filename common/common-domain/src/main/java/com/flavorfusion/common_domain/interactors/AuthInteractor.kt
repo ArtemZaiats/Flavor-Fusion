@@ -10,4 +10,6 @@ class AuthInteractor @Inject constructor(
     suspend fun signUp(email: String, password: String) = authRepository.signUp(email, password)
     suspend fun logout() = authRepository.logout()
     fun getAuthStateFlow() = authRepository.getAuthStateFlow()
+    suspend fun signInWithGoogle(idToken: String, rawNonce: String) = authRepository.signInWithGoogle(idToken, rawNonce)
+    suspend fun getUserProfile() = authRepository.getUserProfile()
 }

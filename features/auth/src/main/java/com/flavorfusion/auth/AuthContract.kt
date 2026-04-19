@@ -30,6 +30,7 @@ interface AuthContract {
         data class OnConfirmPasswordChanged(val value: String) : Event
         data class OnTabChanged(val isLogin: Boolean) : Event
         data object OnSubmitClicked : Event
+        data class OnGoogleSignInClicked(val idToken: String, val rawNonce: String) : Event
     }
 
     sealed interface Action : UiAction {

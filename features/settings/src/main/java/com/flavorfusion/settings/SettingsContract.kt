@@ -31,6 +31,7 @@ interface SettingsContract {
 
     sealed interface Action : UiAction {
         data class UpdateCategories(val categories: List<SettingsCategory>) : Action
+        data class UpdateProfile(val profile: ProfileUi) : Action
     }
 
     sealed interface Effect : UiEffect {

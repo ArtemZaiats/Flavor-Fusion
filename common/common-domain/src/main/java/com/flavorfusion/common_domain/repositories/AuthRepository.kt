@@ -1,6 +1,7 @@
 package com.flavorfusion.common_domain.repositories
 
 import com.flavorfusion.common_domain.model.Result
+import com.flavorfusion.common_domain.model.UserProfile
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
@@ -8,4 +9,6 @@ interface AuthRepository {
     suspend fun signUp(email: String, password: String): Result<Unit>
     suspend fun logout()
     fun getAuthStateFlow(): Flow<Boolean>
+    suspend fun signInWithGoogle(idToken: String, rawNonce: String): Result<Unit>
+    suspend fun getUserProfile(): UserProfile
 }

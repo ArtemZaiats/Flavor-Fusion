@@ -17,4 +17,3 @@ local.properties
 /.idea/
 /build-logic/convention/build/
 .kotlin
-.claude

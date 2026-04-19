@@ -15,6 +15,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
@@ -24,19 +25,30 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import androidx.credentials.CredentialManager
+import androidx.credentials.GetCredentialRequest
+import androidx.credentials.exceptions.GetCredentialException
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.flavorfusion.common_ui.compose.EffectHandler
 import com.flavorfusion.common_ui.compose.design_system.button.PrimaryButton
 import com.flavorfusion.common_ui.theme.FlavorFusionTheme
+import com.flavorfusion.feature_auth.BuildConfig
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import kotlinx.coroutines.launch
+import java.security.MessageDigest
+import java.util.UUID
 
 @Composable
 fun AuthScreen(
@@ -63,6 +75,8 @@ fun AuthScreen(
 ) {
     val colors = FlavorFusionTheme.colors
     val typography = FlavorFusionTheme.typography
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -108,7 +122,8 @@ fun AuthScreen(
                             modifier = Modifier.tabIndicatorOffset(tabPositions[if (state.isLogin) 0 else 1]),
                             color = colors.colorPrimary
                         )
-                    }
+                    },
+                    modifier = Modifier.clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
                 ) {
                     Tab(
                         selected = state.isLogin,
@@ -198,6 +213,44 @@ fun AuthScreen(
                     enabled = !state.isLoading,
                     loading = state.isLoading
                 )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                OutlinedButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            val rawNonce = UUID.randomUUID().toString()
+                            val hashedNonce = MessageDigest.getInstance("SHA-256")
+                                .digest(rawNonce.toByteArray())
+                                .joinToString("") { "%02x".format(it) }
+
+                            val credentialManager = CredentialManager.create(context)
+                            val googleIdOption = GetGoogleIdOption.Builder()
+                                .setFilterByAuthorizedAccounts(false)
+                                .setServerClientId(BuildConfig.WEB_GOOGLE_CLIENT_ID)
+                                .setNonce(hashedNonce)
+                                .build()
+
+                            val request = GetCredentialRequest.Builder()
+                                .addCredentialOption(googleIdOption)
+                                .build()
+
+                            try {
+                                val result = credentialManager.getCredential(context, request)
+                                val credential = result.credential as? GoogleIdTokenCredential
+                                if (credential != null) {
+                                    onEvent(AuthContract.Event.OnGoogleSignInClicked(credential.idToken, rawNonce))
+                                }
+                            } catch (e: GetCredentialException) {
+                                Toast.makeText(context, e.message ?: "Google sign-in failed", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    },
+                    enabled = !state.isLoading,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Sign in with Google")
+                }
             }
         }
     }

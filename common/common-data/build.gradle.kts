@@ -1,4 +1,4 @@
-import java.util.Properties
+import com.flavorfusion.gradleplugins.getKey
 
 plugins {
     alias(libs.plugins.common.android.library)
@@ -7,15 +7,8 @@ plugins {
     alias(libs.plugins.google.services)
 }
 
-val localProperties = Properties().apply {
-    val file = rootProject.file("local.properties")
-    if (file.exists()) load(file.inputStream())
-}
-
-fun getKey(key: String): String =
-    localProperties[key] as String?
-        ?: System.getenv(key)
-        ?: error("Missing property: $key")
+val supabaseUrl = getKey("SUPABASE_URL")
+val supabaseAnonKey = getKey("SUPABASE_ANON_KEY")
 
 android {
     namespace = "com.flavorfusion.common_data"
@@ -35,12 +28,12 @@ android {
             buildConfigField(
                 type = "String",
                 name = "SUPABASE_URL",
-                value = "\"${getKey("SUPABASE_URL")}\""
+                value = "\"$supabaseUrl\""
             )
             buildConfigField(
                 type = "String",
                 name = "SUPABASE_ANON_KEY",
-                value = "\"${getKey("SUPABASE_ANON_KEY")}\""
+                value = "\"$supabaseAnonKey\""
             )
         }
         release {
@@ -57,12 +50,12 @@ android {
             buildConfigField(
                 type = "String",
                 name = "SUPABASE_URL",
-                value = "\"${getKey("SUPABASE_URL")}\""
+                value = "\"$supabaseUrl\""
             )
             buildConfigField(
                 type = "String",
                 name = "SUPABASE_ANON_KEY",
-                value = "\"${getKey("SUPABASE_ANON_KEY")}\""
+                value = "\"$supabaseAnonKey\""
             )
         }
     }
