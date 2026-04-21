@@ -8,6 +8,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -16,6 +20,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.flavorfusion.common_ui.compose.EffectHandler
 import com.flavorfusion.common_ui.compose.design_system.button.PrimaryButton
 import com.flavorfusion.common_ui.theme.FlavorFusionTheme
+import com.flavorfusion.settings.compose.LogOutDialog
 import com.flavorfusion.settings.compose.ProfileHeader
 import com.flavorfusion.settings.compose.SettingsCategoryComponent
 import com.flavorfusion.settings.model.SettingsDataPreviewProvider
@@ -27,6 +32,8 @@ fun SettingsScreen(
     val viewModel: SettingsViewModel = hiltViewModel()
     val state = viewModel.state.collectAsStateWithLifecycle().value
 
+    var showLogOutDialog by remember { mutableStateOf(false) }
+
     SettingsScreen(
         state = state,
         onEvent = viewModel::handleEvent
@@ -35,7 +42,16 @@ fun SettingsScreen(
     EffectHandler(viewModel = viewModel) {
         when (it) {
             is SettingsContract.Effect.NavigateToAppTheme -> navigateToAppTheme.invoke()
+            is SettingsContract.Effect.ShowLogOutDialog -> showLogOutDialog = true
         }
+    }
+
+    if(showLogOutDialog) {
+        LogOutDialog(
+            dialogData = state.dialogData,
+            onConfirm = { viewModel.handleEvent(SettingsContract.Event.OnLogOutConfirmed) },
+            onDismiss = { showLogOutDialog = false }
+        )
     }
 
     SettingsScreen(state = state, onEvent = viewModel::handleEvent)

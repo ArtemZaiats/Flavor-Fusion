@@ -6,6 +6,7 @@ import com.flavorfusion.core_ui.mvi.UiAction
 import com.flavorfusion.core_ui.mvi.UiEffect
 import com.flavorfusion.core_ui.mvi.UiEvent
 import com.flavorfusion.core_ui.mvi.UiState
+import com.flavorfusion.settings.model.DialogData
 import com.flavorfusion.settings.model.SettingsCategory
 import javax.inject.Inject
 
@@ -21,17 +22,20 @@ interface SettingsContract {
             firstName = "John",
             lastName = "Doe"
         ),
-        val categories: List<SettingsCategory> = emptyList()
+        val categories: List<SettingsCategory> = emptyList(),
+        val dialogData: DialogData = DialogData()
     ) : UiState
 
     sealed interface Event : UiEvent {
         data class OnItemClicked(val id: Int) : Event
         data object OnLogOutClicked : Event
+        data object OnLogOutConfirmed : Event
     }
 
     sealed interface Action : UiAction {
         data class UpdateCategories(val categories: List<SettingsCategory>) : Action
         data class UpdateProfile(val profile: ProfileUi) : Action
+        data class UpdateDialogData(val dialogData: DialogData) : Action
     }
 
     sealed interface Effect : UiEffect {

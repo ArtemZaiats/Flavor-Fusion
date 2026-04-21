@@ -10,6 +10,7 @@ class SettingsReducer : Reducer<SettingsContract.State>{
         return when(action) {
             is SettingsContract.Action.UpdateCategories -> copy(categories = action.categories)
             is SettingsContract.Action.UpdateProfile -> copy(profile = action.profile)
+            is SettingsContract.Action.UpdateDialogData -> copy(dialogData = action.dialogData)
         }
     }
 }

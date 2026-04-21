@@ -29,6 +29,13 @@
     <string name="feature_settings_category_item_show_alcoholic">Show alcoholic drinks</string>
     <string name="feature_settings_category_item_privacy_policy">Privacy policy</string>
     <string name="feature_settings_category_item_terms_of_use">Terms of use</string>
+    <string name="feature_settings_dialog_logout_title">Do you really want to Log out?</string>
+    <string name="feature_settings_dialog_logout_confirm">Log out</string>
+    <string name="feature_settings_dialog_logout_cancel">Cancel</string>
+    <string name="feature_settings_dialog_delete_account_title">Do you really want to delete your account?</string>
+    <string name="feature_settings_dialog_delete_account_message">Your account will be deleted permanently</string>
+    <string name="feature_settings_dialog_delete_account_confirm">Delete account</string>
+    <string name="feature_settings_dialog_delete_account_cancel">Cancel</string>
 
     <string name="feature_meals_title">Recipes</string>
     <string name="feature_meals_empty_list">Empty list</string>

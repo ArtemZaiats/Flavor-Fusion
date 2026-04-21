@@ -7,6 +7,7 @@ import com.flavorfusion.common_ui.Executor
 import com.flavorfusion.common_ui.model.profile.toUi
 import com.flavorfusion.core_ui.mvi.MviViewModel
 import com.flavorfusion.settings.model.CategoryItem
+import com.flavorfusion.settings.providers.LogOutDataProvider
 import com.flavorfusion.settings.providers.SettingsCategoryProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
@@ -20,14 +21,16 @@ class SettingsViewModel @Inject constructor(
     private val settingsInteractor: SettingsInteractor,
     private val authInteractor: AuthInteractor,
     private val settingsCategoryProvider: SettingsCategoryProvider,
+    private val logOutDataProvider: LogOutDataProvider,
     config: SettingsContract.Config,
     executor: Executor
 ) : MviViewModel<SettingsContract.State, SettingsContract.Event>(config), Executor by executor {
 
     override fun handleEvent(event: SettingsContract.Event) {
         when (event) {
-            SettingsContract.Event.OnLogOutClicked -> onLogout()
             is SettingsContract.Event.OnItemClicked -> handleItemClicked(event.id)
+            SettingsContract.Event.OnLogOutClicked -> onLogoutClicked()
+            SettingsContract.Event.OnLogOutConfirmed -> onLogout()
         }
     }
 
@@ -82,6 +85,12 @@ class SettingsViewModel @Inject constructor(
             val profile = authInteractor.getUserProfile().toUi()
             dispatch(SettingsContract.Action.UpdateProfile(profile))
         }
+    }
+
+    private fun onLogoutClicked() {
+        val dialogData = logOutDataProvider.provideData()
+        dispatch(SettingsContract.Action.UpdateDialogData(dialogData))
+        publish { SettingsContract.Effect.ShowLogOutDialog }
     }
 
     private fun onLogout() {
