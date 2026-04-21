@@ -28,6 +28,7 @@ jobs:
         run: |
           echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> local.properties
           echo "SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}" >> local.properties
+          echo "WEB_GOOGLE_CLIENT_ID=${{ secrets.WEB_GOOGLE_CLIENT_ID }}" >> local.properties
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
