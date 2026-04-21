@@ -2,16 +2,13 @@ package com.flavorfusion.gradleplugins
 
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.dependencies
 
 internal fun Project.configureAndroidCompose(
-    commonExtension: CommonExtension<*, *, *, *, *>,
+    commonExtension: CommonExtension,
 ) {
     commonExtension.apply {
-        buildFeatures {
-            compose = true
-        }
+        buildFeatures.compose = true
 
         dependencies {
             val bom = libs.findLibrary("androidx-compose-bom").get()
@@ -25,6 +22,5 @@ internal fun Project.configureAndroidCompose(
             add("implementation", libs.findLibrary("androidx.lifecycle.runtime.compose").get())
             add("debugImplementation", libs.findLibrary("compose.ui.tooling").get())
         }
-
     }
 }

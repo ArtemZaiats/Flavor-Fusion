@@ -11,27 +11,26 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 internal fun Project.configureKotlinAndroid(
-    commonExtension: CommonExtension<*, *, *, *, *>,
+    commonExtension: CommonExtension,
 ) {
     commonExtension.apply {
-        defaultConfig {
-            compileSdk = 36
+        compileSdk = 36
+
+        defaultConfig.apply {
             minSdk = 26
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }
 
-        compileOptions {
+        compileOptions.apply {
             sourceCompatibility = JavaVersion.VERSION_17
             targetCompatibility = JavaVersion.VERSION_17
         }
 
-        packaging {
-            resources {
-                excludes += "/META-INF/{AL2.0,LGPL2.1}"
-                excludes += "/META-INF/LICENSE.md"
-                excludes += "/META-INF/LICENSE-notice.md"
-            }
-        }
+        packaging.resources.excludes += listOf(
+            "/META-INF/{AL2.0,LGPL2.1}",
+            "/META-INF/LICENSE.md",
+            "/META-INF/LICENSE-notice.md",
+        )
 
         configureKotlin()
     }
