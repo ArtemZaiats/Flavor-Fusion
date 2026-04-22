@@ -42,8 +42,8 @@ class MainViewModel @Inject constructor(
 
     private fun observeAuthState() {
         authInteractor.getAuthStateFlow()
-            .onEach { isAuthenticated ->
-                dispatch(MainContract.Action.UpdateAuthState(isAuthenticated))
+            .onEach { authState ->
+                dispatch(MainContract.Action.UpdateAuthState(authState))
             }
             .launchIn(viewModelScope)
     }

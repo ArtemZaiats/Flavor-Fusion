@@ -49,6 +49,7 @@ dependencies {
     implementation(projects.features.favorites)
 
     implementation(libs.core.ktx)
+    implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.compose.ui.graphics)
     ksp(libs.androidx.hilt.compiler)

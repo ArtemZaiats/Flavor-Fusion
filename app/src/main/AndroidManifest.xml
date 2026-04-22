@@ -18,7 +18,7 @@
         <activity
             android:name=".main.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.FlavorFusion">
+            android:theme="@style/Theme.FlavorFusion.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

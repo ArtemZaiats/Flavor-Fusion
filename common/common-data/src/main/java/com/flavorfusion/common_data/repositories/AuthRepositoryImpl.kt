@@ -1,5 +1,6 @@
 package com.flavorfusion.common_data.repositories
 
+import com.flavorfusion.common_domain.model.AuthState
 import com.flavorfusion.common_domain.model.Result
 import com.flavorfusion.common_domain.model.UserProfile
 import com.flavorfusion.common_domain.model.error.DataError
@@ -48,9 +49,14 @@ class AuthRepositoryImpl @Inject constructor(
         runCatching { supabaseClient.auth.signOut() }
     }
 
-    override fun getAuthStateFlow(): Flow<Boolean> {
+    override fun getAuthStateFlow(): Flow<AuthState> {
         return supabaseClient.auth.sessionStatus.map { status ->
-            status is SessionStatus.Authenticated
+            when (status) {
+                is SessionStatus.Initializing -> AuthState.Loading
+                is SessionStatus.Authenticated -> AuthState.Authenticated
+                is SessionStatus.NotAuthenticated,
+                is SessionStatus.RefreshFailure -> AuthState.NotAuthenticated
+            }
         }
     }
 

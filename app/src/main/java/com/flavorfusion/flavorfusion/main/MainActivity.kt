@@ -10,13 +10,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.flavorfusion.common_domain.model.AuthState
 import com.flavorfusion.common_ui.error.ErrorMessageExtractor
 import com.flavorfusion.common_ui.theme.FlavorFusionTheme
 import com.flavorfusion.common_ui.theme.LocalErrorMessageExtractor
 import com.flavorfusion.auth.AuthScreen
-import com.flavorfusion.common_ui.compose.CocktailLoading
 import com.flavorfusion.flavorfusion.navigation.AppNavigation
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -30,6 +31,8 @@ class MainActivity : FragmentActivity() {
     private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
+        splashScreen.setKeepOnScreenCondition { viewModel.state.value.authState is AuthState.Loading }
         super.onCreate(savedInstanceState)
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT),
@@ -57,10 +60,10 @@ class MainActivity : FragmentActivity() {
                     Surface(
                         modifier = Modifier.fillMaxSize()
                     ) {
-                        when {
-                            !state.authStateLoaded -> CocktailLoading()
-                            state.isAuthenticated -> AppNavigation()
-                            else -> AuthScreen(onAuthSuccess = {})
+                        when (state.authState) {
+                            AuthState.Loading -> Unit
+                            AuthState.Authenticated -> AppNavigation()
+                            AuthState.NotAuthenticated -> AuthScreen(onAuthSuccess = {})
                         }
                     }
                 }

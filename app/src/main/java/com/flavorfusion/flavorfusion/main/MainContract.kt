@@ -1,5 +1,6 @@
 package com.flavorfusion.flavorfusion.main
 
+import com.flavorfusion.common_domain.model.AuthState
 import com.flavorfusion.common_ui.error.ErrorMessage
 import com.flavorfusion.common_ui.model.AppThemeUi
 import com.flavorfusion.core_ui.mvi.MviConfig
@@ -19,8 +20,7 @@ interface MainContract {
     data class State(
         val appTheme: AppThemeUi = AppThemeUi(),
         val errorMessage: ErrorMessage? = null,
-        val isAuthenticated: Boolean = false,
-        val authStateLoaded: Boolean = false
+        val authState: AuthState = AuthState.Loading
     ) : UiState
 
     sealed interface Event : UiEvent {
@@ -30,7 +30,7 @@ interface MainContract {
     sealed interface Action : UiAction {
         data class UpdateAppTheme(val appTheme: AppThemeUi) : Action
         data class UpdateErrorMessage(val errorMessage: ErrorMessage) : Action
-        data class UpdateAuthState(val isAuthenticated: Boolean) : Action
+        data class UpdateAuthState(val authState: AuthState) : Action
     }
 
     sealed interface Effect : UiEffect {
