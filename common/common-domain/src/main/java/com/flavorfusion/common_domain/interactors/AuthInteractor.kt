@@ -8,8 +8,8 @@ class AuthInteractor @Inject constructor(
 ) {
     suspend fun login(email: String, password: String) = authRepository.login(email, password)
     suspend fun signUp(email: String, password: String) = authRepository.signUp(email, password)
+    suspend fun signInWithGoogle(idToken: String, rawNonce: String) = authRepository.signInWithGoogle(idToken, rawNonce)
     suspend fun logout() = authRepository.logout()
     fun getAuthStateFlow() = authRepository.getAuthStateFlow()
-    suspend fun signInWithGoogle(idToken: String, rawNonce: String) = authRepository.signInWithGoogle(idToken, rawNonce)
-    suspend fun getUserProfile() = authRepository.getUserProfile()
+    fun getUserProfileFlow() = authRepository.getUserProfileFlow()
 }

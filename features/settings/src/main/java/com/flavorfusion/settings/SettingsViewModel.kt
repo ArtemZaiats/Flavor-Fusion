@@ -35,9 +35,9 @@ class SettingsViewModel @Inject constructor(
     }
 
     init {
+        observeUserProfile()
         updateCategories()
         observeAlcoholic()
-        loadUserProfile()
     }
 
     private fun handleItemClicked(id: Int) {
@@ -80,11 +80,12 @@ class SettingsViewModel @Inject constructor(
         dispatch(SettingsContract.Action.UpdateCategories(categories))
     }
 
-    private fun loadUserProfile() {
-        viewModelScope.launch {
-            val profile = authInteractor.getUserProfile().toUi()
-            dispatch(SettingsContract.Action.UpdateProfile(profile))
-        }
+    private fun observeUserProfile() {
+        authInteractor.getUserProfileFlow().onEach { profile ->
+            profile ?: return@onEach
+
+            dispatch(SettingsContract.Action.UpdateProfile(profile.toUi()))
+        }.launchIn(viewModelScope)
     }
 
     private fun onLogoutClicked() {

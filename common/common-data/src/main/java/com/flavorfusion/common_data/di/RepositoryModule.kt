@@ -8,7 +8,7 @@ import com.flavorfusion.common_domain.repositories.SettingsRepository
 import com.flavorfusion.common_data.di.qualifiers.DrinksClient
 import com.flavorfusion.common_data.di.qualifiers.MealsClient
 import com.flavorfusion.common_data.local_storage.room.dao.FavoriteDao
-import com.flavorfusion.common_data.local_storage.shared_preferences.DataStoreHelper
+import com.flavorfusion.common_data.local_storage.data_store.DataStoreHelper
 import com.flavorfusion.common_data.repositories.AuthRepositoryImpl
 import com.flavorfusion.common_data.repositories.FavoritesRepositoryImpl
 import io.github.jan.supabase.SupabaseClient
@@ -56,9 +56,10 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun providesAuthRepository(
-        supabaseClient: SupabaseClient
+        supabaseClient: SupabaseClient,
+        dataStoreHelper: DataStoreHelper
     ): AuthRepository {
-        return AuthRepositoryImpl(supabaseClient)
+        return AuthRepositoryImpl(supabaseClient, dataStoreHelper)
     }
 
     @Provides

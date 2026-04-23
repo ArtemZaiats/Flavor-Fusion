@@ -1,5 +1,6 @@
 package com.flavorfusion.common_data.repositories
 
+import com.flavorfusion.common_data.local_storage.data_store.DataStoreHelper
 import com.flavorfusion.common_domain.model.AuthState
 import com.flavorfusion.common_domain.model.Result
 import com.flavorfusion.common_domain.model.UserProfile
@@ -18,7 +19,8 @@ import javax.inject.Singleton
 
 @Singleton
 class AuthRepositoryImpl @Inject constructor(
-    private val supabaseClient: SupabaseClient
+    private val supabaseClient: SupabaseClient,
+    private val dataStoreHelper: DataStoreHelper
 ) : AuthRepository {
 
     override suspend fun login(email: String, password: String): Result<Unit> {
@@ -27,6 +29,7 @@ class AuthRepositoryImpl @Inject constructor(
                 this.email = email
                 this.password = password
             }
+            cacheCurrentUserProfile()
             Result.Success(Unit)
         } catch (e: Exception) {
             Result.Error(DataError.Network.CustomServerError(e.message ?: "Login failed"))
@@ -39,6 +42,7 @@ class AuthRepositoryImpl @Inject constructor(
                 this.email = email
                 this.password = password
             }
+            cacheCurrentUserProfile()
             Result.Success(Unit)
         } catch (e: Exception) {
             Result.Error(DataError.Network.CustomServerError(e.message ?: "Sign up failed"))
@@ -46,7 +50,10 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun logout() {
-        runCatching { supabaseClient.auth.signOut() }
+        runCatching {
+            supabaseClient.auth.signOut()
+            dataStoreHelper.clearAllData()
+        }
     }
 
     override fun getAuthStateFlow(): Flow<AuthState> {
@@ -67,29 +74,39 @@ class AuthRepositoryImpl @Inject constructor(
                 this.provider = Google
                 this.nonce = rawNonce
             }
+            cacheCurrentUserProfile()
             Result.Success(Unit)
         } catch (e: Exception) {
             Result.Error(DataError.Network.CustomServerError(e.message ?: "Google sign-in failed"))
         }
     }
 
-    override suspend fun getUserProfile(): UserProfile {
-        val user = supabaseClient.auth.currentUserOrNull() ?: return UserProfile(
-            id = "",
-            email = "",
-            firstName = "",
-            lastName = "",
-            avatarUrl = ""
-        )
+    override fun getUserProfileFlow(): Flow<UserProfile?> = dataStoreHelper.userProfileFlow
+
+    private suspend fun cacheCurrentUserProfile() {
+        buildUserProfileFromSupabase()?.let { dataStoreHelper.saveUserProfile(it) }
+    }
+
+    private fun buildUserProfileFromSupabase(): UserProfile? {
+        val user = supabaseClient.auth.currentUserOrNull() ?: return null
         val meta = user.userMetadata
-        println("User metadata: $meta")
+
         return UserProfile(
             id = user.id,
             email = user.email ?: "",
             firstName = meta?.get("given_name")?.toString()?.trim('"')
-                ?: meta?.get("full_name")?.toString()?.trim('"')?.substringBefore(" ") ?: "",
+                ?: meta
+                    ?.get("full_name")
+                    ?.toString()
+                    ?.trim('"')
+                    ?.substringBefore(" ") ?: "",
             lastName = meta?.get("family_name")?.toString()?.trim('"')
-                ?: meta?.get("full_name")?.toString()?.trim('"')?.substringAfter(" ", "") ?: "",
+                ?: meta
+                    ?.get("full_name")
+                    ?.toString()
+                    ?.trim('"')
+                    ?.substringAfter(" ", "")
+                ?: "",
             avatarUrl = meta?.get("avatar_url")?.toString()?.trim('"') ?: ""
         )
     }

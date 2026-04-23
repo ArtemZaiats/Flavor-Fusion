@@ -1,4 +1,4 @@
-package com.flavorfusion.common_data.local_storage.shared_preferences
+package com.flavorfusion.common_data.local_storage.data_store
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -7,9 +7,11 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.flavorfusion.common_domain.model.UserProfile
 import com.flavorfusion.common_domain.model.app_theme.AppTheme
 import com.flavorfusion.common_domain.model.app_theme.ThemeType
 import com.flavorfusion.common_data.local_storage.model.AppThemeEntity
+import com.flavorfusion.common_data.local_storage.model.UserProfileEntity
 import com.flavorfusion.common_data.local_storage.model.toDomain
 import com.flavorfusion.common_data.local_storage.model.toEntity
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -29,6 +31,7 @@ class DataStoreHelper @Inject constructor(
 ) {
     private val themeKey = stringPreferencesKey("theme")
     private val alcoholicKey = booleanPreferencesKey("show_alcoholic")
+    private val userProfileKey = stringPreferencesKey("user_profile")
 
     val appThemeFlow: Flow<AppTheme> = context.dataStore.data.map { preferences ->
         val json = preferences[themeKey]
@@ -45,24 +48,40 @@ class DataStoreHelper @Inject constructor(
 
     suspend fun updateTheme(appTheme: AppTheme) {
         val json = Json.encodeToString(appTheme.toEntity())
-        context.dataStore.edit { preferences ->
-            preferences[themeKey] = json
-        }
+        saveToStore(themeKey, json)
     }
 
     val showAlcoholicFlow: Flow<Boolean> = context.dataStore.data.map { preferences ->
-        preferences[alcoholicKey] ?: false
+        preferences[alcoholicKey] ?: true
     }
 
     suspend fun setShowAlcoholic(showAlcoholic: Boolean) {
-        context.dataStore.edit { preferences ->
-            preferences[alcoholicKey] = showAlcoholic
+        saveToStore(alcoholicKey, showAlcoholic)
+    }
+
+    val userProfileFlow: Flow<UserProfile?> = context.dataStore.data.map { preferences ->
+        val json = preferences[userProfileKey] ?: return@map null
+        try {
+            Json.decodeFromString<UserProfileEntity>(json).toDomain()
+        } catch (e: Exception) {
+            null
         }
+    }
+
+    suspend fun saveUserProfile(profile: UserProfile) {
+        val json = Json.encodeToString(profile.toEntity())
+        saveToStore(userProfileKey, json)
     }
 
     suspend fun clearAllData() {
         context.dataStore.edit { preferences ->
             preferences.clear()
+        }
+    }
+
+    private suspend fun <T> saveToStore(key: Preferences.Key<T>, value: T) {
+        context.dataStore.edit { preferences ->
+            preferences[key] = value
         }
     }
 }

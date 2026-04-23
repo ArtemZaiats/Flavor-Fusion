@@ -2,7 +2,7 @@ package com.flavorfusion.common_data.repositories
 
 import com.flavorfusion.common_domain.model.app_theme.AppTheme
 import com.flavorfusion.common_domain.repositories.SettingsRepository
-import com.flavorfusion.common_data.local_storage.shared_preferences.DataStoreHelper
+import com.flavorfusion.common_data.local_storage.data_store.DataStoreHelper
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
