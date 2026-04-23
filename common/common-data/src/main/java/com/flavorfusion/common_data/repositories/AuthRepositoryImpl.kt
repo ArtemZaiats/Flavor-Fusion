@@ -1,6 +1,7 @@
 package com.flavorfusion.common_data.repositories
 
 import com.flavorfusion.common_data.local_storage.data_store.DataStoreHelper
+import com.flavorfusion.common_data.utils.Utils.getStringByKey
 import com.flavorfusion.common_domain.model.AuthState
 import com.flavorfusion.common_domain.model.Result
 import com.flavorfusion.common_domain.model.UserProfile
@@ -94,20 +95,16 @@ class AuthRepositoryImpl @Inject constructor(
         return UserProfile(
             id = user.id,
             email = user.email ?: "",
-            firstName = meta?.get("given_name")?.toString()?.trim('"')
+            firstName = meta?.getStringByKey("given_name")
                 ?: meta
-                    ?.get("full_name")
-                    ?.toString()
-                    ?.trim('"')
+                    ?.getStringByKey("full_name")
                     ?.substringBefore(" ") ?: "",
-            lastName = meta?.get("family_name")?.toString()?.trim('"')
+            lastName = meta?.getStringByKey("family_name")
                 ?: meta
-                    ?.get("full_name")
-                    ?.toString()
-                    ?.trim('"')
+                    ?.getStringByKey("full_name")
                     ?.substringAfter(" ", "")
                 ?: "",
-            avatarUrl = meta?.get("avatar_url")?.toString()?.trim('"') ?: ""
+            avatarUrl = meta?.getStringByKey("avatar_url") ?: ""
         )
     }
 }
