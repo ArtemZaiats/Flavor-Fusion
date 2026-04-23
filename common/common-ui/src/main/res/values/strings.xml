@@ -29,6 +29,8 @@
     <string name="feature_settings_category_item_show_alcoholic">Show alcoholic drinks</string>
     <string name="feature_settings_category_item_privacy_policy">Privacy policy</string>
     <string name="feature_settings_category_item_terms_of_use">Terms of use</string>
+    <string name="feature_settings_privacy_policy_url" translatable="false">https://[GITHUB_USER].github.io/Flavor-Fusion/privacy-policy.html</string>
+    <string name="feature_settings_terms_of_use_url" translatable="false">https://[GITHUB_USER].github.io/Flavor-Fusion/terms-of-use.html</string>
     <string name="feature_settings_dialog_logout_title">Do you really want to Log out?</string>
     <string name="feature_settings_dialog_logout_confirm">Log out</string>
     <string name="feature_settings_dialog_logout_cancel">Cancel</string>

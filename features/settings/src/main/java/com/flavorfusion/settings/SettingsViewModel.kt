@@ -5,8 +5,10 @@ import com.flavorfusion.common_domain.interactors.AuthInteractor
 import com.flavorfusion.common_domain.interactors.SettingsInteractor
 import com.flavorfusion.common_ui.Executor
 import com.flavorfusion.common_ui.model.profile.toUi
+import com.flavorfusion.core_ui.mvi.CommonEffect
 import com.flavorfusion.core_ui.mvi.MviViewModel
 import com.flavorfusion.settings.model.CategoryItem
+import com.flavorfusion.settings.providers.LegalUrlsProvider
 import com.flavorfusion.settings.providers.LogOutDataProvider
 import com.flavorfusion.settings.providers.SettingsCategoryProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,6 +24,7 @@ class SettingsViewModel @Inject constructor(
     private val authInteractor: AuthInteractor,
     private val settingsCategoryProvider: SettingsCategoryProvider,
     private val logOutDataProvider: LogOutDataProvider,
+    private val legalUrlsProvider: LegalUrlsProvider,
     config: SettingsContract.Config,
     executor: Executor
 ) : MviViewModel<SettingsContract.State, SettingsContract.Event>(config), Executor by executor {
@@ -44,6 +47,10 @@ class SettingsViewModel @Inject constructor(
         when (id) {
             CategoryItem.APP_THEME.id -> publish { SettingsContract.Effect.NavigateToAppTheme }
             CategoryItem.SHOW_ALCOHOLIC.id -> onAlcoholicSwitchChanged()
+            CategoryItem.PRIVACY_POLICY.id ->
+                publish { CommonEffect.OpenUrl(legalUrlsProvider.privacyPolicyUrl) }
+            CategoryItem.TERMS_OF_USE.id ->
+                publish { CommonEffect.OpenUrl(legalUrlsProvider.termsOfUseUrl) }
             else -> {}
         }
     }
