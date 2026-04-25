@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -32,6 +33,7 @@ fun SecondaryButton(
     enabled: Boolean = true,
     loading: Boolean = false,
     leadingIcon: ImageVector? = null,
+    customIconTint: Boolean = false,
     textStyles: TextStyle = FlavorFusionTheme.typography.bodyMMedium,
     onClick: () -> Unit
 ) {
@@ -59,7 +61,8 @@ fun SecondaryButton(
                     Icon(
                         imageVector = it,
                         contentDescription = null,
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(18.dp),
+                        tint = if (customIconTint) Color.Unspecified else primary
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                 }

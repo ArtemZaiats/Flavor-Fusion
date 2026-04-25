@@ -1,5 +1,6 @@
 package com.flavorfusion.auth
 
+import android.content.Context
 import com.flavorfusion.core_ui.mvi.MviConfig
 import com.flavorfusion.core_ui.mvi.UiAction
 import com.flavorfusion.core_ui.mvi.UiEffect
@@ -29,8 +30,8 @@ interface AuthContract {
         data class OnPasswordChanged(val value: String) : Event
         data class OnConfirmPasswordChanged(val value: String) : Event
         data class OnTabChanged(val isLogin: Boolean) : Event
+        data class OnGoogleSignInClicked(val activityContext: Context) : Event
         data object OnSubmitClicked : Event
-        data class OnGoogleSignInClicked(val idToken: String, val rawNonce: String) : Event
     }
 
     sealed interface Action : UiAction {

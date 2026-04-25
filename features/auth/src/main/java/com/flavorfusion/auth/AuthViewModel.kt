@@ -1,5 +1,6 @@
 package com.flavorfusion.auth
 
+import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.flavorfusion.common_domain.interactors.AuthInteractor
 import com.flavorfusion.common_domain.model.Result
@@ -14,6 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val authInteractor: AuthInteractor,
+    private val googleSignInHelper: GoogleSignInHelper,
     config: AuthContract.Config,
     executor: Executor
 ) : MviViewModel<AuthContract.State, AuthContract.Event>(config), Executor by executor {
@@ -25,7 +27,7 @@ class AuthViewModel @Inject constructor(
             is AuthContract.Event.OnConfirmPasswordChanged -> dispatch(AuthContract.Action.UpdateConfirmPassword(event.value))
             is AuthContract.Event.OnTabChanged -> dispatch(AuthContract.Action.UpdateTab(event.isLogin))
             AuthContract.Event.OnSubmitClicked -> onSubmit()
-            is AuthContract.Event.OnGoogleSignInClicked -> onGoogleSignIn(event.idToken, event.rawNonce)
+            is AuthContract.Event.OnGoogleSignInClicked -> onGoogleSignIn(event.activityContext)
         }
     }
 
@@ -50,12 +52,24 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    private fun onGoogleSignIn(idToken: String, rawNonce: String) {
+    private fun onGoogleSignIn(activityContext: Context) {
         viewModelScope.launch(Dispatchers.IO) {
             dispatch(AuthContract.Action.ShowLoading(true))
-            val result = authInteractor.signInWithGoogle(idToken, rawNonce)
-            dispatch(AuthContract.Action.ShowLoading(false))
-            if (result is Result.Error) publish { CommonEffect.Toast(result.error.toString()) }
+            when (val signIn = googleSignInHelper.requestSignIn(activityContext)) {
+                is GoogleSignInResult.Success -> {
+                    val result = authInteractor.signInWithGoogle(signIn.idToken, signIn.rawNonce)
+                    dispatch(AuthContract.Action.ShowLoading(false))
+                    when (result) {
+                        is Result.Success -> publish { AuthContract.Effect.NavigateToMain }
+                        is Result.Error -> publish { CommonEffect.Toast(result.error.toString()) }
+                    }
+                }
+                is GoogleSignInResult.Failure -> {
+                    dispatch(AuthContract.Action.ShowLoading(false))
+                    println(signIn.message)
+                    publish { CommonEffect.Toast(signIn.message) }
+                }
+            }
         }
     }
 
