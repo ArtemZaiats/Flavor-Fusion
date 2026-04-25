@@ -32,6 +32,8 @@ class SettingsViewModel @Inject constructor(
     override fun handleEvent(event: SettingsContract.Event) {
         when (event) {
             is SettingsContract.Event.OnItemClicked -> handleItemClicked(event.id)
+            SettingsContract.Event.OnProfileClicked ->
+                publish { SettingsContract.Effect.NavigateToEditUser }
             SettingsContract.Event.OnLogOutClicked -> onLogoutClicked()
             SettingsContract.Event.OnLogOutConfirmed -> onLogout()
         }

@@ -38,6 +38,12 @@
     <string name="feature_settings_dialog_delete_account_message">Your account will be deleted permanently</string>
     <string name="feature_settings_dialog_delete_account_confirm">Delete account</string>
     <string name="feature_settings_dialog_delete_account_cancel">Cancel</string>
+    <string name="feature_settings_edit_user_screen_title">Edit profile</string>
+    <string name="feature_settings_edit_user_first_name">First name</string>
+    <string name="feature_settings_edit_user_last_name">Last name</string>
+    <string name="feature_settings_edit_user_save">Save</string>
+    <string name="feature_settings_edit_user_change_photo">Change photo</string>
+    <string name="feature_settings_edit_user_upload_failed">Failed to upload image</string>
 
     <string name="feature_meals_title">Recipes</string>
     <string name="feature_meals_empty_list">Empty list</string>

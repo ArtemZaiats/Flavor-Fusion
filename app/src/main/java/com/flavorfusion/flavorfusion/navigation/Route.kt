@@ -41,4 +41,7 @@ sealed interface Screen : NavKey {
 
     @Serializable
     data object SettingsAppTheme : Screen
+
+    @Serializable
+    data object SettingsEditUser : Screen
 }

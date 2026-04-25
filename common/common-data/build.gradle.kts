@@ -94,6 +94,7 @@ dependencies {
     implementation(libs.ktor.utils)
     implementation(libs.supabase.postgrest)
     implementation(libs.supabase.auth)
+    implementation(libs.supabase.storage)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit.ext)

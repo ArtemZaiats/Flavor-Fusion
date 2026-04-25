@@ -10,6 +10,8 @@ interface AuthRepository {
     suspend fun signUp(email: String, password: String): Result<Unit>
     suspend fun signInWithGoogle(idToken: String, rawNonce: String): Result<Unit>
     suspend fun logout()
+    suspend fun updateUserProfile(profile: UserProfile): Result<Unit>
+    suspend fun uploadAvatar(bytes: ByteArray, mimeType: String): Result<String>
     fun getUserProfileFlow(): Flow<UserProfile?>
     fun getAuthStateFlow(): Flow<AuthState>
 }

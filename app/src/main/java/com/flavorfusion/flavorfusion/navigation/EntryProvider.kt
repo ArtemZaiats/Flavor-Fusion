@@ -9,6 +9,7 @@ import com.flavorfusion.meals.mealDetails.MealDetailsScreen
 import com.flavorfusion.home.HomeScreen
 import com.flavorfusion.settings.SettingsScreen
 import com.flavorfusion.settings.category.app_theme.AppThemeScreen
+import com.flavorfusion.settings.category.edit_user.EditUserScreen
 import com.flavorfusion.flavorfusion.navigation.animation.screenMetadata
 import com.flavorfusion.flavorfusion.navigation.animation.tabMetadata
 import com.flavorfusion.favorites.FavoritesScreen
@@ -34,6 +35,9 @@ fun appEntryProvider(navigator: Navigator): (NavKey) -> NavEntry<NavKey> = entry
         SettingsScreen(
             navigateToAppTheme = {
                 navigator.navigate(Screen.SettingsAppTheme)
+            },
+            navigateToEditUser = {
+                navigator.navigate(Screen.SettingsEditUser)
             }
         )
     }
@@ -62,6 +66,12 @@ fun appEntryProvider(navigator: Navigator): (NavKey) -> NavEntry<NavKey> = entry
 
     entry<Screen.SettingsAppTheme>(metadata = screenMetadata) {
         AppThemeScreen(
+            navigateBack = { navigator.goBack() }
+        )
+    }
+
+    entry<Screen.SettingsEditUser>(metadata = screenMetadata) {
+        EditUserScreen(
             navigateBack = { navigator.goBack() }
         )
     }

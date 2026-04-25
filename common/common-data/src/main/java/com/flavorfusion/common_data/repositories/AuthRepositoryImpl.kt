@@ -13,8 +13,11 @@ import io.github.jan.supabase.auth.providers.Google
 import io.github.jan.supabase.auth.providers.builtin.Email
 import io.github.jan.supabase.auth.providers.builtin.IDToken
 import io.github.jan.supabase.auth.status.SessionStatus
+import io.github.jan.supabase.storage.storage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -54,6 +57,52 @@ class AuthRepositoryImpl @Inject constructor(
         runCatching {
             supabaseClient.auth.signOut()
             dataStoreHelper.clearAllData()
+        }
+    }
+
+    override suspend fun updateUserProfile(profile: UserProfile): Result<Unit> {
+        return try {
+            supabaseClient.auth.updateUser {
+                data = buildJsonObject {
+                    if (profile.firstName.isNotBlank()) put("given_name", profile.firstName)
+                    if (profile.lastName.isNotBlank()) put("family_name", profile.lastName)
+                    if (profile.avatarUrl.isNotBlank()) put("avatar_url", profile.avatarUrl)
+                }
+            }
+            cacheCurrentUserProfile()
+            Result.Success(Unit)
+        } catch (e: Exception) {
+            Result.Error(
+                DataError.Network.CustomServerError(
+                    e.message ?: "Update user profile failed"
+                )
+            )
+        }
+    }
+
+    override suspend fun uploadAvatar(bytes: ByteArray, mimeType: String): Result<String> {
+        return try {
+            val userId = supabaseClient.auth.currentUserOrNull()?.id
+                ?: return Result.Error(
+                    DataError.Network.CustomServerError("User not authenticated")
+                )
+
+            val extension = when (mimeType.lowercase()) {
+                "image/png" -> "png"
+                "image/webp" -> "webp"
+                "image/gif" -> "gif"
+                else -> "jpg"
+            }
+            val path = "$userId.$extension"
+            val bucket = supabaseClient.storage.from(AVATARS_BUCKET)
+            bucket.upload(path, bytes) { upsert = true }
+            val publicUrl = bucket.publicUrl(path)
+            Result.Success("$publicUrl?t=${System.currentTimeMillis()}")
+        } catch (e: Exception) {
+            println("Avatar upload failed: ${e.message}")
+            Result.Error(
+                DataError.Network.CustomServerError(e.message ?: "Avatar upload failed")
+            )
         }
     }
 
@@ -98,7 +147,8 @@ class AuthRepositoryImpl @Inject constructor(
             firstName = meta?.getStringByKey("given_name")
                 ?: meta
                     ?.getStringByKey("full_name")
-                    ?.substringBefore(" ") ?: "",
+                    ?.substringBefore(" ")
+                ?: "",
             lastName = meta?.getStringByKey("family_name")
                 ?: meta
                     ?.getStringByKey("full_name")
@@ -106,5 +156,9 @@ class AuthRepositoryImpl @Inject constructor(
                 ?: "",
             avatarUrl = meta?.getStringByKey("avatar_url") ?: ""
         )
+    }
+
+    private companion object {
+        const val AVATARS_BUCKET = "avatars"
     }
 }

@@ -28,6 +28,7 @@ interface SettingsContract {
 
     sealed interface Event : UiEvent {
         data class OnItemClicked(val id: Int) : Event
+        data object OnProfileClicked : Event
         data object OnLogOutClicked : Event
         data object OnLogOutConfirmed : Event
     }
@@ -40,6 +41,7 @@ interface SettingsContract {
 
     sealed interface Effect : UiEffect {
         data object NavigateToAppTheme : Effect
+        data object NavigateToEditUser : Effect
         data object ShowLogOutDialog : Effect
     }
 }

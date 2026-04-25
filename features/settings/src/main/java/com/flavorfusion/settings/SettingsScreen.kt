@@ -27,21 +27,18 @@ import com.flavorfusion.settings.model.SettingsDataPreviewProvider
 
 @Composable
 fun SettingsScreen(
-    navigateToAppTheme: () -> Unit
+    navigateToAppTheme: () -> Unit,
+    navigateToEditUser: () -> Unit
 ) {
     val viewModel: SettingsViewModel = hiltViewModel()
     val state = viewModel.state.collectAsStateWithLifecycle().value
 
     var showLogOutDialog by remember { mutableStateOf(false) }
 
-    SettingsScreen(
-        state = state,
-        onEvent = viewModel::handleEvent
-    )
-
     EffectHandler(viewModel = viewModel) {
         when (it) {
             is SettingsContract.Effect.NavigateToAppTheme -> navigateToAppTheme.invoke()
+            is SettingsContract.Effect.NavigateToEditUser -> navigateToEditUser.invoke()
             is SettingsContract.Effect.ShowLogOutDialog -> showLogOutDialog = true
         }
     }
@@ -73,7 +70,10 @@ fun SettingsScreen(
                 .padding(paddingValues)
                 .padding(start = 16.dp, end = 16.dp, top = 30.dp)
         ) {
-            ProfileHeader(profile = state.profile)
+            ProfileHeader(
+                profile = state.profile,
+                onClick = { onEvent.invoke(SettingsContract.Event.OnProfileClicked) }
+            )
             Column(verticalArrangement = Arrangement.spacedBy(30.dp)) {
                 state.categories.forEach { category ->
                     SettingsCategoryComponent(

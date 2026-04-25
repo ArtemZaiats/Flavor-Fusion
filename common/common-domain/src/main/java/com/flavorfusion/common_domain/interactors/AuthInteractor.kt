@@ -1,5 +1,6 @@
 package com.flavorfusion.common_domain.interactors
 
+import com.flavorfusion.common_domain.model.UserProfile
 import com.flavorfusion.common_domain.repositories.AuthRepository
 import javax.inject.Inject
 
@@ -10,6 +11,8 @@ class AuthInteractor @Inject constructor(
     suspend fun signUp(email: String, password: String) = authRepository.signUp(email, password)
     suspend fun signInWithGoogle(idToken: String, rawNonce: String) = authRepository.signInWithGoogle(idToken, rawNonce)
     suspend fun logout() = authRepository.logout()
+    suspend fun updateUserProfile(profile: UserProfile) = authRepository.updateUserProfile(profile)
+    suspend fun uploadAvatar(bytes: ByteArray, mimeType: String) = authRepository.uploadAvatar(bytes, mimeType)
     fun getAuthStateFlow() = authRepository.getAuthStateFlow()
     fun getUserProfileFlow() = authRepository.getUserProfileFlow()
 }
